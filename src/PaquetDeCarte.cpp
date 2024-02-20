@@ -55,3 +55,8 @@ void PaquetDeCarte::afficherPaquet() const
         paquet[i].afficherCarte();
     }
 }
+
+Carte PaquetDeCarte::getCarteDansPaquet(int index)
+{
+    return paquet[index];
+}

@@ -1,10 +1,13 @@
 #include <iostream>
-#include "PaquetDeCarte.h"
+#include "Main.h"
 
 int main()
 {
     srand(time(NULL));
-    PaquetDeCarte paquet;
-    paquet.afficherPaquet();
+    Main main;
+    main.afficherMain();
+    main.trierMain();
+    std::cout << std::endl;
+    main.afficherMain();
     return 0;
 }

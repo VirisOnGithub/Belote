@@ -15,6 +15,7 @@ public:
     PaquetDeCarte getPaquet();
     void setPaquet(PaquetDeCarte paquet);
     void afficherPaquet() const;
+    Carte getCarteDansPaquet(int index);
 };
 
 #endif
