@@ -1,13 +1,9 @@
 #include <iostream>
-#include "Main.h"
+#include "Equipe.h"
 
 int main()
 {
     srand(time(NULL));
-    Main main;
-    main.afficherMain();
-    main.trierMain();
-    std::cout << std::endl;
-    main.afficherMain();
-    return 0;
+    Equipe equipe1;
+    equipe1.afficherEquipe();
 }

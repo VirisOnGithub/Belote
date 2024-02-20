@@ -1,6 +1,8 @@
 #ifndef CARTE_H
 #define CARTE_H
 
+#include <iostream>
+
 enum Couleur
 {
     coeur = 0,
