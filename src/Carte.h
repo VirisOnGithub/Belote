@@ -63,7 +63,7 @@ public:
     void setAtout(bool atout);
     bool isAccessible() const;
     void setAccessible(bool accessible);
-    void afficher() const;
+    void afficherCarte() const;
 };
 
 #endif

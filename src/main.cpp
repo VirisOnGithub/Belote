@@ -1,10 +1,10 @@
 #include <iostream>
-#include "Carte.h"
+#include "PaquetDeCarte.h"
 
 int main()
 {
     srand(time(NULL));
-    Carte c1;
-    c1.afficher();
+    PaquetDeCarte paquet;
+    paquet.afficherPaquet();
     return 0;
 }

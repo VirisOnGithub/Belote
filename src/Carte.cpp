@@ -51,7 +51,7 @@ void Carte::setAccessible(bool accessible)
     this->accessible = accessible;
 }
 
-void Carte::afficher() const
+void Carte::afficherCarte() const
 {
     std::string couleurStr;
     switch (couleur)
