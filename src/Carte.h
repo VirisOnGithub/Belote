@@ -64,6 +64,7 @@ public:
     bool isAccessible() const;
     void setAccessible(bool accessible);
     void afficherCarte() const;
+    bool operator==(const Carte &carte1) const;
 };
 
 #endif

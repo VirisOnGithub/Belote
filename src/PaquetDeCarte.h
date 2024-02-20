@@ -1,6 +1,5 @@
 #ifndef PAQUETDECARTE_H
 #define PAQUETDECARTE_H
-
 #include "Carte.h"
 #include <vector>
 

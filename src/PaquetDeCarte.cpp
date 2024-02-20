@@ -4,9 +4,26 @@
 
 PaquetDeCarte::PaquetDeCarte()
 {
-    for (int i = 0; i < 32; i++)
+    while (paquet.size() < 32)
     {
-        paquet.push_back(Carte());
+        Carte carte;
+        bool alreadyExists = false;
+
+        // Vérifier si la carte existe déjà dans le paquet
+        for (const Carte &c : paquet)
+        {
+            if (c == carte)
+            {
+                alreadyExists = true;
+                break;
+            }
+        }
+
+        // Si la carte n'existe pas déjà, l'ajouter au paquet
+        if (!alreadyExists)
+        {
+            paquet.push_back(carte);
+        }
     }
 }
 

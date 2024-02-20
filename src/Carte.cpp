@@ -101,3 +101,8 @@ void Carte::afficherCarte() const
 
     std::cout << chiffreStr << " de " << couleurStr << std::endl;
 }
+
+bool Carte::operator==(const Carte &carte) const
+{
+    return (couleur == carte.couleur && chiffre == carte.chiffre);
+}
