@@ -10,7 +10,7 @@ private:
 
 public:
     Main();
-    void Pour4Joueurs(PaquetDeCarte p, std::vector<Main> &mains);
+    static void Pour4Joueurs(PaquetDeCarte p, std::vector<Main> &mains);
     int operator=(const Carte &carte);
     int operator[](int index);
     Main getMain();
