@@ -72,3 +72,13 @@ Equipe Table::getEquipe2()
 {
     return Equipe2;
 }
+
+void Table::setMains(std::vector<MainJoueur> m)
+{
+    Mains = m;
+}
+
+std::vector<MainJoueur> Table::getMains()
+{
+    return Mains;
+}

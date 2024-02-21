@@ -1,13 +1,13 @@
 #ifndef JOUEUR_H
 #define JOUEUR_H
 
-#include "Main.h"
+#include "MainJoueur.h"
 #include <string>
 
 class Joueur
 {
 private:
-    Main main;
+    MainJoueur main;
     std::string nom;
     int rang;
 
@@ -17,8 +17,8 @@ public:
     void setNom(std::string nom);
     int getRang();
     void setRang(int rang);
-    Main getMain();
-    void setMain(Main main);
+    MainJoueur getMain();
+    void setMain(MainJoueur main);
     void afficherJoueur();
 };
 

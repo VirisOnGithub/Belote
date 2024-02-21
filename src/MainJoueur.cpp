@@ -1,7 +1,7 @@
 #include <iostream>
-#include "Main.h"
+#include "MainJoueur.h"
 
-Main::Main()
+MainJoueur::MainJoueur()
 {
     PaquetDeCarte paquet;
 
@@ -11,11 +11,11 @@ Main::Main()
     }
 }
 
-void Main::Pour4Joueurs(PaquetDeCarte p, std::vector<Main> &mains)
+void MainJoueur::Pour4Joueurs(PaquetDeCarte p, std::vector<MainJoueur> &mains)
 {
     for (int i = 0; i < 4; i++)
     {
-        Main main;
+        MainJoueur main;
         for (int j = 0; j < 8; j++)
         {
             main = p.getCarteDansPaquet(j);
@@ -25,28 +25,28 @@ void Main::Pour4Joueurs(PaquetDeCarte p, std::vector<Main> &mains)
     }
 }
 
-int Main::operator=(const Carte &carte)
+int MainJoueur::operator=(const Carte &carte)
 {
     main.push_back(carte);
     return 0;
 }
 
-int Main::operator[](int index)
+int MainJoueur::operator[](int index)
 {
     return index;
 }
 
-Main Main::getMain()
+MainJoueur MainJoueur::getMain()
 {
     return *this;
 }
 
-void Main::setMain(Main main)
+void MainJoueur::setMain(MainJoueur main)
 {
     this->main = main.main;
 }
 
-void Main::afficherMain() const
+void MainJoueur::afficherMain() const
 {
     for (int i = 0; i < 8; i++)
     {
@@ -54,7 +54,7 @@ void Main::afficherMain() const
     }
 }
 
-void Main::trierMain()
+void MainJoueur::trierMain()
 {
     for (int i = 0; i < 8; i++)
     {

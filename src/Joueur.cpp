@@ -5,7 +5,7 @@ Joueur::Joueur()
 {
     nom = "Joueur";
     rang = 0;
-    main = Main();
+    main = MainJoueur();
 }
 
 std::string Joueur::getNom()
@@ -28,12 +28,12 @@ void Joueur::setRang(int rang)
     this->rang = rang;
 }
 
-Main Joueur::getMain()
+MainJoueur Joueur::getMain()
 {
     return main;
 }
 
-void Joueur::setMain(Main main)
+void Joueur::setMain(MainJoueur main)
 {
     this->main = main;
 }

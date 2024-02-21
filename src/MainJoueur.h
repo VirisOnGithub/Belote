@@ -3,18 +3,18 @@
 
 #include "PaquetDeCarte.h"
 
-class Main
+class MainJoueur
 {
 private:
     std::vector<Carte> main;
 
 public:
-    Main();
-    static void Pour4Joueurs(PaquetDeCarte p, std::vector<Main> &mains);
+    MainJoueur();
+    static void Pour4Joueurs(PaquetDeCarte p, std::vector<MainJoueur> &mains);
     int operator=(const Carte &carte);
     int operator[](int index);
-    Main getMain();
-    void setMain(Main main);
+    MainJoueur getMain();
+    void setMain(MainJoueur main);
     void afficherMain() const;
     void trierMain();
 };
