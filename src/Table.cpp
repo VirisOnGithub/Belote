@@ -82,3 +82,17 @@ std::vector<MainJoueur> Table::getMains()
 {
     return Mains;
 }
+
+void Table::Pour4Joueurs(PaquetDeCarte p, std::vector<MainJoueur> &mains)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        MainJoueur main;
+        for (int j = 0; j < 8; j++)
+        {
+            main = p.getCarteDansPaquet(i * 8 + j);
+        }
+        main.trierMain();
+        mains.push_back(main);
+    }
+}

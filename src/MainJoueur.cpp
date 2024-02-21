@@ -11,20 +11,6 @@ MainJoueur::MainJoueur()
     }
 }
 
-void MainJoueur::Pour4Joueurs(PaquetDeCarte p, std::vector<MainJoueur> &mains)
-{
-    for (int i = 0; i < 4; i++)
-    {
-        MainJoueur main;
-        for (int j = 0; j < 8; j++)
-        {
-            main = p.getCarteDansPaquet(j);
-        }
-        main.trierMain();
-        mains.push_back(main);
-    }
-}
-
 int MainJoueur::operator=(const Carte &carte)
 {
     main.push_back(carte);

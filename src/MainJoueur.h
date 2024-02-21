@@ -10,7 +10,6 @@ private:
 
 public:
     MainJoueur();
-    static void Pour4Joueurs(PaquetDeCarte p, std::vector<MainJoueur> &mains);
     int operator=(const Carte &carte);
     int operator[](int index);
     MainJoueur getMain();

@@ -7,7 +7,7 @@ int main()
     srand(time(NULL));
     Table table;
     std::vector<MainJoueur> mains;
-    MainJoueur::Pour4Joueurs(table.getAllCards(), mains);
+    Table::Pour4Joueurs(table.getAllCards(), mains);
     for (int i = 0; i < 4; i++)
     {
         mains[i].afficherMain();

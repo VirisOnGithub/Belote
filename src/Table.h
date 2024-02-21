@@ -31,6 +31,8 @@ public:
     Equipe getEquipe2();
     void setMains(std::vector<MainJoueur> m);
     std::vector<MainJoueur> getMains();
+
+    static void Pour4Joueurs(PaquetDeCarte p, std::vector<MainJoueur> &mains);
 };
 
 #endif
