@@ -1,9 +1,11 @@
 #include <iostream>
-#include "Equipe.h"
+#include "Table.h"
+#include "Main.h"
 
 int main()
 {
     srand(time(NULL));
-    Equipe equipe1;
-    equipe1.afficherEquipe();
+    Table table;
+    std::vector<Main> mains;
+    Pour4Joueurs(table.getAllCards(), mains);
 }
