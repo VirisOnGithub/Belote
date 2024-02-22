@@ -1,4 +1,3 @@
-#include <iostream>
 #include "Table.h"
 
 Table::Table()
@@ -95,4 +94,14 @@ void Table::Pour4Joueurs(PaquetDeCarte p, std::vector<MainJoueur> &mains)
         main.trierMain();
         mains.push_back(main);
     }
+}
+
+void Table::coupe(PaquetDeCarte &p)
+{
+    int n = rand() % 32;
+    for (int i = 0; i < n; i++)
+    {
+        p.getCarteDansPaquet(0);
+    }
+    
 }

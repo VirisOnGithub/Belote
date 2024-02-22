@@ -33,3 +33,11 @@
 
 .vscode/*
 .idea
+
+#exec
+*.exe
+main
+
+!.gitignore
+!.gitkeep
+!*/.gitkeep

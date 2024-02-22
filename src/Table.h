@@ -33,6 +33,8 @@ public:
     std::vector<MainJoueur> getMains();
 
     static void Pour4Joueurs(PaquetDeCarte p, std::vector<MainJoueur> &mains);
+
+    void coupe(PaquetDeCarte &p);
 };
 
 #endif
