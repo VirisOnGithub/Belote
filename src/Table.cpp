@@ -4,6 +4,17 @@ Table::Table()
 {
     nbPlis = 0;
     AllCards = PaquetDeCarte();
+    Equipe1 = Equipe();
+    Equipe2 = Equipe();
+    Joueurs = std::vector<Joueur>();
+    for (int i = 0; i < 4; i++)
+    {
+        Joueur j;
+        Joueurs.push_back(j);
+    }
+    Mains = std::vector<MainJoueur>();
+    CartesSurTable = std::vector<Carte>();
+    CartesJouees = std::vector<Carte>();
 }
 
 void Table::setJoueurs(std::vector<Joueur> j)
@@ -89,7 +100,7 @@ void Table::Pour4Joueurs(PaquetDeCarte p, std::vector<MainJoueur> &mains)
         MainJoueur main;
         for (int j = 0; j < 8; j++)
         {
-            main = p.getCarteDansPaquet(i * 8 + j);
+            main.getMain().push_back(p.getCarteDansPaquet(0));
         }
         main.trierMain();
         mains.push_back(main);

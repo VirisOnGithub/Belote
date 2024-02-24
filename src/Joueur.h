@@ -18,7 +18,7 @@ public:
     int getRang();
     void setRang(int rang);
     MainJoueur getMain();
-    void setMain(MainJoueur main);
+    void setMain(const MainJoueur &main);
     void afficherJoueur();
 };
 

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include "MainJoueur.h"
 
 MainJoueur::MainJoueur()
@@ -11,10 +12,12 @@ MainJoueur::MainJoueur()
     }
 }
 
-int MainJoueur::operator=(const Carte &carte)
+MainJoueur& MainJoueur::operator=(const MainJoueur &autre)
 {
-    main.push_back(carte);
-    return 0;
+    if (this != &autre) {
+        main = autre.main;
+    }
+    return *this;
 }
 
 int MainJoueur::operator[](int index)
@@ -22,9 +25,9 @@ int MainJoueur::operator[](int index)
     return index;
 }
 
-MainJoueur MainJoueur::getMain()
+std::vector<Carte> MainJoueur::getMain()
 {
-    return *this;
+    return main;
 }
 
 void MainJoueur::setMain(MainJoueur main)

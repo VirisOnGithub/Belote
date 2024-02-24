@@ -1,7 +1,9 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#include "Carte.h"
 #include "PaquetDeCarte.h"
+#include <vector>
 
 class MainJoueur
 {
@@ -10,9 +12,9 @@ private:
 
 public:
     MainJoueur();
-    int operator=(const Carte &carte);
+    MainJoueur& operator=(const MainJoueur &autre);
     int operator[](int index);
-    MainJoueur getMain();
+    std::vector<Carte> getMain();
     void setMain(MainJoueur main);
     void afficherMain() const;
     void trierMain();

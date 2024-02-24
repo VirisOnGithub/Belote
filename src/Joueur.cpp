@@ -33,8 +33,7 @@ MainJoueur Joueur::getMain()
     return main;
 }
 
-void Joueur::setMain(MainJoueur main)
-{
+void Joueur::setMain(const MainJoueur& main) {
     this->main = main;
 }
 
