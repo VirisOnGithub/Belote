@@ -38,6 +38,9 @@
 *.exe
 main
 
+# CMake
+build/*
+
 !.gitignore
 !.gitkeep
 !*/.gitkeep

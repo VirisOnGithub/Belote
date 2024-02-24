@@ -1,1 +1,1 @@
-# Belote
+# BelotePro
