@@ -18,6 +18,7 @@ set(SOURCES
     src/PaquetDeCarte.h
     src/MainJoueur.cpp
     src/MainJoueur.h
+    src/enums.cpp
 )
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/obj)

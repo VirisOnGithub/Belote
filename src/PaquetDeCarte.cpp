@@ -1,27 +1,12 @@
-#include <iostream>
-
 #include "PaquetDeCarte.h"
 
 PaquetDeCarte::PaquetDeCarte()
 {
-    while (paquet.size() < 32)
-    {
-        Carte carte;
-        bool alreadyExists = false;
-
-        // Vérifier si la carte existe déjà dans le paquet
-        for (const Carte &c : paquet)
-        {
-            if (c == carte)
-            {
-                alreadyExists = true;
-                break;
-            }
-        }
-
-        // Si la carte n'existe pas déjà, l'ajouter au paquet
-        if (!alreadyExists)
-        {
+    for (int couleur = Couleur::coeur; couleur <= Couleur::trefle; couleur++) {
+        for (int chiffre = ChiffreCarte::as; chiffre <= ChiffreCarte::sept; chiffre++) {
+            Carte carte;
+            carte.setCouleur(static_cast<Couleur>(couleur));
+            carte.setChiffre(static_cast<ChiffreCarte>(chiffre));
             paquet.push_back(carte);
         }
     }
