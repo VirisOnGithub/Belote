@@ -4,12 +4,7 @@
 
 MainJoueur::MainJoueur()
 {
-    PaquetDeCarte paquet;
 
-    for (int i = 0; i < 8; i++)
-    {
-        main.push_back(paquet.getCarteDansPaquet(i));
-    }
 }
 
 MainJoueur& MainJoueur::operator=(const MainJoueur &autre)
@@ -33,6 +28,11 @@ std::vector<Carte> MainJoueur::getMain()
 void MainJoueur::setMain(MainJoueur main)
 {
     this->main = main.main;
+}
+
+void MainJoueur::addCarte(Carte carte)
+{
+    main.push_back(carte);
 }
 
 void MainJoueur::afficherMain() const

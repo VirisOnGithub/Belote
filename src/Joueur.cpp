@@ -28,7 +28,7 @@ void Joueur::setRang(int rang)
     this->rang = rang;
 }
 
-MainJoueur Joueur::getMain()
+MainJoueur& Joueur::getMain()
 {
     return main;
 }

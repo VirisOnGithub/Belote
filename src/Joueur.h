@@ -17,7 +17,7 @@ public:
     void setNom(std::string nom);
     int getRang();
     void setRang(int rang);
-    MainJoueur getMain();
+    MainJoueur& getMain();
     void setMain(const MainJoueur &main);
     void afficherJoueur();
 };

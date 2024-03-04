@@ -2,6 +2,9 @@
 #define TABLE_H
 
 #include "Equipe.h"
+#include "Joueur.h"
+#include "MainJoueur.h"
+#include "PaquetDeCarte.h"
 
 class Table
 {

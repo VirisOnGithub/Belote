@@ -2,7 +2,6 @@
 #define MAIN_H
 
 #include "Carte.h"
-#include "PaquetDeCarte.h"
 #include <vector>
 
 class MainJoueur
@@ -16,6 +15,7 @@ public:
     int operator[](int index);
     std::vector<Carte> getMain();
     void setMain(MainJoueur main);
+    void addCarte(Carte carte);
     void afficherMain() const;
     void trierMain();
 };
