@@ -41,5 +41,17 @@ void Joueur::afficherJoueur()
 {
     std::cout << "Nom: " << nom << std::endl;
     std::cout << "Rang: " << rang << std::endl;
+}
+
+int Joueur::demanderCarte()
+{
+    int index;
+    std::cout << "Entrez l'index de la carte que vous voulez jouer: ";
+    std::cin >> index;
+    return index;
+}
+
+void Joueur::afficherMain()
+{
     main.afficherMain();
 }

@@ -10,6 +10,7 @@ private:
     MainJoueur main;
     std::string nom;
     int rang;
+    bool ajoue;
 
 public:
     Joueur();
@@ -20,6 +21,8 @@ public:
     MainJoueur& getMain();
     void setMain(const MainJoueur &main);
     void afficherJoueur();
+    int demanderCarte();
+    void afficherMain();
 };
 
 #endif

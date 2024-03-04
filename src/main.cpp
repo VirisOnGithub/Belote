@@ -5,10 +5,7 @@
 
 int main()
 {
+    Table table;
     PaquetDeCarte paquet;
-    paquet.afficherPaquet();
-    std::cout << std::endl;
-    paquet.melanger();
-    paquet.afficherPaquet();
     return 0;
 }

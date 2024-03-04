@@ -1,4 +1,5 @@
 #include "Table.h"
+#include "PaquetDeCarte.h"
 
 Table::Table()
 {
@@ -93,17 +94,18 @@ std::vector<MainJoueur> Table::getMains()
     return Mains;
 }
 
-void Table::Pour4Joueurs(PaquetDeCarte p, std::vector<MainJoueur> &mains)
-{
+ void Table::jeu(){
+    PaquetDeCarte p;
+    p.melanger();
+    coupe(p);
     for (int i = 0; i < 4; i++)
     {
-        MainJoueur main;
+        MainJoueur m;
         for (int j = 0; j < 8; j++)
         {
-            main.getMain().push_back(p.getCarteDansPaquet(0));
+            m.addCarte(p.getCarteDansPaquet(0));
         }
-        main.trierMain();
-        mains.push_back(main);
+        Mains.push_back(m);
     }
 }
 
@@ -115,4 +117,16 @@ void Table::coupe(PaquetDeCarte &p)
         p.getCarteDansPaquet(0);
     }
     
+}
+
+void Table::tourDeJeu(int joueur)
+{
+    int indexCarte;
+    do {
+        Mains[joueur].afficherMain();
+        indexCarte=Joueurs[joueur].demanderCarte();
+    } while (!Mains[joueur].getMain()[indexCarte].estValide(CartesSurTable));
+
+    CartesSurTable.push_back(Mains[joueur].getMain()[indexCarte]);
+    Mains[joueur].getMain().erase(Mains[joueur].getMain().begin() + indexCarte);
 }
