@@ -18,6 +18,7 @@ public:
     void addCarte(Carte carte);
     void afficherMain() const;
     void trierMain();
+    void jouerCarte(int index);
 };
 
 #endif

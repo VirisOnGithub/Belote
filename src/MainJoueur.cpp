@@ -64,3 +64,8 @@ void MainJoueur::trierMain()
         }
     }
 }
+
+void MainJoueur::jouerCarte(int index)
+{
+    main.erase(main.begin() + index);
+}
