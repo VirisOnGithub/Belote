@@ -4,6 +4,7 @@
 
 MainJoueur::MainJoueur()
 {
+    main = std::vector<Carte>();
 }
 
 MainJoueur &MainJoueur::operator=(const MainJoueur &autre)

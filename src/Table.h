@@ -34,7 +34,8 @@ public:
     Equipe getEquipe2();
     void setMains(std::vector<MainJoueur> m);
     std::vector<MainJoueur> getMains();
-    void distribuer(PaquetDeCarte p);
+    void afficherMains();
+    void distribuer(PaquetDeCarte &p);
 
     void jeu();
 
