@@ -94,18 +94,6 @@ std::vector<MainJoueur> Table::getMains()
 
 void Table::jeu()
 {
-    // PaquetDeCarte p;
-    // p.melanger();
-    // coupe(p);
-    // for (int i = 0; i < 4; i++)
-    // {
-    //     MainJoueur m;
-    //     for (int j = 0; j < 8; j++)
-    //     {
-    //         m.addCarte(p.getPremiereCarte());
-    //     }
-    //     Mains.push_back(m);
-    // }
     PaquetDeCarte paquet;
 
     paquet.melanger();
