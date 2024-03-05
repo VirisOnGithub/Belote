@@ -17,7 +17,7 @@ public:
     void setPaquet(PaquetDeCarte paquet);
     void afficherPaquet() const;
     void melanger();
-    Carte getCarteDansPaquet(int index);
+    Carte getPremiereCarte();
 };
 
 #endif

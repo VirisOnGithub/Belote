@@ -52,7 +52,9 @@ void PaquetDeCarte::melanger()
     std::random_shuffle(paquet.begin(), paquet.end());
 }
 
-Carte PaquetDeCarte::getCarteDansPaquet(int index)
+Carte PaquetDeCarte::getPremiereCarte()
 {
-    return paquet[index];
+    Carte carte = paquet[0];
+    paquet.erase(paquet.begin());
+    return carte;
 }

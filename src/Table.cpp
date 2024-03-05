@@ -97,7 +97,7 @@ void Table::jeu()
         MainJoueur m;
         for (int j = 0; j < 8; j++)
         {
-            m.addCarte(p.getCarteDansPaquet(0));
+            m.addCarte(p.getPremiereCarte());
         }
         Mains.push_back(m);
     }
@@ -108,7 +108,7 @@ void Table::coupe(PaquetDeCarte &p)
     int n = rand() % 32;
     for (int i = 0; i < n; i++)
     {
-        p.getCarteDansPaquet(0);
+        p.getPremiereCarte();
     }
 }
 
@@ -127,15 +127,16 @@ void Table::tourDeJeu(int joueur, Couleur atout)
 
 void Table::distribuer(PaquetDeCarte p)
 {
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 4; j++) {
-            Mains[j].addCarte(p.getCarteDansPaquet(0));
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 3; j++) {
+            Mains[i].addCarte(p.getPremiereCarte());
         }
     }
-
-    for (int i = 0; i < 2; i++) {
-        for (int j = 0; j < 4; j++) {
-            Mains[j].addCarte(p.getCarteDansPaquet(0));
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 2; j++) {
+            Mains[i].addCarte(p.getPremiereCarte());
         }
     }
 }
