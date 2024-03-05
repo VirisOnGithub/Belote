@@ -7,6 +7,11 @@ Table::Table()
     Equipe1 = Equipe();
     Equipe2 = Equipe();
     Mains = std::vector<MainJoueur>();
+    for (int i = 0; i < 4; i++)
+    {
+        MainJoueur m;
+        Mains.push_back(m);
+    }
     CartesSurTable = std::vector<Carte>();
     CartesJouees = std::vector<Carte>();
 }
@@ -148,5 +153,6 @@ void Table::afficherMains()
     for (int i = 0; i < 4; i++)
     {
         Mains[i].afficherMain();
+        std::cout << std::endl;
     }
 }

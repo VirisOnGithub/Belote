@@ -9,7 +9,12 @@ int main()
     PaquetDeCarte paquet;
 
     paquet.melanger();
-    table.setAllCards(paquet);
+    paquet.afficherPaquet();
+    std::cout << std::endl;
+    std::cout << std::endl;
     table.distribuer(paquet);
+    std::cout << "Done" << std::endl;
+
+    table.afficherMains();
     return 0;
 }

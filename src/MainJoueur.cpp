@@ -38,7 +38,7 @@ void MainJoueur::addCarte(Carte carte)
 
 void MainJoueur::afficherMain() const
 {
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < main.size(); i++)
     {
         main[i].afficherCarte();
     }
