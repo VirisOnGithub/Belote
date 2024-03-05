@@ -11,6 +11,7 @@ private:
     std::string nom;
     int rang;
     bool ajoue;
+    bool aPrisAtout;
 
 public:
     Joueur();
@@ -20,9 +21,12 @@ public:
     void setRang(int rang);
     MainJoueur& getMain();
     void setMain(const MainJoueur &main);
+    bool getAPrisAtout();
+    void setAPrisAtout(bool aPrisAtout);
     void afficherJoueur();
     int demanderCarte();
     void afficherMain();
+    
 };
 
 #endif

@@ -37,6 +37,16 @@ void Joueur::setMain(const MainJoueur& main) {
     this->main = main;
 }
 
+bool Joueur::getAPrisAtout()
+{
+    return aPrisAtout;
+}
+
+void Joueur::setAPrisAtout(bool aPris)
+{
+    this->aPrisAtout = aPris;
+}
+
 void Joueur::afficherJoueur()
 {
     std::cout << "Nom: " << nom << std::endl;
@@ -55,3 +65,4 @@ void Joueur::afficherMain()
 {
     main.afficherMain();
 }
+
