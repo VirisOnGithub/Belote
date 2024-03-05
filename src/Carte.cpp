@@ -170,7 +170,7 @@ bool Carte::estValide(std::vector<Carte> CartesSurTable, Couleur atout, std::vec
             }
             //de plus, si il y a déjà de l'atout sur la table, le joueur doit jouer de l'atout au dessus de la carte la plus forte
             if (hasTrumpOnTable(CartesSurTable, atout)){
-                ValeurCarteAtout valeurMax = CartesSurTable[0].getValeurAtout(); // on récupère la valeur de la carte atout la plus forte sur la table
+                ValeurCarteAtout valeurMax = septAtout;
                 for (int i = 0; i < CartesSurTable.size(); i++){
                     if (CartesSurTable[i].getValeurAtout() > valeurMax && CartesSurTable[i].getCouleur() == atout){
                         valeurMax = CartesSurTable[i].getValeurAtout();

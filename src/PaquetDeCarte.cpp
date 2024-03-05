@@ -52,38 +52,6 @@ void PaquetDeCarte::melanger()
     std::random_shuffle(paquet.begin(), paquet.end());
 }
 
-void PaquetDeCarte::distribuer(std::vector<Joueur> &joueurs)
-{
-    int indexPaquet = 0;
-
-    // Premier tour : distribuer 3 cartes à chaque joueur
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 3; j++)
-        {
-            joueurs[i].getMain().addCarte(paquet[indexPaquet++]);
-        }
-    }
-
-    // Deuxième tour : distribuer 2 cartes à chaque joueur
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 2; j++)
-        {
-            joueurs[i].getMain().addCarte(paquet[indexPaquet++]);
-        }
-    }
-
-    // Troisième tour : distribuer 3 cartes à chaque joueur
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 3; j++)
-        {
-            joueurs[i].getMain().addCarte(paquet[indexPaquet++]);
-        }
-    }
-}
-
 Carte PaquetDeCarte::getCarteDansPaquet(int index)
 {
     return paquet[index];

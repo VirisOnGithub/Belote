@@ -17,7 +17,6 @@ public:
     void setPaquet(PaquetDeCarte paquet);
     void afficherPaquet() const;
     void melanger();
-    void distribuer(std::vector<Joueur> &joueurs);
     Carte getCarteDansPaquet(int index);
 };
 

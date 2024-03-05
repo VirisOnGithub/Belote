@@ -124,3 +124,18 @@ void Table::tourDeJeu(int joueur, Couleur atout)
     CartesSurTable.push_back(Mains[joueur].getMain()[indexCarte]);
     Mains[joueur].getMain().erase(Mains[joueur].getMain().begin() + indexCarte);
 }
+
+void Table::distribuer(PaquetDeCarte p)
+{
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 4; j++) {
+            Mains[j].addCarte(p.getCarteDansPaquet(0));
+        }
+    }
+
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 4; j++) {
+            Mains[j].addCarte(p.getCarteDansPaquet(0));
+        }
+    }
+}
