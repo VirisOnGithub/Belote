@@ -28,7 +28,6 @@ public:
     bool estValide(std::vector<Carte> CartesSurTable, Couleur atout, std::vector<Carte> mainJoueur) const;
     ValeurCarteAtout getValeurAtout() const;
     ValeurCarteNonAtout getValeurNonAtout() const;
-
 };
 
 #endif
