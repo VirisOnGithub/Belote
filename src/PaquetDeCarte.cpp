@@ -1,6 +1,7 @@
 #include "PaquetDeCarte.h"
 #include <algorithm>
 #include <cassert>
+#include <cstdlib>
 
 PaquetDeCarte::PaquetDeCarte()
 {
@@ -50,7 +51,13 @@ void PaquetDeCarte::afficherPaquet() const
 
 void PaquetDeCarte::melanger()
 {
-    std::random_shuffle(paquet.begin(), paquet.end());
+    srand(time(0));
+    int n = paquet.size();
+    for (int i = n - 1; i > 0; i--)
+    {
+        int j = rand() % (i + 1);
+        std::swap(paquet[i], paquet[j]);
+    }
 }
 
 Carte PaquetDeCarte::getPremiereCarte()
