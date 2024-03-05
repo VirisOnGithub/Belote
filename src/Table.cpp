@@ -129,24 +129,49 @@ void Table::tourDeJeu(int joueur, Couleur atout)
     Mains[joueur].getMain().erase(Mains[joueur].getMain().begin() + indexCarte);
 }
 
-void Table::distribuer(PaquetDeCarte &p)
+void Table::distribuerCartes3(PaquetDeCarte &p,int index)
 {
-    for (int i = 0; i < 4; i++)
+    for (int j = 0; j < 3; j++)
     {
-        for (int j = 0; j < 3; j++)
-        {
-            Mains[i].addCarte(p.getPremiereCarte());
-        }
-    }
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 2; j++)
-        {
-            Mains[i].addCarte(p.getPremiereCarte());
-        }
+        Mains[index].addCarte(p.getPremiereCarte());
     }
 }
 
+void Table::distribuerCartes2(PaquetDeCarte &p,int index)
+{
+   
+    for (int j = 0; j < 2; j++)
+    {
+        Mains[index].addCarte(p.getPremiereCarte());
+    }
+}
+
+void Table::distribuer1(PaquetDeCarte &p)
+{
+     for (int i = 0; i < 4; i++)
+    {
+        distribuerCartes3(p,i);
+    }
+    for (int i = 0; i < 4; i++)
+    {
+        distribuerCartes2(p,i);
+    }  
+}
+
+void Table::distribuer2(PaquetDeCarte &p)
+{
+
+    for (int i = 0; i < 4; i++)
+    {
+        if(Mains[i].getMain().size() == 6){
+            distribuerCartes2(p,i);
+        }
+        else{
+            distribuerCartes3(p,i);
+        }
+    }
+}
+    
 void Table::afficherMains()
 {
     for (int i = 0; i < 4; i++)

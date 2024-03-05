@@ -35,7 +35,10 @@ public:
     void setMains(std::vector<MainJoueur> m);
     std::vector<MainJoueur> getMains();
     void afficherMains();
-    void distribuer(PaquetDeCarte &p);
+    void distribuerCartes3(PaquetDeCarte &p,int index);
+    void distribuerCartes2(PaquetDeCarte &p,int index);
+    void distribuer1(PaquetDeCarte &p);
+    void distribuer2(PaquetDeCarte &p);
 
     void jeu();
 
