@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <string.h>
 #include "enums.cpp"
 
 class Carte
@@ -16,8 +17,10 @@ private:
 public:
     Carte();
     Couleur getCouleur() const;
+    std::string getCouleurStr() const;
     void setCouleur(Couleur couleur);
     ChiffreCarte getChiffre() const;
+    std::string getChiffreStr() const;
     void setChiffre(ChiffreCarte chiffre);
     bool isAtout() const;
     void setAtout(bool atout);

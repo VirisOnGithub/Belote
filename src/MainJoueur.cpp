@@ -46,9 +46,9 @@ void MainJoueur::afficherMain() const
 
 void MainJoueur::trierMain()
 {
-    for (int i = 0; i < 8; i++)
+    for (int i = 0; i < main.size(); i++)
     {
-        for (int j = i + 1; j < 8; j++)
+        for (int j = i + 1; j < main.size(); j++)
         {
             if (main[i].getCouleur() < main[j].getCouleur())
             {
