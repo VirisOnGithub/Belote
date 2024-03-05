@@ -7,7 +7,9 @@ int main()
 {
     Table table;
     PaquetDeCarte paquet;
+
+    paquet.melanger();
+    table.setAllCards(paquet);
     table.distribuer(paquet);
-    // table.afficherMains();
     return 0;
 }

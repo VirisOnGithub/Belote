@@ -187,34 +187,26 @@ bool Carte::estValide(std::vector<Carte> CartesSurTable, Couleur atout, std::vec
     return true;
 }                
 
-ValeurCarteAtout Carte::getValeurAtout() const
-{
-    switch (chiffre)
-    {
-    case sept:
-        return septAtout;
-        break;
-    case huit:
-        return huitAtout;
-        break;
-    case neuf:
-        return neufAtout;
-        break;
-    case valet:
-        return valetAtout;
-        break;
-    case dame:
-        return dameAtout;
-        break;
-    case roi:
-        return roiAtout;
-        break;
-    case dix:
-        return dixAtout;
-        break;
-    case as:
-        return asAtout;
-        break;
+ValeurCarteAtout Carte::getValeurAtout() const{
+    switch (chiffre){
+        case sept:
+            return septAtout;
+        case huit:
+            return huitAtout;
+        case neuf:
+            return neufAtout;
+        case valet:
+            return valetAtout;
+        case dame:
+            return dameAtout;
+        case roi:
+            return roiAtout;
+        case dix:
+            return dixAtout;
+        case as:
+            return asAtout;
+        default:
+            return septAtout;
     }
 }
 
@@ -224,27 +216,21 @@ ValeurCarteNonAtout Carte::getValeurNonAtout() const
     {
     case sept:
         return septNonAtout;
-        break;
     case huit:
         return huitNonAtout;
-        break;
     case neuf:
         return neufNonAtout;
-        break;
     case valet:
         return valetNonAtout;
-        break;
     case dame:
         return dameNonAtout;
-        break;
     case roi:
         return roiNonAtout;
-        break;
     case dix:
         return dixNonAtout;
-        break;
     case as:
         return asNonAtout;
-        break;
+    default:
+        return septNonAtout;
     }
 }

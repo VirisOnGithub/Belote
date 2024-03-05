@@ -1,5 +1,6 @@
 #include "PaquetDeCarte.h"
 #include <algorithm>
+#include <cassert>
 
 PaquetDeCarte::PaquetDeCarte()
 {
@@ -54,6 +55,7 @@ void PaquetDeCarte::melanger()
 
 Carte PaquetDeCarte::getPremiereCarte()
 {
+    assert(paquet.size() > 0);
     Carte carte = paquet[0];
     paquet.erase(paquet.begin());
     return carte;
