@@ -3,8 +3,10 @@
 
 PaquetDeCarte::PaquetDeCarte()
 {
-    for (int couleur = Couleur::coeur; couleur <= Couleur::trefle; couleur++) {
-        for (int chiffre = ChiffreCarte::as; chiffre <= ChiffreCarte::sept; chiffre++) {
+    for (int couleur = Couleur::coeur; couleur <= Couleur::trefle; couleur++)
+    {
+        for (int chiffre = ChiffreCarte::as; chiffre <= ChiffreCarte::sept; chiffre++)
+        {
             Carte carte;
             carte.setCouleur(static_cast<Couleur>(couleur));
             carte.setChiffre(static_cast<ChiffreCarte>(chiffre));
@@ -13,9 +15,12 @@ PaquetDeCarte::PaquetDeCarte()
     }
 }
 
-int PaquetDeCarte::operator=(const Carte &carte)
+int PaquetDeCarte::operator=(const PaquetDeCarte &autre)
 {
-    paquet.push_back(carte);
+    if (this != &autre)
+    {
+        paquet = autre.paquet;
+    }
     return 0;
 }
 
@@ -52,22 +57,28 @@ void PaquetDeCarte::distribuer(std::vector<Joueur> &joueurs)
     int indexPaquet = 0;
 
     // Premier tour : distribuer 3 cartes à chaque joueur
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 3; j++) {
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
             joueurs[i].getMain().addCarte(paquet[indexPaquet++]);
         }
     }
 
     // Deuxième tour : distribuer 2 cartes à chaque joueur
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 2; j++) {
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 2; j++)
+        {
             joueurs[i].getMain().addCarte(paquet[indexPaquet++]);
         }
     }
 
     // Troisième tour : distribuer 3 cartes à chaque joueur
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 3; j++) {
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
             joueurs[i].getMain().addCarte(paquet[indexPaquet++]);
         }
     }

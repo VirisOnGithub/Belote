@@ -4,15 +4,8 @@
 Table::Table()
 {
     nbPlis = 0;
-    AllCards = PaquetDeCarte();
     Equipe1 = Equipe();
     Equipe2 = Equipe();
-    Joueurs = std::vector<Joueur>();
-    for (int i = 0; i < 4; i++)
-    {
-        Joueur j;
-        Joueurs.push_back(j);
-    }
     Mains = std::vector<MainJoueur>();
     CartesSurTable = std::vector<Carte>();
     CartesJouees = std::vector<Carte>();
@@ -94,7 +87,8 @@ std::vector<MainJoueur> Table::getMains()
     return Mains;
 }
 
- void Table::jeu(){
+void Table::jeu()
+{
     PaquetDeCarte p;
     p.melanger();
     coupe(p);
@@ -116,16 +110,16 @@ void Table::coupe(PaquetDeCarte &p)
     {
         p.getCarteDansPaquet(0);
     }
-    
 }
 
-void Table::tourDeJeu(int joueur)
+void Table::tourDeJeu(int joueur, Couleur atout)
 {
     int indexCarte;
-    do {
+    do
+    {
         Mains[joueur].afficherMain();
-        indexCarte=Joueurs[joueur].demanderCarte();
-    } while (!Mains[joueur].getMain()[indexCarte].estValide(CartesSurTable));
+        indexCarte = Joueurs[joueur].demanderCarte();
+    } while (!Mains[joueur].getMain()[indexCarte].estValide(CartesSurTable, atout, Mains[joueur].getMain()));
 
     CartesSurTable.push_back(Mains[joueur].getMain()[indexCarte]);
     Mains[joueur].getMain().erase(Mains[joueur].getMain().begin() + indexCarte);

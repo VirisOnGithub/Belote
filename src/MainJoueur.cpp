@@ -4,12 +4,12 @@
 
 MainJoueur::MainJoueur()
 {
-
 }
 
-MainJoueur& MainJoueur::operator=(const MainJoueur &autre)
+MainJoueur &MainJoueur::operator=(const MainJoueur &autre)
 {
-    if (this != &autre) {
+    if (this != &autre)
+    {
         main = autre.main;
     }
     return *this;
@@ -20,7 +20,7 @@ int MainJoueur::operator[](int index)
     return index;
 }
 
-std::vector<Carte> MainJoueur::getMain()
+std::vector<Carte> &MainJoueur::getMain()
 {
     return main;
 }

@@ -37,7 +37,7 @@ public:
 
     void jeu();
 
-    void tourDeJeu(int joueur);
+    void tourDeJeu(int joueur, Couleur atout);
 
     void coupe(PaquetDeCarte &p);
 };

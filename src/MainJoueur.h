@@ -11,9 +11,9 @@ private:
 
 public:
     MainJoueur();
-    MainJoueur& operator=(const MainJoueur &autre);
+    MainJoueur &operator=(const MainJoueur &autre);
     int operator[](int index);
-    std::vector<Carte> getMain();
+    std::vector<Carte> &getMain();
     void setMain(MainJoueur main);
     void addCarte(Carte carte);
     void afficherMain() const;

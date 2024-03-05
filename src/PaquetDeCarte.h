@@ -11,7 +11,7 @@ private:
 
 public:
     PaquetDeCarte();
-    int operator=(const Carte &carte);
+    int operator=(const PaquetDeCarte &autre);
     int operator[](int index);
     PaquetDeCarte getPaquet();
     void setPaquet(PaquetDeCarte paquet);
