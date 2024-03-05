@@ -25,8 +25,7 @@ public:
     void setAPrisAtout(bool aPrisAtout);
     void afficherJoueur();
     int demanderCarte();
-    void afficherMain();
-    
+    void afficherMain();    
 };
 
 #endif
