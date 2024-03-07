@@ -1,0 +1,13 @@
+/*!
+ * \mainpage Ma documentation
+ * 
+ * \section intro_sec Introduction
+ * 
+ * Cette page est la page principale de ma documentation.
+ * 
+ * \section install_sec Installation
+ * 
+ * \subsection step1 Étape 1: Ouvrir le terminal
+ * 
+ * etc...
+ */
