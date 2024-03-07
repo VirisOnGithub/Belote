@@ -6,7 +6,7 @@
 
 /**
  * @class PaquetDeCarte
- * Represents a deck of cards.
+ * @brief Represents a deck of cards.
  */
 class PaquetDeCarte
 {
