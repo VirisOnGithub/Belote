@@ -1,6 +1,9 @@
 #ifndef TABLE_H
 #define TABLE_H
 
+#include <chrono>
+#include <thread>
+
 #include "Equipe.h"
 #include "Joueur.h"
 #include "MainJoueur.h"
@@ -35,10 +38,13 @@ public:
     void setMains(std::vector<MainJoueur> m);
     std::vector<MainJoueur> getMains();
     void afficherMains();
-    void distribuerCartes3(PaquetDeCarte &p,int index);
-    void distribuerCartes2(PaquetDeCarte &p,int index);
+    void trierMains(std::vector<MainJoueur> &m);
+    void distribuerCartes3(PaquetDeCarte &p, int index);
+    void distribuerCartes2(PaquetDeCarte &p, int index);
     void distribuer1(PaquetDeCarte &p);
     void distribuer2(PaquetDeCarte &p);
+    void prise(PaquetDeCarte &p, Couleur &atout);
+    void mettreCarteAtout(std::vector<MainJoueur> &m, Couleur atout);
 
     void jeu();
 

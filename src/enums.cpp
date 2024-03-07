@@ -3,7 +3,8 @@ enum Couleur
     coeur = 0,
     carreau = 1,
     pique = 2,
-    trefle = 3
+    trefle = 3,
+    rien = 4,
 };
 
 enum ChiffreCarte
