@@ -46,3 +46,4 @@ build/*
 !*/.gitkeep
 
 src/main.cpp
+doc/html/*
