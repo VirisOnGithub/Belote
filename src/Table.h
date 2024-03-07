@@ -183,6 +183,7 @@ public:
      * @param index The index of the player to be moved.
      */
     void changementOrdreJoueur(std::vector<Joueur> &joueurs, int index);
+    int getGagnant(std::vector<Carte> CartesSurTable, Couleur atout);
 
     /**
      * @brief Starts the game.

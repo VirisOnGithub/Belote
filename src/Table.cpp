@@ -286,22 +286,27 @@ void Table::mettreCarteAtout(std::vector<MainJoueur> &m, Couleur atout)
             }
         }
     }
+    std::string atoutStr;
     switch (atout)
     {
-    case 0:
-        std::cout << "L'atout est le coeur" << std::endl;
-        break;
-    case 1:
-        std::cout << "L'atout est le carreau" << std::endl;
-        break;
-    case 2:
-        std::cout << "L'atout est le pique" << std::endl;
-        break;
-    case 3:
-        std::cout << "L'atout est le trèfle" << std::endl;
-        break;
-    default:
-        break;
+        case 0:
+            atoutStr = "coeur";
+            break;
+        case 1:
+            atoutStr = "carreau";
+            break;
+        case 2:
+            atoutStr = "pique";
+            break;
+        case 3:
+            atoutStr = "trèfle";
+            break;
+        default:
+            break;
+    }
+    if (!atoutStr.empty())
+    {
+        std::cout << "L'atout est le " << atoutStr << std::endl;
     }
 }
 
@@ -317,4 +322,28 @@ void Table::changementOrdreJoueur(std::vector<Joueur> &joueurs, int index)
         temp.push_back(joueurs[i]);
     }
     joueurs = temp;
+}
+
+int getGagnant(std::vector<Carte> CartesSurTable, Couleur atout){
+    int gagnant = 0;
+    for (int i = 1; i < 4; i++)
+    {
+        if(CartesSurTable[i].getCouleur() == atout && CartesSurTable[i].getValeurAtout() > CartesSurTable[gagnant].getValeurAtout()){
+            gagnant = i;
+        }
+        else if(CartesSurTable[i].getCouleur() == atout && CartesSurTable[i].getValeurAtout() == CartesSurTable[gagnant].getValeurAtout()){
+            if(CartesSurTable[i].getChiffre() < CartesSurTable[gagnant].getChiffre()){
+                gagnant = i;
+            }
+        }
+        else if(CartesSurTable[i].getCouleur() != atout && CartesSurTable[i].getValeurNonAtout() > CartesSurTable[gagnant].getValeurNonAtout() && CartesSurTable[i].getCouleur() == CartesSurTable[0].getCouleur()){
+            gagnant = i;
+        }
+        else if(CartesSurTable[i].getCouleur() != atout && CartesSurTable[i].getValeurNonAtout() == CartesSurTable[gagnant].getValeurNonAtout() && CartesSurTable[i].getCouleur() == CartesSurTable[0].getCouleur()){
+            if(CartesSurTable[i].getChiffre() < CartesSurTable[gagnant].getChiffre()){
+                gagnant = i;
+            }
+        }
+    }
+    return gagnant;
 }
