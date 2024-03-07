@@ -183,6 +183,13 @@ public:
      * @param index The index of the player to be moved.
      */
     void changementOrdreJoueur(std::vector<Joueur> &joueurs, int index);
+
+    /**
+     * @brief Returns the index of the winner of a trick.
+     * @param CartesSurTable The cards currently on the table.
+     * @param atout The trump suit.
+     * @return The index of the winner.
+     */
     int getGagnant(std::vector<Carte> CartesSurTable, Couleur atout);
 
     /**
