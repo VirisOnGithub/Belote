@@ -45,6 +45,7 @@ public:
     void distribuer2(PaquetDeCarte &p);
     void prise(PaquetDeCarte &p, Couleur &atout);
     void mettreCarteAtout(std::vector<MainJoueur> &m, Couleur atout);
+    void changementOrdreJoueur(std::vector<Joueur> &joueurs, int index);
 
     void jeu();
 

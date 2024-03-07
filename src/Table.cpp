@@ -301,3 +301,17 @@ void Table::mettreCarteAtout(std::vector<MainJoueur> &m, Couleur atout)
         break;
     }
 }
+
+void Table::changementOrdreJoueur(std::vector<Joueur> &joueurs, int index)
+{
+    std::vector<Joueur> temp;
+    for (int i = index; i < 4; i++)
+    {
+        temp.push_back(joueurs[i]);
+    }
+    for (int i = 0; i < index; i++)
+    {
+        temp.push_back(joueurs[i]);
+    }
+    joueurs = temp;
+}
