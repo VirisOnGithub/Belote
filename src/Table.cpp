@@ -231,13 +231,16 @@ void Table::afficherMains()
 void Table::prise(PaquetDeCarte &p, Couleur &atout)
 {
     Carte carteRetournee = p.getPremiereCarte();
-    bool prise;
+    int prise;
     for (int i = 0; i < 4; i++)
     {
         Mains[i].afficherMain();
         std::cout << "La carte retournée est: " << carteRetournee.getChiffreStr() << " de " << carteRetournee.getCouleurStr() << std::endl;
         std::cout << "Joueur " << i + 1 << " voulez-vous prendre cette couleur ? (1 pour oui, 0 pour non)" << std::endl;
-        std::cin >> prise;
+        while (prise != 0 && prise != 1)
+        {
+            std::cin >> prise;
+        }
         if (prise)
         {
             atout = carteRetournee.getCouleur();
