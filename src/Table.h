@@ -209,6 +209,8 @@ public:
      * @param p The deck of cards.
      */
     void coupe(PaquetDeCarte &p);
+
+    void attente();
 };
 
 #endif

@@ -112,6 +112,7 @@ void Table::jeu()
             {
                 tourDeJeu(j, atout);
                 system("clear");
+                attente();
             }
             std::cout << "Fin du pli" << std::endl;
             for (int k = 0; k < 4; k++)
@@ -231,16 +232,15 @@ void Table::afficherMains()
 void Table::prise(PaquetDeCarte &p, Couleur &atout)
 {
     Carte carteRetournee = p.getPremiereCarte();
-    int prise;
+    bool prise;
     for (int i = 0; i < 4; i++)
     {
         Mains[i].afficherMain();
         std::cout << "La carte retournée est: " << carteRetournee.getChiffreStr() << " de " << carteRetournee.getCouleurStr() << std::endl;
         std::cout << "Joueur " << i + 1 << " voulez-vous prendre cette couleur ? (1 pour oui, 0 pour non)" << std::endl;
-        while (prise != 0 && prise != 1)
-        {
-            std::cin >> prise;
-        }
+
+        std::cin >> prise;
+
         if (prise)
         {
             atout = carteRetournee.getCouleur();
@@ -248,6 +248,7 @@ void Table::prise(PaquetDeCarte &p, Couleur &atout)
             break;
         }
         system("clear");
+        attente();
     }
     if (!prise)
     {
@@ -270,6 +271,7 @@ void Table::prise(PaquetDeCarte &p, Couleur &atout)
                 break;
             }
             system("clear");
+            attente();
         }
     }
 }
@@ -289,20 +291,20 @@ void Table::mettreCarteAtout(std::vector<MainJoueur> &m, Couleur atout)
     std::string atoutStr;
     switch (atout)
     {
-        case 0:
-            atoutStr = "coeur";
-            break;
-        case 1:
-            atoutStr = "carreau";
-            break;
-        case 2:
-            atoutStr = "pique";
-            break;
-        case 3:
-            atoutStr = "trèfle";
-            break;
-        default:
-            break;
+    case 0:
+        atoutStr = "coeur";
+        break;
+    case 1:
+        atoutStr = "carreau";
+        break;
+    case 2:
+        atoutStr = "pique";
+        break;
+    case 3:
+        atoutStr = "trèfle";
+        break;
+    default:
+        break;
     }
     if (!atoutStr.empty())
     {
@@ -324,26 +326,40 @@ void Table::changementOrdreJoueur(std::vector<Joueur> &joueurs, int index)
     joueurs = temp;
 }
 
-int getGagnant(std::vector<Carte> CartesSurTable, Couleur atout){
+int getGagnant(std::vector<Carte> CartesSurTable, Couleur atout)
+{
     int gagnant = 0;
     for (int i = 1; i < 4; i++)
     {
-        if(CartesSurTable[i].getCouleur() == atout && CartesSurTable[i].getValeurAtout() > CartesSurTable[gagnant].getValeurAtout()){
+        if (CartesSurTable[i].getCouleur() == atout && CartesSurTable[i].getValeurAtout() > CartesSurTable[gagnant].getValeurAtout())
+        {
             gagnant = i;
         }
-        else if(CartesSurTable[i].getCouleur() == atout && CartesSurTable[i].getValeurAtout() == CartesSurTable[gagnant].getValeurAtout()){
-            if(CartesSurTable[i].getChiffre() < CartesSurTable[gagnant].getChiffre()){
+        else if (CartesSurTable[i].getCouleur() == atout && CartesSurTable[i].getValeurAtout() == CartesSurTable[gagnant].getValeurAtout())
+        {
+            if (CartesSurTable[i].getChiffre() < CartesSurTable[gagnant].getChiffre())
+            {
                 gagnant = i;
             }
         }
-        else if(CartesSurTable[i].getCouleur() != atout && CartesSurTable[i].getValeurNonAtout() > CartesSurTable[gagnant].getValeurNonAtout() && CartesSurTable[i].getCouleur() == CartesSurTable[0].getCouleur()){
+        else if (CartesSurTable[i].getCouleur() != atout && CartesSurTable[i].getValeurNonAtout() > CartesSurTable[gagnant].getValeurNonAtout() && CartesSurTable[i].getCouleur() == CartesSurTable[0].getCouleur())
+        {
             gagnant = i;
         }
-        else if(CartesSurTable[i].getCouleur() != atout && CartesSurTable[i].getValeurNonAtout() == CartesSurTable[gagnant].getValeurNonAtout() && CartesSurTable[i].getCouleur() == CartesSurTable[0].getCouleur()){
-            if(CartesSurTable[i].getChiffre() < CartesSurTable[gagnant].getChiffre()){
+        else if (CartesSurTable[i].getCouleur() != atout && CartesSurTable[i].getValeurNonAtout() == CartesSurTable[gagnant].getValeurNonAtout() && CartesSurTable[i].getCouleur() == CartesSurTable[0].getCouleur())
+        {
+            if (CartesSurTable[i].getChiffre() < CartesSurTable[gagnant].getChiffre())
+            {
                 gagnant = i;
             }
         }
     }
     return gagnant;
+}
+
+void Table::attente()
+{
+    std::cout << "Au tour du joueur suivant, appuyer sur une touche" << std::endl;
+    std::cin.get();
+    std::cin.ignore();
 }
