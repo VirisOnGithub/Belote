@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 #include "Carte.h"
 
@@ -126,7 +127,7 @@ bool hasTrumpOnTable(const std::vector<Carte> &CartesSurTable, Couleur atout)
     return false;
 }
 
-bool Carte::estValide(std::vector<Carte> CartesSurTable, Couleur atout, std::vector<Carte> mainJoueur) const
+bool Carte::estValide(std::vector<Carte> CartesSurTable, Couleur atout, std::vector<Carte> mainJoueur, std::string &raison)
 {
     if (CartesSurTable.size() == 0) // Si la carte est la première carte jouée, elle ne peut pas être invalide
     {
@@ -154,12 +155,19 @@ bool Carte::estValide(std::vector<Carte> CartesSurTable, Couleur atout, std::vec
                 }
                 else
                 { // Sinon, on teste si le joueur a une carte plus forte que la carte la plus forte sur la table
+                    bool hasStrongerCard = false;
                     for (int i = 0; i < mainJoueur.size(); i++)
                     {
                         if (mainJoueur[i].getCouleur() == atout && mainJoueur[i].getValeurAtout() > valeurMax)
                         {
-                            return false;
+                            hasStrongerCard = true;
+                            break;
                         }
+                    }
+                    if (hasStrongerCard && getValeurAtout() <= valeurMax)
+                    {
+                        raison = "Vous devez jouer une carte plus forte que la carte la plus forte sur la table";
+                        return false;
                     }
                     return true;
                 }
@@ -168,39 +176,34 @@ bool Carte::estValide(std::vector<Carte> CartesSurTable, Couleur atout, std::vec
         else
         {
             // on teste si le joueur a une carte de la couleur de la première carte jouée
+            bool hasSameColor = false;
             for (int i = 0; i < mainJoueur.size(); i++)
             {
                 if (mainJoueur[i].getCouleur() == couleurPremiereCarte)
                 {
-                    return false;
+                    hasSameColor = true;
+                    break;
                 }
             }
-            // sinon on teste si le joueur a une carte atout
+            if (hasSameColor && couleur != couleurPremiereCarte)
+            {
+                raison = "Vous devez jouer une carte de la couleur de la première carte jouée";
+                return false;
+            }
+            // sinon on teste si le joueur a une carte atout et si la première carte jouée est un atout
+            bool hasTrump = false;
             for (int i = 0; i < mainJoueur.size(); i++)
             {
                 if (mainJoueur[i].getCouleur() == atout)
                 {
-                    return false;
+                    hasTrump = true;
+                    break;
                 }
             }
-            // de plus, si il y a déjà de l'atout sur la table, le joueur doit jouer de l'atout au dessus de la carte la plus forte
-            if (hasTrumpOnTable(CartesSurTable, atout))
+            if (hasTrump && couleur != atout && couleurPremiereCarte == atout)
             {
-                ValeurCarteAtout valeurMax = septAtout;
-                for (int i = 0; i < CartesSurTable.size(); i++)
-                {
-                    if (CartesSurTable[i].getValeurAtout() > valeurMax && CartesSurTable[i].getCouleur() == atout)
-                    {
-                        valeurMax = CartesSurTable[i].getValeurAtout();
-                    }
-                }
-                for (int i = 0; i < mainJoueur.size(); i++)
-                {
-                    if (mainJoueur[i].getCouleur() == atout && mainJoueur[i].getValeurAtout() > valeurMax)
-                    {
-                        return false;
-                    }
-                }
+                raison = "Vous devez jouer une carte atout";
+                return false;
             }
         }
     }

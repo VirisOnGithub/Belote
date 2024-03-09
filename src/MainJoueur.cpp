@@ -40,6 +40,7 @@ void MainJoueur::afficherMain() const
 {
     for (int i = 0; i < main.size(); i++)
     {
+        std::cout << i+1 << ". ";
         main[i].afficherCarte();
     }
 }

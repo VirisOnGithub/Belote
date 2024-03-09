@@ -1,5 +1,7 @@
 #include "Table.h"
 #include "PaquetDeCarte.h"
+#include <cstdlib>
+#include <string>
 
 Table::Table()
 {
@@ -99,7 +101,7 @@ void Table::jeu()
     paquet.melanger();
     distribuer1(paquet);
     prise(paquet, atout);
-    system("clear");
+    std::cout << "clear here" << std::endl;
     if (atout != rien)
     {
         distribuer2(paquet);
@@ -111,17 +113,17 @@ void Table::jeu()
             for (int j = 0; j < 4; j++)
             {
                 tourDeJeu(j, atout);
-                system("clear");
+                std::cout << "clear here" << std::endl;
                 attente();
             }
             std::cout << "Fin du pli" << std::endl;
             for (int k = 0; k < 4; k++)
             {
                 CartesJouees.push_back(CartesSurTable[k]);
-                CartesSurTable.erase(CartesSurTable.begin() + k);
             }
+            CartesSurTable = std::vector<Carte>();
             std::this_thread::sleep_for(std::chrono::seconds(1));
-            system("clear");
+            std::cout << "clear here" << std::endl;
         }
     }
     else
@@ -150,21 +152,39 @@ void Table::coupe(PaquetDeCarte &p)
 void Table::tourDeJeu(int joueur, Couleur atout)
 {
     int indexCarte;
+    std::string nomAtout;
+    switch (atout)
+    {
+    case 0:
+        nomAtout = "coeur";
+        break;
+    case 1:
+        nomAtout = "carreau";
+        break;
+    case 2:
+        nomAtout = "pique";
+        break;
+    case 3:
+        nomAtout = "trèfle";
+        break;
+    default:
+        break;
+    }
     std::cout << "C'est au tour du joueur " << joueur + 1 << std::endl;
+    std::string raisonRefus="";
     do
     {
-        std::cout << std::endl;
+        std::cout << "Atout: " << nomAtout << std::endl;
+        std::cout << raisonRefus << std::endl;
         std::cout << "Cartes sur la table: " << std::endl;
         for (int i = 0; i < CartesSurTable.size(); i++)
         {
             CartesSurTable[i].afficherCarte();
         }
-        std::cout << std::endl;
-        std::cout << std::endl;
-        std::cout << std::endl;
+        std::cout << std::endl << std::endl << std::endl;
         Mains[joueur].afficherMain();
-        indexCarte = Joueurs[joueur].demanderCarte();
-    } while (!Mains[joueur].getMain()[indexCarte].estValide(CartesSurTable, atout, Mains[joueur].getMain()));
+        indexCarte = Joueurs[joueur].demanderCarte()-1; // -1 car l'index commence à 0
+    } while (indexCarte < 0 || indexCarte >= Mains[joueur].getMain().size() || !Mains[joueur].getMain()[indexCarte].estValide(CartesSurTable, atout, Mains[joueur].getMain(), raisonRefus));
 
     CartesSurTable.push_back(Mains[joueur].getMain()[indexCarte]);
     Mains[joueur].getMain().erase(Mains[joueur].getMain().begin() + indexCarte);
@@ -225,7 +245,7 @@ void Table::afficherMains()
         Mains[i].afficherMain();
         std::cout << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
-        system("clear");
+        std::cout << "clear here" << std::endl;
     }
 }
 
@@ -235,6 +255,7 @@ void Table::prise(PaquetDeCarte &p, Couleur &atout)
     bool prise;
     for (int i = 0; i < 4; i++)
     {
+        Mains[i].trierMain();
         Mains[i].afficherMain();
         std::cout << "La carte retournée est: " << carteRetournee.getChiffreStr() << " de " << carteRetournee.getCouleurStr() << std::endl;
         std::cout << "Joueur " << i + 1 << " voulez-vous prendre cette couleur ? (1 pour oui, 0 pour non)" << std::endl;
@@ -247,7 +268,7 @@ void Table::prise(PaquetDeCarte &p, Couleur &atout)
             Mains[i].addCarte(carteRetournee);
             break;
         }
-        system("clear");
+        std::cout << "clear here" << std::endl;
         attente();
     }
     if (!prise)
@@ -255,6 +276,7 @@ void Table::prise(PaquetDeCarte &p, Couleur &atout)
         for (int i = 0; i < 4; i++)
         {
             Mains[i].afficherMain();
+            std::cout << "La carte retournée est: " << carteRetournee.getChiffreStr() << " de " << carteRetournee.getCouleurStr() << std::endl;
             std::cout << "Joueur " << i + 1 << " voulez-vous prendre à une autre couleur ? (1 pour oui, 0 pour non)" << std::endl;
             std::cin >> prise;
             if (prise)
@@ -270,8 +292,10 @@ void Table::prise(PaquetDeCarte &p, Couleur &atout)
                 Mains[i].addCarte(carteRetournee);
                 break;
             }
-            system("clear");
-            attente();
+            std::cout << "clear here" << std::endl;
+            if (i!=3){
+                attente();
+            }
         }
     }
 }
@@ -287,28 +311,6 @@ void Table::mettreCarteAtout(std::vector<MainJoueur> &m, Couleur atout)
                 m[i].getMain()[j].setAtout(true);
             }
         }
-    }
-    std::string atoutStr;
-    switch (atout)
-    {
-    case 0:
-        atoutStr = "coeur";
-        break;
-    case 1:
-        atoutStr = "carreau";
-        break;
-    case 2:
-        atoutStr = "pique";
-        break;
-    case 3:
-        atoutStr = "trèfle";
-        break;
-    default:
-        break;
-    }
-    if (!atoutStr.empty())
-    {
-        std::cout << "L'atout est le " << atoutStr << std::endl;
     }
 }
 
@@ -362,4 +364,5 @@ void Table::attente()
     std::cout << "Au tour du joueur suivant, appuyer sur une touche" << std::endl;
     std::cin.get();
     std::cin.ignore();
+    std::cout << "clear here" << std::endl;
 }
