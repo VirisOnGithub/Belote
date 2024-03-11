@@ -33,6 +33,8 @@ std::string Carte::getCouleurStr() const
     case trefle:
         couleurStr = "trefle";
         break;
+    default:
+        break;
     }
     return couleurStr;
 }
@@ -41,6 +43,7 @@ void Carte::setCouleur(Couleur couleur)
 {
     this->couleur = couleur;
 }
+
 
 ChiffreCarte Carte::getChiffre() const
 {
