@@ -372,7 +372,7 @@ int Table::getGagnant(std::vector<Carte> CartesSurTable, Couleur atout)
 
 void Table::attente()
 {
-    std::cout << "Au tour du joueur suivant, appuyer sur une touche" << std::endl;
+    std::cout << "Au tour du joueur suivant, appuyer sur Entrée" << std::endl;
     std::cin.get();
     std::cin.ignore();
     std::cout << "clear here" << std::endl;
