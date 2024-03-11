@@ -127,8 +127,7 @@ void Table::jeu()
             {
                 CartesJouees.push_back(CartesSurTable[k]);
             }
-            int gagnant = getGagnant(CartesSurTable, atout);
-            changementOrdreJoueur(Joueurs, gagnant);
+            changementOrdreJoueur(getGagnant(CartesSurTable, atout));
             CartesSurTable = std::vector<Carte>();
             std::this_thread::sleep_for(std::chrono::seconds(1));
             std::cout << "clear here" << std::endl;
@@ -325,18 +324,18 @@ void Table::mettreCarteAtout(std::vector<MainJoueur> &m, Couleur atout)
     }
 }
 
-void Table::changementOrdreJoueur(std::vector<Joueur> &joueurs, int index)
+void Table::changementOrdreJoueur(int index)
 {
     std::vector<Joueur> temp;
     for (int i = index; i < 4; i++)
     {
-        temp.push_back(joueurs[i]);
+        temp.push_back(Joueurs[i]);
     }
     for (int i = 0; i < index; i++)
     {
-        temp.push_back(joueurs[i]);
+        temp.push_back(Joueurs[i]);
     }
-    joueurs = temp;
+    Joueurs = temp;
 }
 
 int Table::getGagnant(std::vector<Carte> CartesSurTable, Couleur atout)

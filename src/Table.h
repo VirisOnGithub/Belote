@@ -182,7 +182,7 @@ public:
      * @param joueurs The vector of players.
      * @param index The index of the player to be moved.
      */
-    void changementOrdreJoueur(std::vector<Joueur> &joueurs, int index);
+    void changementOrdreJoueur(int index);
 
     /**
      * @brief Returns the index of the winner of a trick.
