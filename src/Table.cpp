@@ -16,6 +16,12 @@ Table::Table()
     }
     CartesSurTable = std::vector<Carte>();
     CartesJouees = std::vector<Carte>();
+    for (int i = 0; i < 4; i++)
+    {
+        Joueur j;
+        j.setRang(i);
+        Joueurs.push_back(j);
+    }
 }
 
 void Table::setJoueurs(std::vector<Joueur> j)
@@ -112,7 +118,7 @@ void Table::jeu()
         {
             for (int j = 0; j < 4; j++)
             {
-                tourDeJeu(j, atout);
+                tourDeJeu(Joueurs[j], atout);
                 std::cout << "clear here" << std::endl;
                 attente();
             }
@@ -121,6 +127,8 @@ void Table::jeu()
             {
                 CartesJouees.push_back(CartesSurTable[k]);
             }
+            int gagnant = getGagnant(CartesSurTable, atout);
+            changementOrdreJoueur(Joueurs, gagnant);
             CartesSurTable = std::vector<Carte>();
             std::this_thread::sleep_for(std::chrono::seconds(1));
             std::cout << "clear here" << std::endl;
@@ -149,7 +157,7 @@ void Table::coupe(PaquetDeCarte &p)
     }
 }
 
-void Table::tourDeJeu(int joueur, Couleur atout)
+void Table::tourDeJeu(Joueur &joueur, Couleur atout)
 {
     int indexCarte;
     std::string nomAtout;
@@ -170,8 +178,8 @@ void Table::tourDeJeu(int joueur, Couleur atout)
     default:
         break;
     }
-    std::cout << "C'est au tour du joueur " << joueur + 1 << std::endl;
-    std::string raisonRefus="";
+    std::cout << "C'est au tour du joueur " << joueur.getRang() + 1 << std::endl;
+    std::string raisonRefus = "";
     do
     {
         std::cout << "Atout: " << nomAtout << std::endl;
@@ -181,13 +189,15 @@ void Table::tourDeJeu(int joueur, Couleur atout)
         {
             CartesSurTable[i].afficherCarte();
         }
-        std::cout << std::endl << std::endl << std::endl;
-        Mains[joueur].afficherMain();
-        indexCarte = Joueurs[joueur].demanderCarte()-1; // -1 car l'index commence à 0
-    } while (indexCarte < 0 || indexCarte >= Mains[joueur].getMain().size() || !Mains[joueur].getMain()[indexCarte].estValide(CartesSurTable, atout, Mains[joueur].getMain(), raisonRefus));
+        std::cout << std::endl
+                  << std::endl
+                  << std::endl;
+        Mains[joueur.getRang()].afficherMain();
+        indexCarte = Joueurs[joueur.getRang()].demanderCarte() - 1; // -1 car l'index commence à 0
+    } while (indexCarte < 0 || indexCarte >= Mains[joueur.getRang()].getMain().size() || !Mains[joueur.getRang()].getMain()[indexCarte].estValide(CartesSurTable, atout, Mains[joueur.getRang()].getMain(), raisonRefus));
 
-    CartesSurTable.push_back(Mains[joueur].getMain()[indexCarte]);
-    Mains[joueur].getMain().erase(Mains[joueur].getMain().begin() + indexCarte);
+    CartesSurTable.push_back(Mains[joueur.getRang()].getMain()[indexCarte]);
+    Mains[joueur.getRang()].getMain().erase(Mains[joueur.getRang()].getMain().begin() + indexCarte);
     std::cout << std::endl;
 }
 
@@ -293,7 +303,8 @@ void Table::prise(PaquetDeCarte &p, Couleur &atout)
                 break;
             }
             std::cout << "clear here" << std::endl;
-            if (i!=3){
+            if (i != 3)
+            {
                 attente();
             }
         }
@@ -328,7 +339,7 @@ void Table::changementOrdreJoueur(std::vector<Joueur> &joueurs, int index)
     joueurs = temp;
 }
 
-int getGagnant(std::vector<Carte> CartesSurTable, Couleur atout)
+int Table::getGagnant(std::vector<Carte> CartesSurTable, Couleur atout)
 {
     int gagnant = 0;
     for (int i = 1; i < 4; i++)

@@ -202,7 +202,7 @@ public:
      * @param joueur The index of the player.
      * @param atout The trump suit.
      */
-    void tourDeJeu(int joueur, Couleur atout);
+    void tourDeJeu(Joueur &joueur, Couleur atout);
 
     /**
      * @brief Performs the "coupe" action in the game.
