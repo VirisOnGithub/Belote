@@ -2,6 +2,7 @@
 #include "PaquetDeCarte.h"
 #include <cstdlib>
 #include <string>
+#include <algorithm>
 
 Table::Table()
 {
@@ -326,16 +327,7 @@ void Table::mettreCarteAtout(std::vector<MainJoueur> &m, Couleur atout)
 
 void Table::changementOrdreJoueur(int index)
 {
-    std::vector<Joueur> temp;
-    for (int i = index; i < 4; i++)
-    {
-        temp.push_back(Joueurs[i]);
-    }
-    for (int i = 0; i < index; i++)
-    {
-        temp.push_back(Joueurs[i]);
-    }
-    Joueurs = temp;
+    std::rotate(Joueurs.begin(), Joueurs.begin() + index, Joueurs.end());
 }
 
 int Table::getGagnant(std::vector<Carte> CartesSurTable, Couleur atout)
@@ -366,6 +358,7 @@ int Table::getGagnant(std::vector<Carte> CartesSurTable, Couleur atout)
             }
         }
     }
+    std::cout << "Le gagnant du pli est le joueur " << gagnant << std::endl;
     return gagnant;
 }
 
