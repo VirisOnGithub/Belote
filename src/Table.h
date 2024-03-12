@@ -213,6 +213,10 @@ public:
     void attente();
 
     unsigned int getPointsSurTable(Couleur atout);
+
+    void initGame();
+
+    void playGame();
 };
 
 #endif

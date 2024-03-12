@@ -1,6 +1,8 @@
 #include "Table.h"
 #include "Joueur.h"
 #include "PaquetDeCarte.h"
+#include <SFML/Graphics/RenderWindow.hpp>
+
 #include <cstdlib>
 #include <iostream>
 #include <string>
@@ -392,4 +394,31 @@ unsigned int Table::getPointsSurTable(Couleur atout)
     }
     std::cout << "Points sur la table: " << points << std::endl;
     return points;
+}
+
+
+
+
+
+/* SFML */
+
+void Table::initGame()
+{
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Belote");
+    PaquetDeCarte paquet;
+    Couleur atout = rien;
+    paquet.melanger();
+    distribuer1(paquet);
+    prise(paquet, atout);
+    system("clear");
+    if (atout != rien)
+    {
+        distribuer2(paquet);
+        trierMains(Mains);
+        mettreCarteAtout(Mains, atout);
+    }
+    else
+    {
+        std::cout << "Aucune couleur n'a été prise, la partie est annulée" << std::endl;
+    }
 }
