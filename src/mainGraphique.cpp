@@ -1,9 +1,10 @@
 #include <SFML/Graphics.hpp>
-#include <iostream>
-#include <string>
-#include "Table.h"
+#include <SFML/Graphics/RenderWindow.hpp>
+#include "Affichage.h"
 
-int main()
-{
+int main(){
+    Affichage a;
+    a.init();
+    a.jeu();
     return 0;
 }

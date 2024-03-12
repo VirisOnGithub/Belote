@@ -23,7 +23,7 @@ set(SOURCES
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/obj)
 
 add_executable(Belote ${SOURCES} src/main.cpp)
-add_executable(Graphique ${SOURCES} src/mainGraphique.cpp)
+add_executable(Graphique ${SOURCES} src/mainGraphique.cpp src/Affichage.h src/Affichage.cpp)
 
 # Add your include directories here
 target_include_directories(Belote PRIVATE src)
