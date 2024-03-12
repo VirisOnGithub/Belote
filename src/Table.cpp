@@ -1,4 +1,5 @@
 #include "Table.h"
+#include "Joueur.h"
 #include "PaquetDeCarte.h"
 #include <cstdlib>
 #include <iostream>
@@ -135,10 +136,16 @@ void Table::jeu()
             if (gagnant == 0 || gagnant == 2)
             {
                 Equipe1.addScore(points);
+                if (i==7) {
+                    Equipe1.addScore(10);
+                }
             }
             else
             {
                 Equipe2.addScore(points);
+                if (i==7) {
+                    Equipe2.addScore(10);
+                }
             }
             std::this_thread::sleep_for(std::chrono::seconds(1));
             std::cout << "L'équipe 1 a " << Equipe1.getScore() << " points" << std::endl;
@@ -341,6 +348,9 @@ void Table::mettreCarteAtout(std::vector<MainJoueur> &m, Couleur atout)
 
 void Table::changementOrdreJoueur(int index)
 {
+    std::sort(Joueurs.begin(), Joueurs.end(), [](const Joueur& a, const Joueur& b) {
+        return a.getRang() < b.getRang();
+    });
     std::rotate(Joueurs.begin(), Joueurs.begin() + index, Joueurs.end());
 }
 
@@ -349,27 +359,9 @@ int Table::getGagnant(std::vector<Carte> CartesSurTable, Couleur atout)
     int gagnant = 0;
     for (int i = 1; i < 4; i++)
     {
-        if (CartesSurTable[i].getCouleur() == atout && CartesSurTable[i].getValeurAtout() > CartesSurTable[gagnant].getValeurAtout())
+        if (CartesSurTable[i].estMeilleure(CartesSurTable[gagnant], atout))
         {
-            gagnant = i;
-        }
-        else if (CartesSurTable[i].getCouleur() == atout && CartesSurTable[i].getValeurAtout() == CartesSurTable[gagnant].getValeurAtout())
-        {
-            if (CartesSurTable[i].getChiffre() < CartesSurTable[gagnant].getChiffre())
-            {
-                gagnant = i;
-            }
-        }
-        else if (CartesSurTable[i].getCouleur() != atout && CartesSurTable[i].getValeurNonAtout() > CartesSurTable[gagnant].getValeurNonAtout() && CartesSurTable[i].getCouleur() == CartesSurTable[0].getCouleur())
-        {
-            gagnant = i;
-        }
-        else if (CartesSurTable[i].getCouleur() != atout && CartesSurTable[i].getValeurNonAtout() == CartesSurTable[gagnant].getValeurNonAtout() && CartesSurTable[i].getCouleur() == CartesSurTable[0].getCouleur())
-        {
-            if (CartesSurTable[i].getChiffre() < CartesSurTable[gagnant].getChiffre())
-            {
-                gagnant = i;
-            }
+            gagnant = Joueurs[i].getRang();
         }
     }
     std::cout << "Le gagnant du pli est le joueur " << gagnant+1 << std::endl;

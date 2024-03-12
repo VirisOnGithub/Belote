@@ -119,6 +119,8 @@ public:
      * @return The value of the card as a non-trump card.
      */
     ValeurCarteNonAtout getValeurNonAtout() const;
+
+    bool estMeilleure(Carte carte1, Couleur atout) const;
 };
 
 #endif

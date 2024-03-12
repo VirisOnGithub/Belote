@@ -39,7 +39,7 @@ public:
      * @brief Gets the player's rank.
      * @return The player's rank.
      */
-    int getRang();
+    int getRang() const;
 
     /**
      * @brief Sets the player's rank.

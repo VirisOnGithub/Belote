@@ -18,7 +18,7 @@ void Joueur::setNom(std::string nom)
     this->nom = nom;
 }
 
-int Joueur::getRang()
+int Joueur::getRang() const
 {
     return rang;
 }

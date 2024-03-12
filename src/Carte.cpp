@@ -262,3 +262,29 @@ ValeurCarteNonAtout Carte::getValeurNonAtout() const
         return septNonAtout;
     }
 }
+
+bool Carte::estMeilleure(Carte carte1, Couleur atout) const
+{
+    if (couleur == carte1.getCouleur())
+    {
+        if (couleur == atout)
+        {
+            return getValeurAtout() > carte1.getValeurAtout();
+        }
+        else
+        {
+            return getValeurNonAtout() > carte1.getValeurNonAtout();
+        }
+    }
+    else
+    {
+        if (couleur == atout)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
