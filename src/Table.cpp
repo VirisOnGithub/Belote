@@ -1,6 +1,7 @@
 #include "Table.h"
 #include "PaquetDeCarte.h"
 #include <cstdlib>
+#include <iostream>
 #include <string>
 #include <algorithm>
 
@@ -131,11 +132,19 @@ void Table::jeu()
             int gagnant = getGagnant(CartesSurTable, atout);
             int points = getPointsSurTable(atout);
             changementOrdreJoueur(gagnant);
-            gagnant%2 == 0 ? Equipe1.addScore(gagnant) : Equipe2.addScore(gagnant);
+            if (gagnant == 0 || gagnant == 2)
+            {
+                Equipe1.addScore(points);
+            }
+            else
+            {
+                Equipe2.addScore(points);
+            }
+            std::this_thread::sleep_for(std::chrono::seconds(1));
             std::cout << "L'équipe 1 a " << Equipe1.getScore() << " points" << std::endl;
             std::cout << "L'équipe 2 a " << Equipe2.getScore() << " points" << std::endl;
+            std::this_thread::sleep_for(std::chrono::seconds(5));
             CartesSurTable = std::vector<Carte>();
-            std::this_thread::sleep_for(std::chrono::seconds(1));
             system("clear");
         }
     }
@@ -389,5 +398,6 @@ unsigned int Table::getPointsSurTable(Couleur atout)
             points += CartesSurTable[i].getValeurNonAtout();
         }
     }
+    std::cout << "Points sur la table: " << points << std::endl;
     return points;
 }
