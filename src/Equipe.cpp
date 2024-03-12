@@ -35,7 +35,7 @@ void Equipe::afficherEquipe()
     }
 }
 
-void Equipe::changerScore(int score)
+void Equipe::addScore(int score)
 {
     this->score += score;
 }

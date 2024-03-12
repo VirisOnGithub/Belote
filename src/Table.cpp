@@ -108,7 +108,7 @@ void Table::jeu()
     paquet.melanger();
     distribuer1(paquet);
     prise(paquet, atout);
-    std::cout << "clear here" << std::endl;
+    system("clear");
     if (atout != rien)
     {
         distribuer2(paquet);
@@ -120,7 +120,7 @@ void Table::jeu()
             for (int j = 0; j < 4; j++)
             {
                 tourDeJeu(Joueurs[j], atout);
-                std::cout << "clear here" << std::endl;
+                system("clear");
                 attente();
             }
             std::cout << "Fin du pli" << std::endl;
@@ -128,10 +128,15 @@ void Table::jeu()
             {
                 CartesJouees.push_back(CartesSurTable[k]);
             }
-            changementOrdreJoueur(getGagnant(CartesSurTable, atout));
+            int gagnant = getGagnant(CartesSurTable, atout);
+            int points = getPointsSurTable(atout);
+            changementOrdreJoueur(gagnant);
+            gagnant%2 == 0 ? Equipe1.addScore(gagnant) : Equipe2.addScore(gagnant);
+            std::cout << "L'équipe 1 a " << Equipe1.getScore() << " points" << std::endl;
+            std::cout << "L'équipe 2 a " << Equipe2.getScore() << " points" << std::endl;
             CartesSurTable = std::vector<Carte>();
             std::this_thread::sleep_for(std::chrono::seconds(1));
-            std::cout << "clear here" << std::endl;
+            system("clear");
         }
     }
     else
@@ -255,7 +260,7 @@ void Table::afficherMains()
         Mains[i].afficherMain();
         std::cout << std::endl;
         std::this_thread::sleep_for(std::chrono::seconds(1));
-        std::cout << "clear here" << std::endl;
+        system("clear");
     }
 }
 
@@ -278,7 +283,7 @@ void Table::prise(PaquetDeCarte &p, Couleur &atout)
             Mains[i].addCarte(carteRetournee);
             break;
         }
-        std::cout << "clear here" << std::endl;
+        system("clear");
         attente();
     }
     if (!prise)
@@ -302,7 +307,7 @@ void Table::prise(PaquetDeCarte &p, Couleur &atout)
                 Mains[i].addCarte(carteRetournee);
                 break;
             }
-            std::cout << "clear here" << std::endl;
+            system("clear");
             if (i != 3)
             {
                 attente();
@@ -358,7 +363,7 @@ int Table::getGagnant(std::vector<Carte> CartesSurTable, Couleur atout)
             }
         }
     }
-    std::cout << "Le gagnant du pli est le joueur " << gagnant << std::endl;
+    std::cout << "Le gagnant du pli est le joueur " << gagnant+1 << std::endl;
     return gagnant;
 }
 
@@ -367,5 +372,22 @@ void Table::attente()
     std::cout << "Au tour du joueur suivant, appuyer sur Entrée" << std::endl;
     std::cin.get();
     std::cin.ignore();
-    std::cout << "clear here" << std::endl;
+    system("clear");
+}
+
+unsigned int Table::getPointsSurTable(Couleur atout)
+{
+    unsigned int points = 0;
+    for (int i = 0; i < 4; i++)
+    {
+        if (CartesSurTable[i].getCouleur() == atout)
+        {
+            points += CartesSurTable[i].getValeurAtout();
+        }
+        else
+        {
+            points += CartesSurTable[i].getValeurNonAtout();
+        }
+    }
+    return points;
 }

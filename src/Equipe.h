@@ -13,7 +13,7 @@ class Equipe
 {
 private:
     std::vector<Joueur> team; // The players in the team
-    int score;                // The score of the team
+    unsigned int score;                // The score of the team
 
 public:
     /**
@@ -49,7 +49,7 @@ public:
      * @brief Change the score of the team by a given amount.
      * @param score The amount by which to change the score.
      */
-    void changerScore(int score);
+    void addScore(int score);
 
     /**
      * @brief Display the score of the team.

@@ -211,6 +211,8 @@ public:
     void coupe(PaquetDeCarte &p);
 
     void attente();
+
+    unsigned int getPointsSurTable(Couleur atout);
 };
 
 #endif
