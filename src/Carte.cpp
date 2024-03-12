@@ -208,7 +208,26 @@ bool Carte::estValide(std::vector<Carte> CartesSurTable, Couleur atout, std::vec
                 raison = "Vous devez jouer une carte atout";
                 return false;
             }
+            //on teste si le joueur a une carte d'atout plus forte que la carte d'atout la plus forte sur la table
+            bool hasStrongerTrump = false;
+            for(int i = 0; i < mainJoueur.size(); i++)
+            {
+                for(int j = 0; i<CartesSurTable.size(); j++)
+                {
+                    if(mainJoueur[i].getCouleur() == atout && mainJoueur[i].getValeurAtout() > CartesSurTable[j].getValeurAtout())
+                    {
+                        hasStrongerTrump = true;
+                        break;
+                    }
+                }
+            }
+            if (hasStrongerTrump && couleur == atout && CartesSurTable[CartesSurTable.size()-1].getCouleur() == atout && CartesSurTable[CartesSurTable.size()-1].getValeurAtout()>getValeurAtout())
+            {
+                raison = "Vous devez jouer une carte atout plus forte";
+                return false;
+            }
         }
+
     }
     return true;
 }
