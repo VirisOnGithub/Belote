@@ -13,12 +13,14 @@ void Affichage::init(){
     sf::Text text;
     text.setFont(font);
     text.setString("BelotePro");
-    text.setCharacterSize(50);
+    text.setCharacterSize(100);
     text.setFillColor(sf::Color::White);
     text.setStyle(sf::Text::Bold);
-    text.setPosition(1920/2 - text.getGlobalBounds().width/2, 1080/2 - text.getGlobalBounds().height/2);
+    text.setPosition(1920.0/2 - text.getGlobalBounds().width/2, 1080.0/3);
     window.draw(text);
     window.display();
+
+ 
 }
 
 void Affichage::jeu(){
@@ -35,7 +37,7 @@ void Affichage::jeu(){
 
 sf::Font Affichage::loadFont(){
     sf::Font font;
-    if (!font.loadFromFile("../src/fonts/arial.ttf"))
+    if (!font.loadFromFile("src/fonts/GravitasOne-Regular.ttf"))
     {
         std::cerr << "Error loading font" << std::endl;
     }
