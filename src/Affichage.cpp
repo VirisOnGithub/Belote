@@ -3,6 +3,8 @@
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Window.hpp>
+#include <SFML/Window/Event.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include <iostream>
 
 void Affichage::init(){
@@ -29,7 +31,8 @@ void Affichage::jeu(){
         sf::Event event;
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed || 
+                (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)) 
                 window.close();
         }
     }
@@ -37,9 +40,11 @@ void Affichage::jeu(){
 
 sf::Font Affichage::loadFont(){
     sf::Font font;
-    if (!font.loadFromFile("src/fonts/GravitasOne-Regular.ttf"))
+    if (!font.loadFromFile("../src/fonts/GravitasOne-Regular.ttf"))
     {
         std::cerr << "Error loading font" << std::endl;
+    } else {
+        std::cout << "Font loaded" << std::endl;
     }
     return font;
 }
