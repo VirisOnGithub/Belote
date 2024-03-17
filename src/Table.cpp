@@ -360,7 +360,7 @@ void Table::changementOrdreJoueur(int index)
 int Table::getGagnant(std::vector<Carte> CartesSurTable, Couleur atout)
 {
     int gagnant = 0;
-    for (int i = 1; i < 4; i++)
+    for (int i = 1; i < CartesSurTable.size(); i++)
     {
         if (CartesSurTable[i].estMeilleure(CartesSurTable[gagnant], atout))
         {
