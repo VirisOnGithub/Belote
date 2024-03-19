@@ -2,7 +2,9 @@
 #define MAIN_H
 
 #include "Carte.h"
+#include <SFML/System/String.hpp>
 #include <vector>
+#include <SFML/Graphics/Sprite.hpp>
 
 /**
  * @brief The MainJoueur class represents a player's hand in a card game.
@@ -65,6 +67,12 @@ public:
      * @param index The index of the card to play.
      */
     void jouerCarte(int index);
+
+
+
+    // GRAPHIQUE
+
+   std::vector<sf::String> getCartesG();
 };
 
 #endif

@@ -9,6 +9,8 @@
 #include "MainJoueur.h"
 #include "PaquetDeCarte.h"
 
+#include <SFML/Graphics/Sprite.hpp>
+
 /**
  * @class Table
  * @brief Represents a table for playing the Belote card game.
@@ -217,6 +219,10 @@ public:
     void initGame();
 
     void playGame();
+
+    void jeuGraphique();
+
+    void montrerCartesG();
 
     void testregression();
 };

@@ -20,22 +20,39 @@ set(SOURCES
     src/enums.cpp
 )
 
-set(SOURCES_GRAPHIQUES
-    src/Bouton.h
+set(GRAPHIQUES
+    src/Affichage.cpp
+    src/Affichage.h
+    src/mainGraphique.cpp
+    src/TableG.cpp
+    src/CarteG.cpp
+    src/MainJoueurG.cpp
+)
+
+set(IMGUI
+    src/imgui-master/imgui.cpp
+    src/imgui-master/imgui.h
+    src/imgui-master/imgui_draw.cpp
+    src/imgui-master/imgui_widgets.cpp
+    src/imgui-master/imgui_demo.cpp
+    src/imgui-master/imgui_tables.cpp
+    src/imgui-sfml/imgui-SFML.cpp
+    src/imgui-sfml/imgui-SFML.h
 )
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/obj)
 
 add_executable(Belote ${SOURCES} src/main.cpp)
-add_executable(Graphique ${SOURCES} ${SOURCES_GRAPHIQUES} src/mainGraphique.cpp src/Affichage.h src/Affichage.cpp)
+add_executable(Graphique ${SOURCES} ${IMGUI} ${GRAPHIQUES})
 
 # Add your include directories here
 target_include_directories(Belote PRIVATE src)
 target_include_directories(Graphique PRIVATE src)
 
+find_package(OpenGL REQUIRED)
 find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
 
 # Link required libraries for Graphique executable
-target_link_libraries(Graphique sfml-graphics sfml-audio)
+target_link_libraries(Graphique sfml-graphics sfml-audio OpenGL::GL)
 target_link_libraries(Belote sfml-graphics sfml-audio)
 

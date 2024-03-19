@@ -1,10 +1,12 @@
 #ifndef CARTE_H
 #define CARTE_H
 
+#include <SFML/System/String.hpp>
 #include <iostream>
 #include <vector>
 #include <string.h>
 #include "enums.cpp"
+#include <SFML/Graphics/Sprite.hpp>
 
 /**
  * @class Carte
@@ -130,6 +132,8 @@ public:
     ValeurCarteNonAtout getValeurNonAtout() const;
 
     bool estMeilleure(Carte carte1, Couleur atout) const;
+
+    sf::String getCarteG();
 };
 
 #endif
