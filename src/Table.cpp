@@ -139,14 +139,16 @@ void Table::jeu()
             if (gagnant == 0 || gagnant == 2)
             {
                 Equipe1.addScore(points);
-                if (i==7) {
+                if (i == 7)
+                {
                     Equipe1.addScore(10);
                 }
             }
             else
             {
                 Equipe2.addScore(points);
-                if (i==7) {
+                if (i == 7)
+                {
                     Equipe2.addScore(10);
                 }
             }
@@ -351,9 +353,8 @@ void Table::mettreCarteAtout(std::vector<MainJoueur> &m, Couleur atout)
 
 void Table::changementOrdreJoueur(int index)
 {
-    std::sort(Joueurs.begin(), Joueurs.end(), [](const Joueur& a, const Joueur& b) {
-        return a.getRang() < b.getRang();
-    });
+    std::sort(Joueurs.begin(), Joueurs.end(), [](const Joueur &a, const Joueur &b)
+              { return a.getRang() < b.getRang(); });
     std::rotate(Joueurs.begin(), Joueurs.begin() + index, Joueurs.end());
 }
 
@@ -367,7 +368,7 @@ int Table::getGagnant(std::vector<Carte> CartesSurTable, Couleur atout)
             gagnant = Joueurs[i].getRang();
         }
     }
-    std::cout << "Le gagnant du pli est le joueur " << gagnant+1 << std::endl;
+    std::cout << "Le gagnant du pli est le joueur " << gagnant + 1 << std::endl;
     return gagnant;
 }
 
@@ -396,3 +397,105 @@ unsigned int Table::getPointsSurTable(Couleur atout)
     std::cout << "Points sur la table: " << points << std::endl;
     return points;
 }
+
+// void Table::testregression()
+// {
+//     PaquetDeCarte p;
+//     distribuer1(p);
+//     for (int i = 0; i < 4; i++)
+//     {
+//         std::cout << "Main du joueur " << i + 1 << std::endl;
+//         Mains[i].afficherMain();
+//         std::cout << std::endl;
+//     }
+//     std::cout << "Test de la prise" << std::endl;
+//     Couleur atout = rien;
+//     prise(p, atout);
+//     std::cout << "Atout: " << atout << std::endl;
+//     std::cout << "Test de la distribution 2" << std::endl;
+//     distribuer2(p);
+//     for (int i = 0; i < 4; i++)
+//     {
+//         std::cout << "Main du joueur " << i + 1 << std::endl;
+//         Mains[i].afficherMain();
+//         std::cout << std::endl;
+//     }
+//     std::cout << "Test du tri des mains" << std::endl;
+//     trierMains(Mains);
+//     for (int i = 0; i < 4; i++)
+//     {
+//         std::cout << "Main du joueur " << i + 1 << std::endl;
+//         Mains[i].afficherMain();
+//         std::cout << std::endl;
+//     }
+//     std::cout << "Test de la mise des cartes atout" << std::endl;
+//     mettreCarteAtout(Mains, atout);
+//     for (int i = 0; i < 4; i++)
+//     {
+//         std::cout << "Main du joueur " << i + 1 << std::endl;
+//         Mains[i].afficherMain();
+//         std::cout << std::endl;
+//     }
+//     std::cout << "Test du changement d'ordre des joueurs" << std::endl;
+//     changementOrdreJoueur(2);
+//     for (int i = 0; i < 4; i++)
+//     {
+//         std::cout << "Joueur " << Joueurs[i].getRang() + 1 << std::endl;
+//     }
+//     std::cout << "Test du getGagnant" << std::endl;
+//     std::vector<Carte> CartesSurTable = std::vector<Carte>();
+//     Carte c1(static_cast<ChiffreCarte>(sept), static_cast<Couleur>(coeur));
+//     Carte c2(static_cast<ChiffreCarte>(dame), static_cast<Couleur>(carreau));
+//     Carte c3(static_cast<ChiffreCarte>(neuf), static_cast<Couleur>(pique));
+//     Carte c4(static_cast<ChiffreCarte>(valet), static_cast<Couleur>(coeur));
+//     CartesSurTable.push_back(c1);
+//     CartesSurTable.push_back(c2);
+//     CartesSurTable.push_back(c3);
+//     CartesSurTable.push_back(c4);
+//     int gagnant = getGagnant(CartesSurTable, atout);
+//     std::cout << "Le gagnant est le joueur " << gagnant + 1 << std::endl;
+//     std::cout << "Test de la fonction tourDeJeu" << std::endl;
+//     tourDeJeu(Joueurs[0], atout);
+//     std::cout << "Test de la fonction coupe" << std::endl;
+//     coupe(p);
+//     std::cout << "Test de la fonction attente" << std::endl;
+//     attente();
+//     std::cout << "Test de la fonction jeu" << std::endl;
+//     jeu();
+//     std::cout << "Test de la fonction getCartesSurTable" << std::endl;
+//     std::vector<Carte> c = getCartesSurTable();
+//     for (int i = 0; i < c.size(); i++)
+//     {
+//         c[i].afficherCarte();
+//     }
+//     std::cout << "Test de la fonction getNbPlis" << std::endl;
+//     int n = getNbPlis();
+//     std::cout << "Nombre de plis: " << n << std::endl;
+//     std::cout << "Test de la fonction getAllCards" << std::endl;
+//     PaquetDeCarte p2 = getAllCards();
+//     p2.afficherPaquet();
+//     std::cout << "Test de la fonction getJoueurs" << std::endl;
+//     std::vector<Joueur> j = getJoueurs();
+//     for (int i = 0; i < j.size(); i++)
+//     {
+//         std::cout << "Joueur " << j[i].getRang() + 1 << std::endl;
+//     }
+//     std::cout << "Test de la fonction getEquipe1" << std::endl;
+//     Equipe e1 = getEquipe1();
+//     std::cout << "Test de la fonction getEquipe2" << std::endl;
+//     Equipe e2 = getEquipe2();
+//     std::cout << "Test de la fonction getMains" << std::endl;
+//     std::vector<MainJoueur> m = getMains();
+//     for (int i = 0; i < m.size(); i++)
+//     {
+//         std::cout << "Main du joueur " << i + 1 << std::endl;
+//         m[i].afficherMain();
+//     }
+//     std::cout << "Test de la fonction getCartesJouees" << std::endl;
+//     std::vector<Carte> g2 = getCartesJouees();
+//     for (int i = 0; i < g2.size(); i++)
+//     {
+//         g2[i].afficherCarte();
+//     }
+//     std::cout << "Test de la fonction setJoueurs" << std::endl;
+// }

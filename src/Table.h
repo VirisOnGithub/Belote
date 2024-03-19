@@ -217,6 +217,8 @@ public:
     void initGame();
 
     void playGame();
+
+    void testregression();
 };
 
 #endif

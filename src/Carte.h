@@ -28,6 +28,15 @@ public:
     Carte();
 
     /**
+     * @brief Constructor for the Carte class.
+     * @param couleur The color of the card.
+     * @param chiffre The rank of the card.
+     * @param atout True if the card is a trump card, false otherwise.
+     * @param accessible True if the card is accessible, false otherwise.
+     */
+    Carte(ChiffreCarte chiffre, Couleur couleur);
+
+    /**
      * @brief Gets the color of the card.
      * @return The color of the card.
      */

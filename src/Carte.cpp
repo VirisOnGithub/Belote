@@ -11,6 +11,14 @@ Carte::Carte()
     chiffre = static_cast<ChiffreCarte>(rand() % 8);
 }
 
+Carte::Carte(ChiffreCarte chiffre, Couleur couleur)
+{
+    atout = false;
+    accessible = true;
+    this->couleur = couleur;
+    this->chiffre = chiffre;
+}
+
 Couleur Carte::getCouleur() const
 {
     return couleur;
@@ -43,7 +51,6 @@ void Carte::setCouleur(Couleur couleur)
 {
     this->couleur = couleur;
 }
-
 
 ChiffreCarte Carte::getChiffre() const
 {
@@ -213,26 +220,25 @@ bool Carte::estValide(std::vector<Carte> CartesSurTable, Couleur atout, std::vec
                 raison = "Vous devez jouer une carte atout";
                 return false;
             }
-            //on teste si le joueur a une carte d'atout plus forte que la carte d'atout la plus forte sur la table
+            // on teste si le joueur a une carte d'atout plus forte que la carte d'atout la plus forte sur la table
             bool hasStrongerTrump = false;
-            for(int i = 0; i < mainJoueur.size(); i++)
+            for (int i = 0; i < mainJoueur.size(); i++)
             {
-                for(int j = 0; j < CartesSurTable.size(); j++)
+                for (int j = 0; j < CartesSurTable.size(); j++)
                 {
-                    if(mainJoueur[i].getCouleur() == atout && mainJoueur[i].getValeurAtout() > CartesSurTable[j].getValeurAtout())
+                    if (mainJoueur[i].getCouleur() == atout && mainJoueur[i].getValeurAtout() > CartesSurTable[j].getValeurAtout())
                     {
                         hasStrongerTrump = true;
                         break;
                     }
                 }
             }
-            if (hasStrongerTrump && couleur == atout && CartesSurTable[CartesSurTable.size()-1].getCouleur() == atout && CartesSurTable[CartesSurTable.size()-1].getValeurAtout()>getValeurAtout())
+            if (hasStrongerTrump && couleur == atout && CartesSurTable[CartesSurTable.size() - 1].getCouleur() == atout && CartesSurTable[CartesSurTable.size() - 1].getValeurAtout() > getValeurAtout())
             {
                 raison = "Vous devez jouer une carte atout plus forte";
                 return false;
             }
         }
-
     }
     return true;
 }
