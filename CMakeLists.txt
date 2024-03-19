@@ -20,10 +20,14 @@ set(SOURCES
     src/enums.cpp
 )
 
+set(SOURCES_GRAPHIQUES
+    src/Bouton.h
+)
+
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/obj)
 
 add_executable(Belote ${SOURCES} src/main.cpp)
-add_executable(Graphique ${SOURCES} src/mainGraphique.cpp src/Affichage.h src/Affichage.cpp)
+add_executable(Graphique ${SOURCES} ${SOURCES_GRAPHIQUES} src/mainGraphique.cpp src/Affichage.h src/Affichage.cpp)
 
 # Add your include directories here
 target_include_directories(Belote PRIVATE src)

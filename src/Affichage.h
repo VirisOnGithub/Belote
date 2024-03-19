@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+
 class Affichage{
     private:
         sf::RenderWindow window;
@@ -11,6 +12,8 @@ class Affichage{
     public:    
         void init();
         void jeu();
+        void menuLoop();
+        void jeuLoop();
         sf::Font loadFont();
 };
 
