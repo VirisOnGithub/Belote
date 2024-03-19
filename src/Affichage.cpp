@@ -41,6 +41,10 @@ void Affichage::init(){
     titre.setStyle(sf::Text::Bold);
     titre.setPosition(static_cast<float>(window.getSize().x)/2 - titre.getGlobalBounds().width/2, static_cast<float>(window.getSize().y)/3);
     window.display();
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////:
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////:
+    table.jeuGraphique();
 }
 
 void Affichage::jeu(){
@@ -83,8 +87,6 @@ void Affichage::menuLoop(bool &menu){
 }
 
 void Affichage::jeuLoop(){
-    Table table;
-    table.jeuGraphique();
     afficherMainGraphique(table.getMains()[0]);
 }
 
