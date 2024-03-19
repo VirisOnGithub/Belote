@@ -220,7 +220,7 @@ public:
 
     void playGame();
 
-    void jeuGraphique();
+    void jeuGraphique(PaquetDeCarte &p, Couleur atout);
 
     void montrerCartesG();
 

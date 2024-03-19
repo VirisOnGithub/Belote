@@ -6,8 +6,11 @@
 #include <SFML/Window.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
+#include <cassert>
 #include <iostream>
+#include "Carte.h"
 #include "MainJoueur.h"
+#include "PaquetDeCarte.h"
 #include "Table.h"
 #include "imgui-master/imgui.h"
 #include "imgui-sfml/imgui-SFML.h"
@@ -44,7 +47,8 @@ void Affichage::init(){
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////:
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////:
-    table.jeuGraphique();
+    table.jeuGraphique(p, atout);
+    carteRetournee = Carte(sept, rien);
 }
 
 void Affichage::jeu(){
@@ -66,11 +70,11 @@ void Affichage::jeu(){
         menu ? menuLoop(menu) : jeuLoop();
         ImGui::SFML::Render(window);
         window.display();
-    }std::map<std::string, sf::Texture> textures;
+    }
+    std::map<std::string, sf::Texture> textures;
 }
 
 void Affichage::menuLoop(bool &menu){
-    window.clear(sf::Color(0,128,0));
     window.draw(titre);
     ImGui::SetNextWindowPos(ImVec2(window.getSize().x/2., window.getSize().y*2/3.), ImGuiCond_Once, ImVec2(0.5f, 0.5f));
     ImGui::Begin("Menu", &menu, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
@@ -88,6 +92,7 @@ void Affichage::menuLoop(bool &menu){
 
 void Affichage::jeuLoop(){
     afficherMainGraphique(table.getMains()[0]);
+    afficherCartePriseGraphique();
 }
 
 sf::Font Affichage::loadFont(){
@@ -125,12 +130,27 @@ void Affichage::afficherMainGraphique(MainJoueur main){
 
     if (!cartesG.empty()) {
         std::cout << "Dessin de la première carte" << std::endl;
-        window.draw(cartesG[0]);
+        int CardWidth = textures[cartes[0]]->getSize().x;
+        int CardHeight = textures[cartes[0]]->getSize().y;
+        for (int i = 0; i < cartesG.size(); i++) {
+            cartesG[i].setPosition((window.getSize().x-CardWidth*(cartesG.size()+1)/2.)/2. + i * CardWidth/2., window.getSize().y - CardHeight/2.);
+            window.draw(cartesG[i]);
+        }
     } else {
         std::cerr << "Erreur : aucune carte à dessiner" << std::endl;
     }
 
-    // Vérifiez que window.display() est appelé après window.draw()
     std::cout << "Affichage de la fenêtre" << std::endl;
-    window.display();
+}
+
+void Affichage::afficherCartePriseGraphique(){
+    static bool isCarteRetourneeSet = false;
+    if (!isCarteRetourneeSet && carteRetournee.getCouleur() == rien){
+        carteRetournee = p.getPremiereCarte();
+        std::cout << "Carte retournée : " << carteRetournee.getChiffreStr() << " de " << carteRetournee.getCouleurStr() << std::endl;
+        isCarteRetourneeSet = true;
+    }
+    sprite.setTexture(*textures[carteRetournee.getCarteG()]);
+    sprite.setPosition((window.getSize().x - sprite.getGlobalBounds().width)/2, (window.getSize().y - sprite.getGlobalBounds().height)/2);
+    window.draw(sprite);
 }

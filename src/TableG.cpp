@@ -1,12 +1,12 @@
+#include "PaquetDeCarte.h"
 #include "Table.h"
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
-#include <string>
 
-
-void Table::jeuGraphique(){
-    PaquetDeCarte paquet;
-    Couleur atout = rien;
-    paquet.melanger();
-    distribuer1(paquet);
+void Table::jeuGraphique(PaquetDeCarte &p, Couleur atout){
+    p=PaquetDeCarte();
+    atout = rien;
+    p.melanger();
+    p.afficherPaquet();
+    distribuer1(p);
 }
