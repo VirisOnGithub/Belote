@@ -95,7 +95,6 @@ void Affichage::menuLoop(bool &menu)
     {
         menu = false;
     }
-    ImGui::PopStyleColor(2);
     ImGui::End();
 }
 
