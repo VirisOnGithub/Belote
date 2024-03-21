@@ -6,6 +6,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
+#include <cassert>
 #include <cstdlib>
 #include <iostream>
 #include "Carte.h"
@@ -101,7 +102,11 @@ void Affichage::menuLoop(bool &menu)
 
 void Affichage::jeuLoop()
 {
-    afficherMainGraphique(table.getMains()[0]);
+    animDistribution();
+}
+
+void Affichage::animDistribution(){
+    afficherMainGraphique(table.getMains()[0], 5);
     afficherCartePriseGraphique();
     afficherMainRetourneeGraphiqueHaut1(5);
     afficherMainRetourneeGraphiqueDroite1(5);
@@ -122,27 +127,44 @@ sf::Font Affichage::loadFont()
     return font;
 }
 
-void Affichage::afficherMainGraphique(MainJoueur main)
+void Affichage::afficherMainGraphique(MainJoueur main, int nbCartesAffichees)
 {
+    assert(nbCartesAffichees <= main.getCartesG().size());
     std::vector<sf::Sprite> cartesG;
     auto cartes = main.getCartesG();
 
     // Vérifiez que getCartesG() renvoie les bonnes valeurs
     std::cout << "Nombre de cartes : " << cartes.size() << std::endl;
 
-    for (const auto &carte : cartes)
+    for (int i = 0; i < nbCartesAffichees; i++)
     {
         sf::Sprite sprite;
-        sprite.setTexture(*textures[carte]);
+        sprite.setTexture(*textures[cartes[i]]);
 
         // Vérifiez que les textures sont chargées correctement
-        if (textures[carte]->getSize().x == 0)
+        if (textures[cartes[i]]->getSize().x == 0)
         {
-            std::cout << "Erreur de chargement de la texture pour la carte : " << carte.toAnsiString() << std::endl;
+            std::cout << "Erreur de chargement de la texture pour la carte : " << cartes[i].toAnsiString() << std::endl;
         }
         else
         {
-            std::cout << "Texture chargée pour la carte : " << carte.toAnsiString() << std::endl;
+            std::cout << "Texture chargée pour la carte : " << cartes[i].toAnsiString() << std::endl;
+        }
+
+        cartesG.push_back(sprite);
+    }
+    {
+        sf::Sprite sprite;
+        sprite.setTexture(*textures[cartes[0]]);
+
+        // Vérifiez que les textures sont chargées correctement
+        if (textures[cartes[0]]->getSize().x == 0)
+        {
+            std::cout << "Erreur de chargement de la texture pour la carte : " << cartes[0].toAnsiString() << std::endl;
+        }
+        else
+        {
+            std::cout << "Texture chargée pour la carte : " << cartes[0].toAnsiString() << std::endl;
         }
 
         cartesG.push_back(sprite);

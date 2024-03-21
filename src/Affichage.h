@@ -32,11 +32,12 @@ public:
     void menuLoop(bool &menu);
     void jeuLoop();
     sf::Font loadFont();
-    void afficherMainGraphique(MainJoueur main);
+    void afficherMainGraphique(MainJoueur main, int nbCartesAffichees);
     void afficherCartePriseGraphique();
     void afficherMainRetourneeGraphiqueHaut1(int nbCartes);
     void afficherMainRetourneeGraphiqueDroite1(int nbCartes);
     void afficherMainRetourneeGraphiqueGauche1(int nbCartes);
+    void animDistribution();
 };
 
 #endif // AFFICHAGE_H
