@@ -62,12 +62,20 @@ void Joueur::afficherJoueur()
     std::cout << "Rang: " << rang << std::endl;
 }
 
-int Joueur::demanderCarte()
+int Joueur::demanderCarte(std::vector<Carte> CartesSurTable, Couleur atout, std::vector<Carte> mainJoueur, std::string &raison)
 {
     int index;
     std::cout << "Entrez l'index de la carte que vous voulez jouer: ";
-    std::cin >> index;
-    return index;
+    if(estBot)
+    {
+        return botAction(CartesSurTable, atout, mainJoueur, raison);
+        std::cout << std::endl;
+    }
+    else
+    {
+        std::cin >> index;
+        return index;
+    }
 }
 
 void Joueur::afficherMain()
@@ -102,7 +110,7 @@ std::pair<int,Couleur> Joueur::botPrise(Carte CarteAtout,  std::vector<Carte> ma
             }
             
         }
-        else if (mainBot[i].getChiffreStr() == "Valet")
+        else if (mainBot[i].getChiffreStr() == "valet")
         {
             CouleurAtout2 = mainBot[i].getCouleur();
             hasValet2 = true;
@@ -112,7 +120,7 @@ std::pair<int,Couleur> Joueur::botPrise(Carte CarteAtout,  std::vector<Carte> ma
             hasNeuf2 = true;
         }
     }   
-    if((hasValet && hasNeuf && !tour2) || (hasValet && hasAs && !tour2) || (hasValet2 && hasNeuf2 && tour2))
+    if((hasValet && hasNeuf && !tour2) ||  (CarteAtout.getChiffreStr() == "valet" && !tour2) || (hasValet && hasAs && !tour2) || (hasValet2 && hasNeuf2 && tour2))
     {
         if (tour2)
         {
@@ -132,4 +140,18 @@ std::pair<int,Couleur> Joueur::botPrise(Carte CarteAtout,  std::vector<Carte> ma
         std::cout<<"Le bot a décidé de ne pas prendre l'atout"<<std::endl;
         return std::make_pair(0 , CouleurAtout2);
     }
+}
+
+int Joueur:: botAction(std::vector<Carte> CartesSurTable, Couleur atout, std::vector<Carte> mainJoueur, std::string &raison)
+{
+    std::vector<Carte> cartesValides;
+    
+    for(int i = 0; i < mainJoueur.size(); i++)
+    {
+        if(mainJoueur[i].estValide(CartesSurTable, atout, mainJoueur, raison))
+        {
+            cartesValides.push_back(mainJoueur[i]);
+        }
+    }
+    
 }

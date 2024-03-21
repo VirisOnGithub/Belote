@@ -88,7 +88,7 @@ public:
      * @brief Asks the player to choose a card.
      * @return The index of the chosen card.
      */
-    int demanderCarte();
+    int demanderCarte(std::vector<Carte> CartesSurTable, Couleur atout, std::vector<Carte> mainJoueur, std::string &raison);
 
     /**
      * @brief Displays the player's hand.
@@ -104,6 +104,8 @@ public:
      * @return A pair containing the decision (0 for not taking, 1 for taking) and the chosen trump suit.
      */
     std::pair<int, Couleur> botPrise(Carte CarteAtout, std::vector<Carte> mainBot,bool tour2);
+
+    int botAction(std::vector<Carte> CartesSurTable, Couleur atout, std::vector<Carte> mainJoueur, std::string &raison);
 };
 
 #endif
