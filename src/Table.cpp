@@ -110,6 +110,10 @@ void Table::jeu()
 {
     PaquetDeCarte paquet;
     Couleur atout = rien;
+    Joueur premierJoueur(true);
+    Joueurs[0]=premierJoueur;
+    std::cout << "Le premier joueur est un bot : " << Joueurs[0].getEstBot() << std::endl;
+
     paquet.melanger();
     distribuer1(paquet);
     prise(paquet, atout);
@@ -219,6 +223,7 @@ void Table::tourDeJeu(Joueur &joueur, Couleur atout)
                   << std::endl
                   << std::endl;
         Mains[joueur.getRang()].afficherMain();
+
         indexCarte = Joueurs[joueur.getRang()].demanderCarte() - 1; // -1 car l'index commence à 0
     } while (indexCarte < 0 || indexCarte >= Mains[joueur.getRang()].getMain().size() || !Mains[joueur.getRang()].getMain()[indexCarte].estValide(CartesSurTable, atout, Mains[joueur.getRang()].getMain(), raisonRefus));
 
@@ -289,6 +294,8 @@ void Table::prise(PaquetDeCarte &p, Couleur &atout)
 {
     Carte carteRetournee = p.getPremiereCarte();
     bool prise;
+    bool tour2 = false;
+    std::pair<int, Couleur> priseCouleur;
     for (int i = 0; i < 4; i++)
     {
         Mains[i].trierMain();
@@ -296,7 +303,17 @@ void Table::prise(PaquetDeCarte &p, Couleur &atout)
         std::cout << "La carte retournée est: " << carteRetournee.getChiffreStr() << " de " << carteRetournee.getCouleurStr() << std::endl;
         std::cout << "Joueur " << i + 1 << " voulez-vous prendre cette couleur ? (1 pour oui, 0 pour non)" << std::endl;
 
-        std::cin >> prise;
+        if(Joueurs[i].getEstBot())
+        {
+            Joueurs[i].getEstBot();
+            priseCouleur = Joueurs[i].botPrise(carteRetournee, Mains[i].getMain(),tour2);
+            prise = priseCouleur.first;
+            std::this_thread::sleep_for(std::chrono::seconds(5));
+        }
+        else
+        {
+            std::cin >> prise;
+        }
 
         if (prise)
         {
@@ -309,11 +326,21 @@ void Table::prise(PaquetDeCarte &p, Couleur &atout)
     }
     if (!prise)
     {
+        tour2 = true;
         for (int i = 0; i < 4; i++)
         {
             Mains[i].afficherMain();
             std::cout << "La carte retournée est: " << carteRetournee.getChiffreStr() << " de " << carteRetournee.getCouleurStr() << std::endl;
             std::cout << "Joueur " << i + 1 << " voulez-vous prendre à une autre couleur ? (1 pour oui, 0 pour non)" << std::endl;
+            if(Joueurs[i].getEstBot())
+            {
+                priseCouleur = Joueurs[i].botPrise(carteRetournee, Mains[i].getMain(),tour2);
+                prise = priseCouleur.first;
+            }
+            else
+            {
+                std::cin >> prise;
+            }
             std::cin >> prise;
             if (prise)
             {
@@ -323,7 +350,14 @@ void Table::prise(PaquetDeCarte &p, Couleur &atout)
                 std::cout << "2. Pique" << std::endl;
                 std::cout << "3. Trèfle" << std::endl;
                 int couleur;
-                std::cin >> couleur;
+                if(Joueurs[i].getEstBot())
+                {
+                    couleur = priseCouleur.second;
+                }
+                else
+                {
+                    std::cin >> couleur;
+                }
                 atout = static_cast<Couleur>(couleur);
                 Mains[i].addCarte(carteRetournee);
                 break;

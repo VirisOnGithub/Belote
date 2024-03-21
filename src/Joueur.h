@@ -14,14 +14,20 @@ private:
     MainJoueur main; // The player's hand
     std::string nom; // The player's name
     int rang;        // The player's rank
-    bool ajoue;      // Indicates if the player has played a card
-    bool aPrisAtout; // Indicates if the player has taken the trump card
+    bool estBot;     // True if the player is a bot, false otherwise
 
 public:
     /**
      * @brief Default constructor for the Joueur class.
      */
     Joueur();
+
+    /**
+     * @brief Constructs a new Joueur object.
+     * 
+     * @param estBot A boolean value indicating whether the player is a bot or not.
+     */
+    Joueur(bool estBot);
 
     /**
      * @brief Gets the player's name.
@@ -60,16 +66,18 @@ public:
     void setMain(const MainJoueur &main);
 
     /**
-     * @brief Checks if the player has taken the trump card.
-     * @return True if the player has taken the trump card, false otherwise.
+     * @brief Returns whether the player is a bot or not.
+     * 
+     * @return true if the player is a bot, false otherwise.
      */
-    bool getAPrisAtout();
+    bool getEstBot();
 
     /**
-     * @brief Sets whether the player has taken the trump card.
-     * @param aPrisAtout True if the player has taken the trump card, false otherwise.
+     * @brief Sets the flag indicating whether the player is a bot or not.
+     * 
+     * @param estBot True if the player is a bot, false otherwise.
      */
-    void setAPrisAtout(bool aPrisAtout);
+    void setEstBot(bool estBot);
 
     /**
      * @brief Displays information about the player.
@@ -86,6 +94,16 @@ public:
      * @brief Displays the player's hand.
      */
     void afficherMain();
+
+    /**
+     * Makes a decision for the bot to take or not to take the bid.
+     * 
+     * @param CarteAtout The trump card.
+     * @param mainBot The bot's hand of cards.
+     * @param tour2 Indicates if it is the second round of bidding.
+     * @return A pair containing the decision (0 for not taking, 1 for taking) and the chosen trump suit.
+     */
+    std::pair<int, Couleur> botPrise(Carte CarteAtout, std::vector<Carte> mainBot,bool tour2);
 };
 
 #endif
