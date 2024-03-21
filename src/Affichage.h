@@ -29,15 +29,15 @@ private:
 public:
     void init();
     void jeu();
-    void menuLoop(bool &menu);
-    void jeuLoop();
+    void menuLoop(bool &menu, bool &prise);
+    void jeuLoop(bool &prise, bool &jeu, int &indexJoueur);
     sf::Font loadFont();
     void afficherMainGraphique(MainJoueur main, int nbCartesAffichees);
-    void afficherCartePriseGraphique();
+    void afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJoueur);
     void afficherMainRetourneeGraphiqueHaut1(int nbCartes);
     void afficherMainRetourneeGraphiqueDroite1(int nbCartes);
     void afficherMainRetourneeGraphiqueGauche1(int nbCartes);
-    void animDistribution();
+    void animDistribution(bool &prise, bool &jeu, int &indexJoueur);
 };
 
 #endif // AFFICHAGE_H

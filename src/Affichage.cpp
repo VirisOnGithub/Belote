@@ -7,7 +7,6 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <cassert>
-#include <cstdlib>
 #include <iostream>
 #include "Carte.h"
 #include "MainJoueur.h"
@@ -62,6 +61,9 @@ void Affichage::init()
 void Affichage::jeu()
 {
     bool menu = true;
+    bool prise = false;
+    bool jeu = false;
+    int indexJoueur = 0;
     sf::Clock deltaClock;
 
     while (window.isOpen())
@@ -76,14 +78,14 @@ void Affichage::jeu()
                 (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
                 window.close();
         }
-        menu ? menuLoop(menu) : jeuLoop();
+        menu ? menuLoop(menu, prise) : jeuLoop(prise, jeu, indexJoueur);
         ImGui::SFML::Render(window);
         window.display();
     }
     std::map<std::string, sf::Texture> textures;
 }
 
-void Affichage::menuLoop(bool &menu)
+void Affichage::menuLoop(bool &menu, bool &prise)
 {
     window.draw(titre);
     ImGui::SetNextWindowPos(ImVec2(window.getSize().x / 2., window.getSize().y * 2 / 3.), ImGuiCond_Once, ImVec2(0.5f, 0.5f));
@@ -96,100 +98,34 @@ void Affichage::menuLoop(bool &menu)
     if (ImGui::Button("Jouer", buttonSize))
     {
         menu = false;
+        prise = true;
     }
     ImGui::End();
 }
 
-void Affichage::jeuLoop()
+void Affichage::jeuLoop(bool &prise, bool &jeu, int &indexJoueur)
 {
-    animDistribution();
+    if (prise)
+    {
+        animDistribution(prise, jeu, indexJoueur);
+    }
+    else
+    {
+        // jeu
+    }
 }
 
-void Affichage::animDistribution(){
-    afficherMainGraphique(table.getMains()[0], 5);
-    afficherCartePriseGraphique();
+void Affichage::animDistribution(bool &prise, bool &jeu, int &indexJoueur){
+    
     afficherMainRetourneeGraphiqueHaut1(5);
     afficherMainRetourneeGraphiqueDroite1(5);
     afficherMainRetourneeGraphiqueGauche1(5);
+    afficherMainGraphique(table.getMains()[indexJoueur], 5);
+
+    afficherCartePriseGraphique(prise, jeu, indexJoueur);
 }
 
-sf::Font Affichage::loadFont()
-{
-    sf::Font font;
-    if (!font.loadFromFile("../src/fonts/GravitasOne-Regular.ttf"))
-    {
-        std::cerr << "Error loading font" << std::endl;
-    }
-    else
-    {
-        std::cout << "Font loaded" << std::endl;
-    }
-    return font;
-}
-
-void Affichage::afficherMainGraphique(MainJoueur main, int nbCartesAffichees)
-{
-    assert(nbCartesAffichees <= main.getCartesG().size());
-    std::vector<sf::Sprite> cartesG;
-    auto cartes = main.getCartesG();
-
-    // Vérifiez que getCartesG() renvoie les bonnes valeurs
-    std::cout << "Nombre de cartes : " << cartes.size() << std::endl;
-
-    for (int i = 0; i < nbCartesAffichees; i++)
-    {
-        sf::Sprite sprite;
-        sprite.setTexture(*textures[cartes[i]]);
-
-        // Vérifiez que les textures sont chargées correctement
-        if (textures[cartes[i]]->getSize().x == 0)
-        {
-            std::cout << "Erreur de chargement de la texture pour la carte : " << cartes[i].toAnsiString() << std::endl;
-        }
-        else
-        {
-            std::cout << "Texture chargée pour la carte : " << cartes[i].toAnsiString() << std::endl;
-        }
-
-        cartesG.push_back(sprite);
-    }
-    {
-        sf::Sprite sprite;
-        sprite.setTexture(*textures[cartes[0]]);
-
-        // Vérifiez que les textures sont chargées correctement
-        if (textures[cartes[0]]->getSize().x == 0)
-        {
-            std::cout << "Erreur de chargement de la texture pour la carte : " << cartes[0].toAnsiString() << std::endl;
-        }
-        else
-        {
-            std::cout << "Texture chargée pour la carte : " << cartes[0].toAnsiString() << std::endl;
-        }
-
-        cartesG.push_back(sprite);
-    }
-
-    if (!cartesG.empty())
-    {
-        std::cout << "Dessin de la première carte" << std::endl;
-        int CardWidth = textures[cartes[0]]->getSize().x;
-        int CardHeight = textures[cartes[0]]->getSize().y;
-        for (int i = 0; i < cartesG.size(); i++)
-        {
-            cartesG[i].setPosition((window.getSize().x - CardWidth * (cartesG.size() + 1) / 2.) / 2. + i * CardWidth / 2., window.getSize().y - CardHeight / 2.);
-            window.draw(cartesG[i]);
-        }
-    }
-    else
-    {
-        std::cerr << "Erreur : aucune carte à dessiner" << std::endl;
-    }
-
-    std::cout << "Affichage de la fenêtre" << std::endl;
-}
-
-void Affichage::afficherCartePriseGraphique()
+void Affichage::afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJoueur)
 {
     static bool isCarteRetourneeSet = false;
     if (!isCarteRetourneeSet && carteRetournee.getCouleur() == rien)
@@ -202,9 +138,14 @@ void Affichage::afficherCartePriseGraphique()
     ImGui::Begin("Prise", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
     ImGui::SetWindowPos(ImVec2(window.getSize().x / 2. - 110, window.getSize().y / 2. + 200), ImGuiCond_Once);
     ImGui::SetWindowSize(ImVec2(220, 60), ImGuiCond_Once);
-    ImGui::Button("Je prends", ImVec2(100, 30));
+    if(ImGui::Button("Je prends", ImVec2(100, 30))){
+        std::cout << "Je prends" << std::endl;        
+    }
     ImGui::SameLine();
-    ImGui::Button("Je passe", ImVec2(100, 30));
+    if(ImGui::Button("Je passe", ImVec2(100, 30))){
+        std::cout << "Je passe" << std::endl;
+        indexJoueur = (indexJoueur + 1) % 4;
+    }
     ImGui::End();
     ImGui::PopStyleColor();
     sprite.setTexture(*textures[carteRetournee.getCarteG()]);
@@ -280,4 +221,54 @@ void Affichage::afficherMainRetourneeGraphiqueGauche1(int nbCartes)
         }
         sprite.setScale(1, 1);
     }
+}
+
+void Affichage::afficherMainGraphique(MainJoueur main, int nbCartesAffichees)
+{
+    assert(nbCartesAffichees <= main.getCartesG().size());
+    std::vector<sf::Sprite> cartesG;
+    auto cartes = main.getCartesG();
+
+    for (int i = 0; i < nbCartesAffichees; i++)
+    {
+        sf::Sprite sprite;
+        sprite.setTexture(*textures[cartes[i]]);
+
+        // Vérifiez que les textures sont chargées correctement
+        if (textures[cartes[i]]->getSize().x == 0)
+        {
+            std::cout << "Erreur de chargement de la texture pour la carte : " << cartes[i].toAnsiString() << std::endl;
+        }
+
+        cartesG.push_back(sprite);
+    }
+
+    if (!cartesG.empty())
+    {
+        int CardWidth = textures[cartes[0]]->getSize().x;
+        int CardHeight = textures[cartes[0]]->getSize().y;
+        for (int i = 0; i < cartesG.size(); i++)
+        {
+            cartesG[i].setPosition((window.getSize().x - CardWidth * (cartesG.size() + 1) / 2.) / 2. + i * CardWidth / 2., window.getSize().y - CardHeight / 2.);
+            window.draw(cartesG[i]);
+        }
+    }
+    else
+    {
+        std::cerr << "Erreur : aucune carte à dessiner" << std::endl;
+    }
+}
+
+sf::Font Affichage::loadFont()
+{
+    sf::Font font;
+    if (!font.loadFromFile("../src/fonts/GravitasOne-Regular.ttf"))
+    {
+        std::cerr << "Error loading font" << std::endl;
+    }
+    else
+    {
+        std::cout << "Font loaded" << std::endl;
+    }
+    return font;
 }
