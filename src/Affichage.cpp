@@ -6,7 +6,6 @@
 #include <SFML/Window.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
-#include <cassert>
 #include <iostream>
 #include "Carte.h"
 #include "MainJoueur.h"
@@ -77,16 +76,21 @@ void Affichage::jeu(){
 void Affichage::menuLoop(bool &menu){
     window.draw(titre);
     ImGui::SetNextWindowPos(ImVec2(window.getSize().x/2., window.getSize().y*2/3.), ImGuiCond_Once, ImVec2(0.5f, 0.5f));
+    ImGui::SetNextWindowSize(ImVec2(400, 100), ImGuiCond_Once);
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
     ImGui::Begin("Menu", &menu, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
-    const ImVec2 buttonSize(100, 30); // Set the size of your button here
+    const ImVec2 buttonSize(300, 60);
 
-    // Center the button
     ImGui::SetCursorPosX((ImGui::GetWindowSize().x - buttonSize.x) / 2.0f);
     ImGui::SetCursorPosY((ImGui::GetWindowSize().y - buttonSize.y) / 2.0f);
 
+    ImGui::PopStyleColor();
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 1.0f, 1.0f));
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.1f, 0.3f, 1.0f, 1.0f));
     if (ImGui::Button("Jouer", buttonSize)) {
         menu = false;
     }
+    ImGui::PopStyleColor(2);
     ImGui::End();
 }
 
@@ -150,6 +154,15 @@ void Affichage::afficherCartePriseGraphique(){
         std::cout << "Carte retournée : " << carteRetournee.getChiffreStr() << " de " << carteRetournee.getCouleurStr() << std::endl;
         isCarteRetourneeSet = true;
     }
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+    ImGui::Begin("Prise", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+    ImGui::SetWindowPos(ImVec2(window.getSize().x/2. - 110, window.getSize().y/2. + 200), ImGuiCond_Once);
+    ImGui::SetWindowSize(ImVec2(220, 60), ImGuiCond_Once);
+    ImGui::Button("Je prends", ImVec2(100, 30));
+    ImGui::SameLine();
+    ImGui::Button("Je passe", ImVec2(100, 30));
+    ImGui::End();
+    ImGui::PopStyleColor();
     sprite.setTexture(*textures[carteRetournee.getCarteG()]);
     sprite.setPosition((window.getSize().x - sprite.getGlobalBounds().width)/2, (window.getSize().y - sprite.getGlobalBounds().height)/2);
     window.draw(sprite);
