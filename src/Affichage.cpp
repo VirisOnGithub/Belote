@@ -15,6 +15,7 @@
 #include "imgui-master/imgui.h"
 #include "imgui-sfml/imgui-SFML.h"
 #include <memory>
+#include <map>
 
 void Affichage::init()
 {
@@ -56,6 +57,11 @@ void Affichage::init()
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////:
     table.jeuGraphique(p, atout);
     carteRetournee = Carte(sept, rien);
+
+    texturesCouleurs[coeur].loadFromFile("../assets/cartes/coeur.png");
+    texturesCouleurs[carreau].loadFromFile("../assets/cartes/carreau.png");
+    texturesCouleurs[pique].loadFromFile("../assets/cartes/pique.png");
+    texturesCouleurs[trefle].loadFromFile("../assets/cartes/trefle.png");
 }
 
 void Affichage::jeu()
@@ -63,6 +69,7 @@ void Affichage::jeu()
     bool menu = true;
     bool prise = false;
     bool jeu = false;
+    bool premierTour = true;
     int indexJoueur = 0;
     sf::Clock deltaClock;
 
@@ -78,7 +85,7 @@ void Affichage::jeu()
                 (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
                 window.close();
         }
-        menu ? menuLoop(menu, prise) : jeuLoop(prise, jeu, indexJoueur);
+        menu ? menuLoop(menu, prise) : jeuLoop(prise, jeu, indexJoueur, premierTour);
         ImGui::SFML::Render(window);
         window.display();
     }
@@ -103,11 +110,11 @@ void Affichage::menuLoop(bool &menu, bool &prise)
     ImGui::End();
 }
 
-void Affichage::jeuLoop(bool &prise, bool &jeu, int &indexJoueur)
+void Affichage::jeuLoop(bool &prise, bool &jeu, int &indexJoueur, bool &premierTour)
 {
     if (prise)
     {
-        animDistribution(prise, jeu, indexJoueur);
+        animDistribution(prise, jeu, indexJoueur, premierTour);
     }
     else
     {
@@ -115,17 +122,17 @@ void Affichage::jeuLoop(bool &prise, bool &jeu, int &indexJoueur)
     }
 }
 
-void Affichage::animDistribution(bool &prise, bool &jeu, int &indexJoueur){
+void Affichage::animDistribution(bool &prise, bool &jeu, int &indexJoueur, bool &premierTour){
     
     afficherMainRetourneeGraphiqueHaut1(5);
     afficherMainRetourneeGraphiqueDroite1(5);
     afficherMainRetourneeGraphiqueGauche1(5);
     afficherMainGraphique(table.getMains()[indexJoueur], 5);
 
-    afficherCartePriseGraphique(prise, jeu, indexJoueur);
+    afficherCartePriseGraphique(prise, jeu, indexJoueur, premierTour);
 }
 
-void Affichage::afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJoueur)
+void Affichage::afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJoueur, bool &premierTour)
 {
     static bool isCarteRetourneeSet = false;
     if (!isCarteRetourneeSet && carteRetournee.getCouleur() == rien)
@@ -138,13 +145,23 @@ void Affichage::afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJo
     ImGui::Begin("Prise", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
     ImGui::SetWindowPos(ImVec2(window.getSize().x / 2. - 110, window.getSize().y / 2. + 200), ImGuiCond_Once);
     ImGui::SetWindowSize(ImVec2(220, 60), ImGuiCond_Once);
-    if(ImGui::Button("Je prends", ImVec2(100, 30))){
-        std::cout << "Je prends" << std::endl;        
-    }
-    ImGui::SameLine();
-    if(ImGui::Button("Je passe", ImVec2(100, 30))){
-        std::cout << "Je passe" << std::endl;
-        indexJoueur = (indexJoueur + 1) % 4;
+    if (premierTour) {
+        if(ImGui::Button("Je prends", ImVec2(100, 30))){
+        std::cout << "Je prends" << std::endl;
+        prise = false;
+        jeu = true;   
+        }
+        ImGui::SameLine();
+        if(ImGui::Button("Je passe", ImVec2(100, 30))){
+            std::cout << "Je passe" << std::endl;
+            indexJoueur ++;
+            if (indexJoueur == 4){
+                indexJoueur = 0;
+                premierTour = false;
+            }
+        }
+    } else {
+
     }
     ImGui::End();
     ImGui::PopStyleColor();

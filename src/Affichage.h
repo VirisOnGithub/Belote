@@ -25,19 +25,20 @@ private:
     Couleur atout;
     Carte carteRetournee;
     sf::Sprite sprite;
+    std::map<Couleur, sf::Texture> texturesCouleurs;
 
 public:
     void init();
     void jeu();
     void menuLoop(bool &menu, bool &prise);
-    void jeuLoop(bool &prise, bool &jeu, int &indexJoueur);
+    void jeuLoop(bool &prise, bool &jeu, int &indexJoueur, bool &premierTour);
     sf::Font loadFont();
     void afficherMainGraphique(MainJoueur main, int nbCartesAffichees);
-    void afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJoueur);
+    void afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJoueur, bool &premierTour);
     void afficherMainRetourneeGraphiqueHaut1(int nbCartes);
     void afficherMainRetourneeGraphiqueDroite1(int nbCartes);
     void afficherMainRetourneeGraphiqueGauche1(int nbCartes);
-    void animDistribution(bool &prise, bool &jeu, int &indexJoueur);
+    void animDistribution(bool &prise, bool &jeu, int &indexJoueur, bool &premierTour);
 };
 
 #endif // AFFICHAGE_H
