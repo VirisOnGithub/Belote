@@ -34,12 +34,9 @@ public:
     sf::Font loadFont();
     void afficherMainGraphique(MainJoueur main);
     void afficherCartePriseGraphique();
-    void afficherMainRetourneeGraphiqueHaut1();
-    void afficherMainRetourneeGraphiqueDroite1();
-    void afficherMainRetourneeGraphiqueGauche1();
-    void afficherMainRetourneeGraphiqueHaut2();
-    void afficherMainRetourneeGraphiqueDroite2();
-    void afficherMainRetourneeGraphiqueGauche2();
+    void afficherMainRetourneeGraphiqueHaut1(int nbCartes);
+    void afficherMainRetourneeGraphiqueDroite1(int nbCartes);
+    void afficherMainRetourneeGraphiqueGauche1(int nbCartes);
 };
 
 #endif // AFFICHAGE_H

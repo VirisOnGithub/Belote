@@ -6,6 +6,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
+#include <cstdlib>
 #include <iostream>
 #include "Carte.h"
 #include "MainJoueur.h"
@@ -102,9 +103,9 @@ void Affichage::jeuLoop()
 {
     afficherMainGraphique(table.getMains()[0]);
     afficherCartePriseGraphique();
-    afficherMainRetourneeGraphiqueHaut1();
-    afficherMainRetourneeGraphiqueDroite1();
-    afficherMainRetourneeGraphiqueGauche1();
+    afficherMainRetourneeGraphiqueHaut1(5);
+    afficherMainRetourneeGraphiqueDroite1(5);
+    afficherMainRetourneeGraphiqueGauche1(5);
 }
 
 sf::Font Affichage::loadFont()
@@ -189,7 +190,7 @@ void Affichage::afficherCartePriseGraphique()
     window.draw(sprite);
 }
 
-void Affichage::afficherMainRetourneeGraphiqueHaut1()
+void Affichage::afficherMainRetourneeGraphiqueHaut1(int nbCartes)
 {
     // Assurez-vous que la carte est définie
     sf::Texture texture;
@@ -204,16 +205,16 @@ void Affichage::afficherMainRetourneeGraphiqueHaut1()
         sprite.setScale(0.55, 0.55);
         int CardWidth = sprite.getGlobalBounds().width;
         int CardHeight = sprite.getGlobalBounds().height;
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < nbCartes; i++)
         {
-            sprite.setPosition((window.getSize().x - CardWidth * 6 / 2.) / 2. + i * CardWidth / 2., -120);
+            sprite.setPosition((window.getSize().x - CardWidth * (nbCartes + 1) / 2.) / 2. + i * CardWidth / 2., -120);
             window.draw(sprite);
         }
         sprite.setScale(1, 1);
     }
 }
 
-void Affichage::afficherMainRetourneeGraphiqueDroite1()
+void Affichage::afficherMainRetourneeGraphiqueDroite1(int nbCartes)
 {
     sf::Texture texture;
     if (!texture.loadFromFile("../assets/back/90DegBlueCardBack.png"))
@@ -227,16 +228,16 @@ void Affichage::afficherMainRetourneeGraphiqueDroite1()
         sprite.setScale(0.55, 0.55);
         int CardWidth = sprite.getGlobalBounds().width;
         int CardHeight = sprite.getGlobalBounds().height;
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < nbCartes; i++)
         {
-            sprite.setPosition(-120, (window.getSize().y - CardHeight * 6 / 2.) / 2. + i * CardHeight / 2.);
+            sprite.setPosition(-120, (window.getSize().y - CardHeight * (nbCartes + 1) / 2.) / 2. + i * CardHeight / 2.);
             window.draw(sprite);
         }
         sprite.setScale(1, 1);
     }
 }
 
-void Affichage::afficherMainRetourneeGraphiqueGauche1()
+void Affichage::afficherMainRetourneeGraphiqueGauche1(int nbCartes)
 {
     sf::Texture texture;
     if (!texture.loadFromFile("../assets/back/90DegBlueCardBack.png"))
@@ -250,79 +251,9 @@ void Affichage::afficherMainRetourneeGraphiqueGauche1()
         sprite.setScale(0.55, 0.55);
         int CardWidth = sprite.getGlobalBounds().width;
         int CardHeight = sprite.getGlobalBounds().height;
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < nbCartes; i++)
         {
-            sprite.setPosition(window.getSize().x - 120, (window.getSize().y - CardHeight * 6 / 2.) / 2. + i * CardHeight / 2.);
-            window.draw(sprite);
-        }
-        sprite.setScale(1, 1);
-    }
-}
-
-void Affichage::afficherMainRetourneeGraphiqueHaut2()
-{
-    // Assurez-vous que la carte est définie
-    sf::Texture texture;
-    if (!texture.loadFromFile("../assets/back/BlueCardBack.png"))
-    {
-        std::cerr << "Erreur de chargement de la texture" << std::endl;
-    }
-    else
-    {
-        sf::Sprite sprite;
-        sprite.setTexture(texture);
-        sprite.setScale(0.55, 0.55);
-        int CardWidth = sprite.getGlobalBounds().width;
-        int CardHeight = sprite.getGlobalBounds().height;
-        for (int i = 0; i < 8; i++)
-        {
-            sprite.setPosition((window.getSize().x - CardWidth * 9 / 2.) / 2. + i * CardWidth / 2., -120);
-            window.draw(sprite);
-        }
-        sprite.setScale(1, 1);
-    }
-}
-
-void Affichage::afficherMainRetourneeGraphiqueDroite2()
-{
-    sf::Texture texture;
-    if (!texture.loadFromFile("../assets/back/90DegBlueCardBack.png"))
-    {
-        std::cerr << "Erreur de chargement de la texture" << std::endl;
-    }
-    else
-    {
-        sf::Sprite sprite;
-        sprite.setTexture(texture);
-        sprite.setScale(0.55, 0.55);
-        int CardWidth = sprite.getGlobalBounds().width;
-        int CardHeight = sprite.getGlobalBounds().height;
-        for (int i = 0; i < 8; i++)
-        {
-            sprite.setPosition(-120, (window.getSize().y - CardHeight * 9 / 2.) / 2. + i * CardHeight / 2.);
-            window.draw(sprite);
-        }
-        sprite.setScale(1, 1);
-    }
-}
-
-void Affichage::afficherMainRetourneeGraphiqueGauche2()
-{
-    sf::Texture texture;
-    if (!texture.loadFromFile("../assets/back/90DegBlueCardBack.png"))
-    {
-        std::cerr << "Erreur de chargement de la texture" << std::endl;
-    }
-    else
-    {
-        sf::Sprite sprite;
-        sprite.setTexture(texture);
-        sprite.setScale(0.55, 0.55);
-        int CardWidth = sprite.getGlobalBounds().width;
-        int CardHeight = sprite.getGlobalBounds().height;
-        for (int i = 0; i < 8; i++)
-        {
-            sprite.setPosition(window.getSize().x - 120, (window.getSize().y - CardHeight * 9 / 2.) / 2. + i * CardHeight / 2.);
+            sprite.setPosition(window.getSize().x - 120, (window.getSize().y - CardHeight * (nbCartes +1) / 2.) / 2. + i * CardHeight / 2.);
             window.draw(sprite);
         }
         sprite.setScale(1, 1);
