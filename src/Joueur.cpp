@@ -124,7 +124,7 @@ std::pair<int,Couleur> Joueur::botPrise(Carte CarteAtout,  std::vector<Carte> ma
     {
         if (tour2)
         {
-            std::cout << "Le bot a décidé de prendre l'atout " << CouleurAtout2 << std::endl;
+            std::cout << "Le bot a décidé de prendre l'atout au deuxieme tour" << CouleurAtout2 << std::endl;
             return std::make_pair(1, CouleurAtout2);
         }
         else
@@ -136,13 +136,21 @@ std::pair<int,Couleur> Joueur::botPrise(Carte CarteAtout,  std::vector<Carte> ma
     }
     else
     {
-        std::cout<<std::endl;
-        std::cout<<"Le bot a décidé de ne pas prendre l'atout"<<std::endl;
-        return std::make_pair(0 , CouleurAtout2);
+        if(tour2)
+        {
+            std::cout<<std::endl;
+            std::cout<<"Le bot a décidé de ne pas prendre l'atout au deuxieme tour"<<std::endl;
+            return std::make_pair(0 , CouleurAtout2);
+        }
+        else{
+            std::cout<<std::endl;
+            std::cout<<"Le bot a décidé de ne pas prendre l'atout"<<std::endl;
+            return std::make_pair(0 , CouleurAtout2);
+        }
     }
 }
 
-int Joueur:: botAction(std::vector<Carte> CartesSurTable, Couleur atout, std::vector<Carte> mainJoueur, std::string &raison)
+int Joueur::botAction(std::vector<Carte> CartesSurTable, Couleur atout, std::vector<Carte> mainJoueur, std::string &raison)
 {
     std::vector<Carte> cartesValides;
     
@@ -153,5 +161,66 @@ int Joueur:: botAction(std::vector<Carte> CartesSurTable, Couleur atout, std::ve
             cartesValides.push_back(mainJoueur[i]);
         }
     }
-    
+
+    if(mainJoueur.size() == 8)
+    {
+        for(int i = 0; i < mainJoueur.size(); i++)
+        {
+            if(mainJoueur[i].getChiffreStr() == "valet" && mainJoueur[i].getCouleur() == atout)
+            {
+                std::cout<<std::endl;
+                std::cout<<"Le bot a joué le valet d'atout"<<std::endl;
+                return i+1;
+            }
+        }
+        
+        // Si le bot n'a pas le valet d'atout, jouer la carte non atout la plus faible
+        int indexCarteNonAtoutPlusFaible = -1;
+        for(int i = 0; i < mainJoueur.size(); i++)
+        {
+            if(mainJoueur[i].getCouleur() != atout)
+            {
+                if(indexCarteNonAtoutPlusFaible == -1 || mainJoueur[i].getValeurNonAtout() < mainJoueur[indexCarteNonAtoutPlusFaible].getValeurNonAtout())
+                {
+                    indexCarteNonAtoutPlusFaible = i;
+                }
+            }
+        }
+        
+        if(indexCarteNonAtoutPlusFaible != -1)
+        {
+            std::cout<<std::endl;
+            std::cout<<mainJoueur[indexCarteNonAtoutPlusFaible].getChiffreStr()<<" "<<mainJoueur[indexCarteNonAtoutPlusFaible].getCouleurStr()<<std::endl;
+            return indexCarteNonAtoutPlusFaible + 1;
+        }
+    }
+    else if(mainJoueur.size() == 7)
+    {
+        return 0;
+    }
+    else if(mainJoueur.size() == 6)
+    {
+        return 0;
+    }
+    else if(mainJoueur.size() == 5)
+    {
+        return 0;
+    }
+    else if(mainJoueur.size() == 4)
+    {
+      return 0;
+    }
+    else if(mainJoueur.size() == 3)
+    {
+        return 0;
+    }
+    else if(mainJoueur.size() == 2)
+    {
+        return 0;
+    }
+    else if(mainJoueur.size() == 1)
+    {
+       return 0;
+    }
+    return 0;
 }

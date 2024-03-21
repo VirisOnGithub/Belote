@@ -308,7 +308,7 @@ void Table::prise(PaquetDeCarte &p, Couleur &atout)
             Joueurs[i].getEstBot();
             priseCouleur = Joueurs[i].botPrise(carteRetournee, Mains[i].getMain(),tour2);
             prise = priseCouleur.first;
-            std::this_thread::sleep_for(std::chrono::seconds(10));
+            std::this_thread::sleep_for(std::chrono::seconds(5));
         }
         else
         {
@@ -341,7 +341,6 @@ void Table::prise(PaquetDeCarte &p, Couleur &atout)
             {
                 std::cin >> prise;
             }
-            std::cin >> prise;
             if (prise)
             {
                 std::cout << "Quelle couleur voulez-vous prendre ?" << std::endl;
