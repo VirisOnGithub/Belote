@@ -7,6 +7,5 @@ void Table::jeuGraphique(PaquetDeCarte &p, Couleur atout){
     p=PaquetDeCarte();
     atout = rien;
     p.melanger();
-    p.afficherPaquet();
     distribuer1(p);
 }

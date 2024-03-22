@@ -23,6 +23,7 @@
 class Table
 {
 private:
+    friend class Affichage;
     std::vector<Carte> CartesSurTable; /**< The cards currently on the table. */
     std::vector<Carte> CartesJouees;   /**< The cards played during the game. */
     int nbPlis;                        /**< The number of tricks won. */

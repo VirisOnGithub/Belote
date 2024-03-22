@@ -39,6 +39,9 @@ public:
     void afficherMainRetourneeGraphiqueDroite1(int nbCartes);
     void afficherMainRetourneeGraphiqueGauche1(int nbCartes);
     void animDistribution(bool &prise, bool &jeu, int &indexJoueur, bool &premierTour);
+
+    void jeuDePlis(Couleur atout, int indexJoueur);
+    void showAtoutPreneur(Couleur atout, int indexJoueur);
 };
 
 #endif // AFFICHAGE_H

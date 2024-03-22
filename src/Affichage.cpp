@@ -9,6 +9,7 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <cassert>
 #include <cstdint>
+#include <cstdlib>
 #include <iostream>
 #include "Carte.h"
 #include "MainJoueur.h"
@@ -57,6 +58,17 @@ void Affichage::init()
     titre.setStyle(sf::Text::Bold);
     titre.setPosition(static_cast<float>(window.getSize().x) / 2 - titre.getGlobalBounds().width / 2, static_cast<float>(window.getSize().y) / 3);
     window.display();
+
+    sf::Image icon;
+    if (!icon.loadFromFile("../assets/icon.png"))
+    {
+        std::cerr << "Error loading icon" << std::endl;
+    }
+    else
+    {
+        std::cout << "Icon loaded" << std::endl;
+        window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////:
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////:
@@ -129,7 +141,7 @@ void Affichage::jeuLoop(bool &prise, bool &jeu, int &indexJoueur, bool &premierT
     }
     else
     {
-        // jeu
+        jeuDePlis(atout, indexJoueur);
     }
 }
 
@@ -166,6 +178,7 @@ void Affichage::afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJo
             std::cout << "Je prends" << std::endl;
             prise = false;
             jeu = true;
+            atout = carteRetournee.getCouleur();
         }
         ImGui::SameLine();
         if (ImGui::Button("Je passe", ImVec2(100, 30)))
@@ -179,7 +192,7 @@ void Affichage::afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJo
             }
         }
     }
-    else if (premierTour == false && indexJoueur != 4)
+    else
     {
         ImGui::SetWindowPos(pos, ImGuiCond_Always);
         std::vector<Couleur> couleurs = {coeur, carreau, pique, trefle};
@@ -193,6 +206,7 @@ void Affichage::afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJo
                 if (ImGui::ImageButton((void *)(uintptr_t)texturesCouleurs[couleur].getNativeHandle(), ImVec2(50, 50)))
                 {
                     prise = false;
+                    atout = couleur;
                     jeu = true;
                 }
                 ImGui::PopStyleColor(2);
@@ -202,10 +216,10 @@ void Affichage::afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJo
                 }
             }
         }
-        ImVec2 windowSize = ImGui::GetWindowSize(); // Obtenir la taille de la fenêtre
-        ImVec2 buttonSize(100, 30);                 // La taille de votre bouton
+        //bouton de passe
+        ImVec2 windowSize = ImGui::GetWindowSize();
+        ImVec2 buttonSize(100, 30);                 
 
-        // Calculer la position du bouton pour le centrer
         ImVec2 buttonPos = ImVec2((windowSize.x - buttonSize.x) / 2.0f, (windowSize.y - buttonSize.y) / 2.0f);
 
         ImGui::SetCursorPos(buttonPos);
@@ -216,8 +230,7 @@ void Affichage::afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJo
             indexJoueur++;
             if (indexJoueur == 4)
             {
-                indexJoueur = 0;
-                premierTour = false;
+                exit(1); // A FAIRE
             }
         }
     }
@@ -346,4 +359,45 @@ sf::Font Affichage::loadFont()
         std::cout << "Font loaded" << std::endl;
     }
     return font;
+}
+
+void Affichage::jeuDePlis(Couleur atout, int indexJoueur)
+{
+    afficherMainRetourneeGraphiqueHaut1(table.getMains()[(indexJoueur + 2 )%4].getMain().size());
+    afficherMainRetourneeGraphiqueDroite1(table.getMains()[(indexJoueur + 3 )%4].getMain().size());
+    afficherMainRetourneeGraphiqueGauche1(table.getMains()[(indexJoueur + 1 )%4].getMain().size());
+    afficherMainGraphique(table.getMains()[indexJoueur], 5);
+    showAtoutPreneur(atout, indexJoueur);
+}
+
+const char * AtouttoStr(Couleur c)
+{
+    switch (c)
+    {
+    case coeur:
+        return "coeur";
+    case carreau:
+        return "carreau";
+    case pique:
+        return "pique";
+    case trefle:
+        return "trefle";
+    case rien:
+        return "rien";
+    default:
+        return "erreur";
+    }
+}
+
+void Affichage::showAtoutPreneur(Couleur atout, int indexJoueur)
+{
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+    ImGui::Begin("Atout", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+    ImVec2 pos = ImVec2(window.getSize().x / 2. - 200, window.getSize().y / 2. - 100);
+    ImGui::SetWindowPos(pos, ImGuiCond_Once);
+    ImGui::SetWindowSize(ImVec2(400, 200), ImGuiCond_Always);
+    ImGui::Text("Le preneur est le joueur %d", indexJoueur+1);
+    ImGui::Text("L'atout est %s", AtouttoStr(atout));
+    ImGui::End();
+    ImGui::PopStyleColor(1);
 }
