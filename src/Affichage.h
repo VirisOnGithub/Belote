@@ -12,6 +12,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <unordered_map>
 #include <memory>
+#include <vector>
 
 class Affichage
 {
@@ -26,6 +27,8 @@ private:
     Carte carteRetournee;
     sf::Sprite sprite;
     std::map<Couleur, sf::Texture> texturesCouleurs;
+    std::vector<sf::Sprite> cartesG;
+    bool action = false;
 
 public:
     void init();
@@ -40,7 +43,7 @@ public:
     void afficherMainRetourneeGraphiqueGauche1(int nbCartes);
     void animDistribution(bool &prise, bool &jeu, int &indexJoueur, bool &premierTour);
 
-    void jeuDePlis(Couleur atout, int indexJoueur);
+    void jeuDePlis(Couleur atout, int indexJoueur, std::vector<sf::Sprite> &cartesG);
     void showAtoutPreneur(Couleur atout, int indexJoueur);
 };
 

@@ -141,7 +141,7 @@ void Affichage::jeuLoop(bool &prise, bool &jeu, int &indexJoueur, bool &premierT
     }
     else
     {
-        jeuDePlis(atout, indexJoueur);
+        jeuDePlis(atout, indexJoueur, cartesG);
     }
 }
 
@@ -314,7 +314,7 @@ void Affichage::afficherMainRetourneeGraphiqueGauche1(int nbCartes)
 void Affichage::afficherMainGraphique(MainJoueur main, int nbCartesAffichees)
 {
     assert(nbCartesAffichees <= main.getCartesG().size());
-    std::vector<sf::Sprite> cartesG;
+    cartesG.clear();
     auto cartes = main.getCartesG();
 
     for (int i = 0; i < nbCartesAffichees; i++)
@@ -361,13 +361,28 @@ sf::Font Affichage::loadFont()
     return font;
 }
 
-void Affichage::jeuDePlis(Couleur atout, int indexJoueur)
+void Affichage::jeuDePlis(Couleur atout, int indexJoueur, std::vector<sf::Sprite> &cartesG)
 {
     afficherMainRetourneeGraphiqueHaut1(table.getMains()[(indexJoueur + 2 )%4].getMain().size());
     afficherMainRetourneeGraphiqueDroite1(table.getMains()[(indexJoueur + 3 )%4].getMain().size());
     afficherMainRetourneeGraphiqueGauche1(table.getMains()[(indexJoueur + 1 )%4].getMain().size());
     afficherMainGraphique(table.getMains()[indexJoueur], 5);
     showAtoutPreneur(atout, indexJoueur);
+
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !action)
+    {
+        action = true;
+        sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+        for (int i = cartesG.size() - 1; i >= 0; i--)
+        {
+            if (cartesG[i].getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
+            {
+                std::cout << "Carte " << i << " a été cliquée!" << std::endl;
+                break;
+            }
+        }
+        action = false;
+    }
 }
 
 const char * AtouttoStr(Couleur c)
