@@ -2,11 +2,13 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/Texture.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <cassert>
+#include <cstdint>
 #include <iostream>
 #include "Carte.h"
 #include "MainJoueur.h"
@@ -16,6 +18,9 @@
 #include "imgui-sfml/imgui-SFML.h"
 #include <memory>
 #include <map>
+#include <string>
+#include <vector>
+#include "imgui-sfml/imgui-SFML.h"
 
 void Affichage::init()
 {
@@ -58,10 +63,10 @@ void Affichage::init()
     table.jeuGraphique(p, atout);
     carteRetournee = Carte(sept, rien);
 
-    texturesCouleurs[coeur].loadFromFile("../assets/cartes/coeur.png");
-    texturesCouleurs[carreau].loadFromFile("../assets/cartes/carreau.png");
-    texturesCouleurs[pique].loadFromFile("../assets/cartes/pique.png");
-    texturesCouleurs[trefle].loadFromFile("../assets/cartes/trefle.png");
+    texturesCouleurs[coeur].loadFromFile("../assets/couleurs/coeur.png");
+    texturesCouleurs[carreau].loadFromFile("../assets/couleurs/carreau.png");
+    texturesCouleurs[pique].loadFromFile("../assets/couleurs/pique.png");
+    texturesCouleurs[trefle].loadFromFile("../assets/couleurs/trefle.png");
 }
 
 void Affichage::jeu()
@@ -95,19 +100,25 @@ void Affichage::jeu()
 void Affichage::menuLoop(bool &menu, bool &prise)
 {
     window.draw(titre);
+    ImGui::SetNextWindowSize(ImVec2(600, 400), ImGuiCond_Once);
     ImGui::SetNextWindowPos(ImVec2(window.getSize().x / 2., window.getSize().y * 2 / 3.), ImGuiCond_Once, ImVec2(0.5f, 0.5f));
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
     ImGui::Begin("Menu", &menu, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
     const ImVec2 buttonSize(300, 60);
 
     ImGui::SetCursorPosX((ImGui::GetWindowSize().x - buttonSize.x) / 2.0f);
     ImGui::SetCursorPosY((ImGui::GetWindowSize().y - buttonSize.y) / 2.0f);
 
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.0f, 0.0f, 0.0f, 0.3f));
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.1f));
     if (ImGui::Button("Jouer", buttonSize))
     {
         menu = false;
         prise = true;
     }
+    ImGui::PopStyleColor(2);
     ImGui::End();
+    ImGui::PopStyleColor();
 }
 
 void Affichage::jeuLoop(bool &prise, bool &jeu, int &indexJoueur, bool &premierTour)
@@ -143,8 +154,10 @@ void Affichage::afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJo
     }
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
     ImGui::Begin("Prise", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
-    ImGui::SetWindowPos(ImVec2(window.getSize().x / 2. - 110, window.getSize().y / 2. + 200), ImGuiCond_Once);
-    ImGui::SetWindowSize(ImVec2(220, 60), ImGuiCond_Once);
+    int offset = premierTour ? 110 : 200;
+    ImVec2 pos = ImVec2(window.getSize().x / 2. - offset, window.getSize().y / 2. + 200);
+    ImGui::SetWindowPos(pos, ImGuiCond_Once);
+    ImGui::SetWindowSize(ImVec2(premierTour ? 220 : 400, premierTour ? 60 : 300), ImGuiCond_Once);
     if (premierTour) {
         if(ImGui::Button("Je prends", ImVec2(100, 30))){
         std::cout << "Je prends" << std::endl;
@@ -161,7 +174,20 @@ void Affichage::afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJo
             }
         }
     } else {
-
+        std::vector<Couleur> couleurs = {coeur, carreau, pique, trefle};
+        Couleur atout = carteRetournee.getCouleur();
+        for(const auto &couleur : couleurs){
+            if(couleur != atout){
+                ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+                ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.0f, 0.0f, 0.0f, 0.2f));
+                if(ImGui::ImageButton((void*)(uintptr_t)texturesCouleurs[couleur].getNativeHandle(), ImVec2(50, 50))){
+                    prise = false;
+                    jeu = true;
+                }
+                ImGui::PopStyleColor(2);
+                ImGui::SameLine();
+            }
+        }
     }
     ImGui::End();
     ImGui::PopStyleColor();
