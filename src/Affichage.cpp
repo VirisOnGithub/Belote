@@ -118,7 +118,7 @@ void Affichage::menuLoop(bool &menu, bool &prise)
     }
     ImGui::PopStyleColor(2);
     ImGui::End();
-    ImGui::PopStyleColor();
+    ImGui::PopStyleColor(1);
 }
 
 void Affichage::jeuLoop(bool &prise, bool &jeu, int &indexJoueur, bool &premierTour)
@@ -133,8 +133,9 @@ void Affichage::jeuLoop(bool &prise, bool &jeu, int &indexJoueur, bool &premierT
     }
 }
 
-void Affichage::animDistribution(bool &prise, bool &jeu, int &indexJoueur, bool &premierTour){
-    
+void Affichage::animDistribution(bool &prise, bool &jeu, int &indexJoueur, bool &premierTour)
+{
+
     afficherMainRetourneeGraphiqueHaut1(5);
     afficherMainRetourneeGraphiqueDroite1(5);
     afficherMainRetourneeGraphiqueGauche1(5);
@@ -157,40 +158,72 @@ void Affichage::afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJo
     int offset = premierTour ? 110 : 200;
     ImVec2 pos = ImVec2(window.getSize().x / 2. - offset, window.getSize().y / 2. + 200);
     ImGui::SetWindowPos(pos, ImGuiCond_Once);
-    ImGui::SetWindowSize(ImVec2(premierTour ? 220 : 400, premierTour ? 60 : 300), ImGuiCond_Once);
-    if (premierTour) {
-        if(ImGui::Button("Je prends", ImVec2(100, 30))){
-        std::cout << "Je prends" << std::endl;
-        prise = false;
-        jeu = true;   
+    ImGui::SetWindowSize(ImVec2(premierTour ? 220 : 400, premierTour ? 60 : 150), ImGuiCond_Always);
+    if (premierTour)
+    {
+        if (ImGui::Button("Je prends", ImVec2(100, 30)))
+        {
+            std::cout << "Je prends" << std::endl;
+            prise = false;
+            jeu = true;
         }
         ImGui::SameLine();
-        if(ImGui::Button("Je passe", ImVec2(100, 30))){
+        if (ImGui::Button("Je passe", ImVec2(100, 30)))
+        {
             std::cout << "Je passe" << std::endl;
-            indexJoueur ++;
-            if (indexJoueur == 4){
+            indexJoueur++;
+            if (indexJoueur == 4)
+            {
                 indexJoueur = 0;
                 premierTour = false;
             }
         }
-    } else {
+    }
+    else if (premierTour == false && indexJoueur != 4)
+    {
+        ImGui::SetWindowPos(pos, ImGuiCond_Always);
         std::vector<Couleur> couleurs = {coeur, carreau, pique, trefle};
         Couleur atout = carteRetournee.getCouleur();
-        for(const auto &couleur : couleurs){
-            if(couleur != atout){
+        for (const auto &couleur : couleurs)
+        {
+            if (couleur != atout)
+            {
                 ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
                 ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.0f, 0.0f, 0.0f, 0.2f));
-                if(ImGui::ImageButton((void*)(uintptr_t)texturesCouleurs[couleur].getNativeHandle(), ImVec2(50, 50))){
+                if (ImGui::ImageButton((void *)(uintptr_t)texturesCouleurs[couleur].getNativeHandle(), ImVec2(50, 50)))
+                {
                     prise = false;
                     jeu = true;
                 }
                 ImGui::PopStyleColor(2);
-                ImGui::SameLine();
+                if (couleur != couleurs.back() || couleur == atout)
+                {
+                    ImGui::SameLine();
+                }
+            }
+        }
+        ImVec2 windowSize = ImGui::GetWindowSize(); // Obtenir la taille de la fenêtre
+        ImVec2 buttonSize(100, 30);                 // La taille de votre bouton
+
+        // Calculer la position du bouton pour le centrer
+        ImVec2 buttonPos = ImVec2((windowSize.x - buttonSize.x) / 2.0f, (windowSize.y - buttonSize.y) / 2.0f);
+
+        ImGui::SetCursorPos(buttonPos);
+        ImGui::SameLine();
+        if (ImGui::Button("Je passe", buttonPos))
+        {
+            std::cout << "Je passe" << std::endl;
+            indexJoueur++;
+            if (indexJoueur == 4)
+            {
+                indexJoueur = 0;
+                premierTour = false;
             }
         }
     }
+
     ImGui::End();
-    ImGui::PopStyleColor();
+    ImGui::PopStyleColor(1); // Specify the argument type for the function call
     sprite.setTexture(*textures[carteRetournee.getCarteG()]);
     sprite.setPosition((window.getSize().x - sprite.getGlobalBounds().width) / 2, (window.getSize().y - sprite.getGlobalBounds().height) / 2);
     window.draw(sprite);
@@ -216,7 +249,6 @@ void Affichage::afficherMainRetourneeGraphiqueHaut1(int nbCartes)
             sprite.setPosition((window.getSize().x - CardWidth * (nbCartes + 1) / 2.) / 2. + i * CardWidth / 2., -120);
             window.draw(sprite);
         }
-        sprite.setScale(1, 1);
     }
 }
 
@@ -259,7 +291,7 @@ void Affichage::afficherMainRetourneeGraphiqueGauche1(int nbCartes)
         int CardHeight = sprite.getGlobalBounds().height;
         for (int i = 0; i < nbCartes; i++)
         {
-            sprite.setPosition(window.getSize().x - 120, (window.getSize().y - CardHeight * (nbCartes +1) / 2.) / 2. + i * CardHeight / 2.);
+            sprite.setPosition(window.getSize().x - 120, (window.getSize().y - CardHeight * (nbCartes + 1) / 2.) / 2. + i * CardHeight / 2.);
             window.draw(sprite);
         }
         sprite.setScale(1, 1);
