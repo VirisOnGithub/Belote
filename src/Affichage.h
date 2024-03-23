@@ -36,15 +36,17 @@ public:
     void menuLoop(bool &menu, bool &prise);
     void jeuLoop(bool &prise, bool &jeu, int &indexJoueur, bool &premierTour);
     sf::Font loadFont();
-    void afficherMainGraphique(MainJoueur main, int nbCartesAffichees);
+    void afficherMainGraphique(MainJoueur main);
     void afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJoueur, bool &premierTour);
     void afficherMainRetourneeGraphiqueHaut1(int nbCartes);
     void afficherMainRetourneeGraphiqueDroite1(int nbCartes);
     void afficherMainRetourneeGraphiqueGauche1(int nbCartes);
     void animDistribution(bool &prise, bool &jeu, int &indexJoueur, bool &premierTour);
 
-    void jeuDePlis(Couleur atout, int indexJoueur, std::vector<sf::Sprite> &cartesG);
+    void jeuDePlis(Couleur atout, int &indexJoueur, std::vector<sf::Sprite> &cartesG, std::vector<Carte> &cartes);
     void showAtoutPreneur(Couleur atout, int indexJoueur);
+    void afficherCartesSurTable();
+    void jouerCarte(int indexJoueur, int indexCarte);
 };
 
 #endif // AFFICHAGE_H

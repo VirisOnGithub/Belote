@@ -7,7 +7,6 @@
 #include <SFML/Window.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
-#include <cassert>
 #include <cstdint>
 #include <cstdlib>
 #include <iostream>
@@ -141,7 +140,7 @@ void Affichage::jeuLoop(bool &prise, bool &jeu, int &indexJoueur, bool &premierT
     }
     else
     {
-        jeuDePlis(atout, indexJoueur, cartesG);
+        jeuDePlis(atout, indexJoueur, cartesG, table.getMains()[indexJoueur].getMain());
     }
 }
 
@@ -151,7 +150,7 @@ void Affichage::animDistribution(bool &prise, bool &jeu, int &indexJoueur, bool 
     afficherMainRetourneeGraphiqueHaut1(5);
     afficherMainRetourneeGraphiqueDroite1(5);
     afficherMainRetourneeGraphiqueGauche1(5);
-    afficherMainGraphique(table.getMains()[indexJoueur], 5);
+    afficherMainGraphique(table.getMains()[indexJoueur]);
 
     afficherCartePriseGraphique(prise, jeu, indexJoueur, premierTour);
 }
@@ -311,9 +310,9 @@ void Affichage::afficherMainRetourneeGraphiqueGauche1(int nbCartes)
     }
 }
 
-void Affichage::afficherMainGraphique(MainJoueur main, int nbCartesAffichees)
+void Affichage::afficherMainGraphique(MainJoueur main)
 {
-    assert(nbCartesAffichees <= main.getCartesG().size());
+    int nbCartesAffichees = main.getCartesG().size();
     cartesG.clear();
     auto cartes = main.getCartesG();
 
@@ -361,24 +360,49 @@ sf::Font Affichage::loadFont()
     return font;
 }
 
-void Affichage::jeuDePlis(Couleur atout, int indexJoueur, std::vector<sf::Sprite> &cartesG)
+void Affichage::afficherCartesSurTable()
+{
+    std::vector<Carte> cartes = table.getCartesSurTable();
+    for (int i = 0; i < cartes.size(); i++)
+    {
+        sf::Sprite sprite;
+        sprite.setTexture(*textures[cartes[i].getCarteG()]);
+        sprite.setPosition((window.getSize().x - sprite.getGlobalBounds().width) / 2 + i*sprite.getGlobalBounds().width/2., (window.getSize().y - sprite.getGlobalBounds().height) / 2);
+        window.draw(sprite);
+    }
+}
+
+void Affichage::jouerCarte(int indexJoueur, int indexCarte){
+    table.CartesSurTable.push_back(table.Mains[indexJoueur].getMain()[indexCarte]);
+    table.Mains[indexJoueur].getMain().erase(table.Mains[indexJoueur].getMain().begin() + indexCarte);
+}
+
+void Affichage::jeuDePlis(Couleur atout, int &indexJoueur, std::vector<sf::Sprite> &cartesG, std::vector<Carte> &cartes)
 {
     afficherMainRetourneeGraphiqueHaut1(table.getMains()[(indexJoueur + 2 )%4].getMain().size());
     afficherMainRetourneeGraphiqueDroite1(table.getMains()[(indexJoueur + 3 )%4].getMain().size());
     afficherMainRetourneeGraphiqueGauche1(table.getMains()[(indexJoueur + 1 )%4].getMain().size());
-    afficherMainGraphique(table.getMains()[indexJoueur], 5);
+    afficherMainGraphique(table.getMains()[indexJoueur]);
+    afficherCartesSurTable();
     showAtoutPreneur(atout, indexJoueur);
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !action)
     {
+        std::string raison;
         action = true;
         sf::Vector2i mousePos = sf::Mouse::getPosition(window);
         for (int i = cartesG.size() - 1; i >= 0; i--)
         {
             if (cartesG[i].getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
             {
-                std::cout << "Carte " << i << " a été cliquée!" << std::endl;
-                break;
+                if(cartes[i].estValide(table.CartesSurTable, atout, table.Mains[indexJoueur].getMain(), raison)){
+                    jouerCarte(indexJoueur, i);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+                    indexJoueur++;
+                }
+                else{
+                    std::cout << raison << std::endl;
+                }
             }
         }
         action = false;
@@ -408,9 +432,9 @@ void Affichage::showAtoutPreneur(Couleur atout, int indexJoueur)
 {
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
     ImGui::Begin("Atout", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
-    ImVec2 pos = ImVec2(window.getSize().x / 2. - 200, window.getSize().y / 2. - 100);
+    ImVec2 pos = ImVec2(50, window.getSize().y - 100);
     ImGui::SetWindowPos(pos, ImGuiCond_Once);
-    ImGui::SetWindowSize(ImVec2(400, 200), ImGuiCond_Always);
+    ImGui::SetWindowSize(ImVec2(250, 50), ImGuiCond_Always);
     ImGui::Text("Le preneur est le joueur %d", indexJoueur+1);
     ImGui::Text("L'atout est %s", AtouttoStr(atout));
     ImGui::End();
