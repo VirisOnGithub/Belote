@@ -47,3 +47,5 @@ build/*
 
 src/main.cpp
 doc/html/*
+
+cmake-build-debug/*
