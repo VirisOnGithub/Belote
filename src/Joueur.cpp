@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Joueur.h"
 
+
 Joueur::Joueur()
 {
     nom = "Joueur";
@@ -167,6 +168,23 @@ int Joueur::botCarteFaible( std::vector<Carte> mainJoueur, Couleur atout, std::v
         return indexCarteNonAtoutPlusFaible;
 }
 
+int Joueur::botCarteForte( std::vector<Carte> mainJoueur, Couleur atout, std::vector<Carte> CartesSurTable, std::string &raison)
+{
+    int indexCarteNonAtoutPlusForte=0;
+        for(int i = 0; i < mainJoueur.size(); i++)
+        {
+            if(mainJoueur[i].getCouleur() != atout && mainJoueur[i].estValide(CartesSurTable, atout, mainJoueur, raison))
+            {
+                if(mainJoueur[indexCarteNonAtoutPlusForte].getValeurNonAtout() < mainJoueur[i].getValeurNonAtout())
+                {
+                    indexCarteNonAtoutPlusForte = i;
+                }
+            }
+        }
+        return indexCarteNonAtoutPlusForte;
+
+}
+
 int Joueur::botAction(std::vector<Carte> CartesSurTable, Couleur atout, std::vector<Carte> mainJoueur, std::string &raison)
 {
     std::vector<Carte> cartesValides;
@@ -189,9 +207,15 @@ int Joueur::botAction(std::vector<Carte> CartesSurTable, Couleur atout, std::vec
                 std::cout<<"Le bot a joué le valet d'atout"<<std::endl;
                 return i+1;
             }
+            else if(mainJoueur[i].getChiffreStr() == "as" && mainJoueur[i].getCouleur() != atout && mainJoueur[i].estValide(CartesSurTable, atout, mainJoueur, raison))
+            {
+                std::cout<<std::endl;
+                std::cout<<"Le bot a joué un as de "<<mainJoueur[i].getCouleur()<<std::endl;
+                return i+1;
+            }
         }
         
-        // Si le bot n'a pas le valet d'atout, jouer la carte non atout la plus faible
+        // Si le bot n'a ni valet d'atout, ni d'as alors jouer la carte non atout la plus faible
         return botCarteFaible(mainJoueur, atout, CartesSurTable, raison);
     }
     else if(mainJoueur.size() == 7)
