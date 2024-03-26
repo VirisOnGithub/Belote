@@ -21,7 +21,8 @@
 #include <string>
 #include <vector>
 #include "imgui-sfml/imgui-SFML.h"
-
+#include <chrono>
+#include <thread>
 
 const char *AtouttoStr(Couleur c)
 {
@@ -88,7 +89,7 @@ void Affichage::init()
         std::cout << "Icon loaded" << std::endl;
         window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
     }
-    p=PaquetDeCarte();
+    p = PaquetDeCarte();
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////:
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////:
     table.jeuGraphique(p, atout);
@@ -345,6 +346,7 @@ void Affichage::afficherMainGraphique(MainJoueur main)
     {
         sf::Sprite sprite;
         sprite.setTexture(*textures[cartes[i]]);
+        sprite.setScale(0.9, 0.9);
 
         // Vérifiez que les textures sont chargées correctement
         if (textures[cartes[i]]->getSize().x == 0)
@@ -357,11 +359,13 @@ void Affichage::afficherMainGraphique(MainJoueur main)
 
     if (!cartesG.empty())
     {
-        int CardWidth = textures[cartes[0]]->getSize().x;
-        int CardHeight = textures[cartes[0]]->getSize().y;
+        int CardWidth = textures[cartes[0]]->getSize().x * cartesG[0].getScale().x;  // Prendre en compte l'échelle de la carte
+        int CardHeight = textures[cartes[0]]->getSize().y * cartesG[0].getScale().y; // Prendre en compte l'échelle de la carte
+        float totalWidth = cartesG.size() * CardWidth;                               // La largeur totale des cartes
+
         for (int i = 0; i < cartesG.size(); i++)
         {
-            cartesG[i].setPosition((window.getSize().x - CardWidth * (cartesG.size() + 1) / 2.) / 2. + i * CardWidth / 2., window.getSize().y - CardHeight / 2.);
+            cartesG[i].setPosition((window.getSize().x - totalWidth) / 2.0f + i * (CardWidth), window.getSize().y - CardHeight / 2.);
             window.draw(cartesG[i]);
         }
     }
@@ -415,7 +419,6 @@ void Affichage::jeuDePlis(int &indexJoueur, std::vector<sf::Sprite> &cartesG)
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !action)
     {
-        std::string raison;
         action = true;
         sf::Vector2i mousePos = sf::Mouse::getPosition(window);
         for (int i = cartesG.size() - 1; i >= 0; i--)
@@ -428,6 +431,7 @@ void Affichage::jeuDePlis(int &indexJoueur, std::vector<sf::Sprite> &cartesG)
                     jouerCarte(indexJoueur, i);
                     indexJoueur++;
                     action = false;
+                    raison = "";
                 }
                 else
                 {
@@ -437,17 +441,40 @@ void Affichage::jeuDePlis(int &indexJoueur, std::vector<sf::Sprite> &cartesG)
         }
         action = false;
     }
+    showError(raison);
+    if (indexJoueur == 4)
+    {
+        indexJoueur = table.getGagnant(table.CartesJouees, atout);
+        table.changementOrdreJoueur(indexJoueur);
+        for (int i = 0; i < 4; i++)
+        {
+            table.CartesJouees.push_back(table.getCartesSurTable()[i]);
+        }
+        table.CartesSurTable.clear();
+    }
 }
 
 void Affichage::showAtoutPreneur(int indexJoueur)
 {
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
     ImGui::Begin("Atout", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
-    ImVec2 pos = ImVec2(50, window.getSize().y - 50);
+    ImVec2 pos = ImVec2(50, 10);
     ImGui::SetWindowPos(pos, ImGuiCond_Once);
     ImGui::SetWindowSize(ImVec2(250, 50), ImGuiCond_Always);
     ImGui::Text("Le preneur est le joueur %d", indexJoueur + 1);
     ImGui::Text("L'atout est %s", AtouttoStr(atout));
+    ImGui::End();
+    ImGui::PopStyleColor(1);
+}
+
+void Affichage::showError(std::string message)
+{
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+    ImGui::Begin("Erreur", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+    ImVec2 pos = ImVec2(window.getSize().x - 500, 0);
+    ImGui::SetWindowPos(pos, ImGuiCond_Once);
+    ImGui::SetWindowSize(ImVec2(500, 50), ImGuiCond_Always);
+    ImGui::Text("%s", message.c_str());
     ImGui::End();
     ImGui::PopStyleColor(1);
 }

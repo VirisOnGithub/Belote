@@ -29,6 +29,7 @@ private:
     std::map<Couleur, sf::Texture> texturesCouleurs;
     std::vector<sf::Sprite> cartesG;
     bool action = false;
+    std::string raison;
 
 public:
     void init();
@@ -47,6 +48,7 @@ public:
     void showAtoutPreneur(int indexJoueur);
     void afficherCartesSurTable();
     void jouerCarte(int indexJoueur, int indexCarte);
+    void showError(std::string message);
 };
 
 #endif // AFFICHAGE_H
