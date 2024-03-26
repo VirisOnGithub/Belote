@@ -210,18 +210,45 @@ bool Carte::estValide(std::vector<Carte> CartesSurTable, Couleur atout, std::vec
                     break;
                 }
             }
+            //on teste si le joueur maitre est dans la meme equipe que le joueur qui doit mettre de l'atout
+            bool memeEquipe=false;
+            int indexMaitre = false;
+            Carte maitre;
+
+            for(int i = 0; i < CartesSurTable.size();i++)
+            {
+                if(CartesSurTable[0].getValeurNonAtout() < CartesSurTable[i].getValeurNonAtout())
+                {
+                    maitre = CartesSurTable[i];
+                    indexMaitre = i;
+                }
+                else
+                {
+                    maitre = CartesSurTable[0];
+                    indexMaitre = 0;
+                }
+                if(i >= 1 && indexMaitre == i-1)
+                {
+                    memeEquipe = true;
+                    break;
+                }
+            
+            }
+
             if (hasTrump && couleur != atout && couleurPremiereCarte == atout)
             {
                 raison = "Vous devez jouer une carte atout";
                 return false;
             }
-            else if (hasTrump && couleur != atout && couleurPremiereCarte != atout)
+            else if (hasTrump && couleur != atout && couleurPremiereCarte != atout && !memeEquipe)
             {
                 raison = "Vous devez jouer une carte atout";
                 return false;
             }
+
             // on teste si le joueur a une carte d'atout plus forte que la carte d'atout la plus forte sur la table
             bool hasStrongerTrump = false;
+
             for (int i = 0; i < mainJoueur.size(); i++)
             {
                 for (int j = 0; j < CartesSurTable.size(); j++)
@@ -233,7 +260,7 @@ bool Carte::estValide(std::vector<Carte> CartesSurTable, Couleur atout, std::vec
                     }
                 }
             }
-            if (hasStrongerTrump && couleur == atout && CartesSurTable[CartesSurTable.size() - 1].getCouleur() == atout && CartesSurTable[CartesSurTable.size() - 1].getValeurAtout() > getValeurAtout())
+            if (hasStrongerTrump && couleur == atout && CartesSurTable[CartesSurTable.size() - 1].getCouleur() == atout && CartesSurTable[CartesSurTable.size() - 1].getValeurAtout() > getValeurAtout() && !memeEquipe)
             {
                 raison = "Vous devez jouer une carte atout plus forte";
                 return false;

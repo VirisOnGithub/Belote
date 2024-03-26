@@ -110,9 +110,9 @@ void Table::jeu()
 {
     PaquetDeCarte paquet;
     Couleur atout = rien;
-    Joueur premierJoueur(true);
-    Joueurs[0]=premierJoueur;
-    std::cout << "Le premier joueur est un bot : " << Joueurs[0].getEstBot() << std::endl;
+    //Joueur premierJoueur(true);
+    //Joueurs[0]=premierJoueur;
+    //std::cout << "Le premier joueur est un bot : " << Joueurs[0].getEstBot() << std::endl;
 
     paquet.melanger();
     distribuer1(paquet);
