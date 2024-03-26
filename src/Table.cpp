@@ -129,6 +129,7 @@ void Table::jeu()
             for (int j = 0; j < 4; j++)
             {
                 tourDeJeu(Joueurs[j], atout);
+                std::this_thread::sleep_for(std::chrono::seconds(5));
                 system("clear");
                 attente();
             }
@@ -335,6 +336,7 @@ void Table::prise(PaquetDeCarte &p, Couleur &atout)
             if(Joueurs[i].getEstBot())
             {
                 priseCouleur = Joueurs[i].botPrise(carteRetournee, Mains[i].getMain(),tour2);
+                std::this_thread::sleep_for(std::chrono::seconds(5));
                 prise = priseCouleur.first;
             }
             else
@@ -352,6 +354,7 @@ void Table::prise(PaquetDeCarte &p, Couleur &atout)
                 if(Joueurs[i].getEstBot())
                 {
                     couleur = priseCouleur.second;
+                    std::this_thread::sleep_for(std::chrono::seconds(5));
                 }
                 else
                 {

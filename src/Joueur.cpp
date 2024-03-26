@@ -187,6 +187,7 @@ int Joueur::botCarteForte( std::vector<Carte> mainJoueur, Couleur atout, std::ve
 
 int Joueur::botAction(std::vector<Carte> CartesSurTable, Couleur atout, std::vector<Carte> mainJoueur, std::string &raison)
 {
+    Carte carteJouee;
     std::vector<Carte> cartesValides;
     
     for(int i = 0; i < mainJoueur.size(); i++)
@@ -210,17 +211,37 @@ int Joueur::botAction(std::vector<Carte> CartesSurTable, Couleur atout, std::vec
             else if(mainJoueur[i].getChiffreStr() == "as" && mainJoueur[i].getCouleur() != atout && mainJoueur[i].estValide(CartesSurTable, atout, mainJoueur, raison))
             {
                 std::cout<<std::endl;
-                std::cout<<"Le bot a joué un as de "<<mainJoueur[i].getCouleur()<<std::endl;
+                std::cout<<"Le bot a joué un as de "<<mainJoueur[i].getCouleurStr()<<std::endl;
                 return i+1;
             }
+            carteJouee=mainJoueur[i];
         }
         
         // Si le bot n'a ni valet d'atout, ni d'as alors jouer la carte non atout la plus faible
-        return botCarteFaible(mainJoueur, atout, CartesSurTable, raison);
+        int index = botCarteFaible(mainJoueur, atout, CartesSurTable, raison);
+        carteJouee=mainJoueur[index];
+        return index;
     }
     else if(mainJoueur.size() == 7)
     {
-        return 0;
+        for(int i = 0; i < mainJoueur.size(); i++)
+        {
+            if(carteJouee.getChiffreStr() == "valet" && carteJouee.getCouleur() == atout && mainJoueur[i].getChiffreStr() == "neuf" && mainJoueur[i].estValide(CartesSurTable, atout, mainJoueur, raison))
+            {
+                std::cout<<std::endl;
+                std::cout<<"Le bot a joué le neuf d'atout"<<std::endl;
+                return i+1;
+            }
+            else if(carteJouee.getChiffreStr() == "as" && mainJoueur[i].getCouleur()!= atout && mainJoueur[i].estValide(CartesSurTable, atout, mainJoueur, raison) && mainJoueur[i].getChiffreStr() == "as")
+            {
+                std::cout<<std::endl;
+                std::cout<<"Le bot a joué un as de "<<carteJouee.getCouleurStr()<<std::endl;
+                return i+1;
+            }
+        }
+        int index = botCarteFaible(mainJoueur, atout, CartesSurTable, raison);
+        carteJouee=mainJoueur[index];
+        return index;
     }
     else if(mainJoueur.size() == 6)
     {
