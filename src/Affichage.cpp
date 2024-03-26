@@ -68,7 +68,7 @@ void Affichage::init()
         std::cout << "Icon loaded" << std::endl;
         window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
     }
-
+    p=PaquetDeCarte();
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////:
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////:
     table.jeuGraphique(p, atout);
@@ -179,6 +179,8 @@ void Affichage::afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJo
             prise = false;
             jeu = true;
             atout = carteRetournee.getCouleur();
+            table.getMains()[indexJoueur].addCarte(carteRetournee);
+            table.distribuer2(p);
         }
         ImGui::SameLine();
         if (ImGui::Button("Je passe", ImVec2(100, 30)))
@@ -437,7 +439,7 @@ void Affichage::showAtoutPreneur(Couleur atout, int indexJoueur)
 {
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
     ImGui::Begin("Atout", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
-    ImVec2 pos = ImVec2(50, window.getSize().y - 100);
+    ImVec2 pos = ImVec2(50, window.getSize().y - 50);
     ImGui::SetWindowPos(pos, ImGuiCond_Once);
     ImGui::SetWindowSize(ImVec2(250, 50), ImGuiCond_Always);
     ImGui::Text("Le preneur est le joueur %d", indexJoueur + 1);

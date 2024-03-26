@@ -37,7 +37,7 @@ public:
      * Get the current deck of cards.
      * @return The current deck of cards.
      */
-    PaquetDeCarte getPaquet();
+    std::vector<Carte> getPaquet();
 
     /**
      * Set the deck of cards.

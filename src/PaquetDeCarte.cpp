@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <cassert>
 #include <cstdlib>
+#include <iostream>
+#include <vector>
 
 PaquetDeCarte::PaquetDeCarte()
 {
@@ -31,9 +33,9 @@ int PaquetDeCarte::operator[](int index)
     return index;
 }
 
-PaquetDeCarte PaquetDeCarte::getPaquet()
+std::vector<Carte> PaquetDeCarte::getPaquet()
 {
-    return *this;
+    return paquet;
 }
 
 void PaquetDeCarte::setPaquet(PaquetDeCarte paquet)

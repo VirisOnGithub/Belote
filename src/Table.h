@@ -127,7 +127,7 @@ public:
      * @brief Returns the hands of the players.
      * @return The vector of hands.
      */
-    std::vector<MainJoueur> getMains();
+    std::vector<MainJoueur> &getMains();
 
     /**
      * @brief Displays the players' hands.

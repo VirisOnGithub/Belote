@@ -101,7 +101,7 @@ void Table::setMains(std::vector<MainJoueur> m)
     Mains = m;
 }
 
-std::vector<MainJoueur> Table::getMains()
+std::vector<MainJoueur> &Table::getMains()
 {
     return Mains;
 }

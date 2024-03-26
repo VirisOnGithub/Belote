@@ -1,0 +1,4 @@
+/home/clement/projects/Belote/cmake-build-debug/CMakeFiles/Belote.dir
+/home/clement/projects/Belote/cmake-build-debug/CMakeFiles/Graphique.dir
+/home/clement/projects/Belote/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/clement/projects/Belote/cmake-build-debug/CMakeFiles/rebuild_cache.dir
