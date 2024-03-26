@@ -22,6 +22,26 @@
 #include <vector>
 #include "imgui-sfml/imgui-SFML.h"
 
+
+const char *AtouttoStr(Couleur c)
+{
+    switch (c)
+    {
+    case coeur:
+        return "coeur";
+    case carreau:
+        return "carreau";
+    case pique:
+        return "pique";
+    case trefle:
+        return "trefle";
+    case rien:
+        return "rien";
+    default:
+        return "erreur";
+    }
+}
+
 void Affichage::init()
 {
     std::string couleurs[4] = {"coeur", "carreau", "pique", "trefle"};
@@ -140,8 +160,7 @@ void Affichage::jeuLoop(bool &prise, bool &jeu, int &indexJoueur, bool &premierT
     }
     else
     {
-        indexJoueur = 0;
-        jeuDePlis(atout, indexJoueur, cartesG, table.getMains()[indexJoueur].getMain());
+        jeuDePlis(indexJoueur, cartesG, table.getMains()[indexJoueur].getMain());
     }
 }
 
@@ -198,24 +217,29 @@ void Affichage::afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJo
     {
         ImGui::SetWindowPos(pos, ImGuiCond_Always);
         std::vector<Couleur> couleurs = {coeur, carreau, pique, trefle};
-        Couleur atout = carteRetournee.getCouleur();
-        for (const auto &couleur : couleurs)
+        atout = carteRetournee.getCouleur();
+        for (int i = 0; i < couleurs.size(); i++)
         {
-            if (couleur != atout)
+            if (couleurs[i] != atout)
             {
+                Couleur couleurBouton = couleurs[i];
                 ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
                 ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.0f, 0.0f, 0.0f, 0.2f));
-                if (ImGui::ImageButton((void *)(uintptr_t)texturesCouleurs[couleur].getNativeHandle(), ImVec2(50, 50)))
+                if (ImGui::ImageButton((void *)(uintptr_t)texturesCouleurs[couleurBouton].getNativeHandle(), ImVec2(50, 50)))
                 {
                     prise = false;
-                    atout = couleur;
+                    atout = couleurBouton;
                     jeu = true;
+                    table.getMains()[indexJoueur].addCarte(carteRetournee);
+                    table.distribuer2(p);
                 }
                 ImGui::PopStyleColor(2);
-                if (couleur != couleurs.back() || couleur == atout)
+                if (couleurBouton != couleurs.back() || couleurBouton == atout)
                 {
                     ImGui::SameLine();
                 }
+                std::cout << AtouttoStr(atout) << std::endl;
+
             }
         }
         // bouton de passe
@@ -316,7 +340,6 @@ void Affichage::afficherMainRetourneeGraphiqueGauche1(int nbCartes)
 void Affichage::afficherMainGraphique(MainJoueur main)
 {
     int nbCartesAffichees = main.getCartesG().size();
-    main.trierMain();
     cartesG.clear();
     auto cartes = main.getCartesG();
 
@@ -382,14 +405,14 @@ void Affichage::jouerCarte(int indexJoueur, int indexCarte)
     table.Mains[indexJoueur].getMain().erase(table.Mains[indexJoueur].getMain().begin() + indexCarte);
 }
 
-void Affichage::jeuDePlis(Couleur atout, int &indexJoueur, std::vector<sf::Sprite> &cartesG, std::vector<Carte> &cartes)
+void Affichage::jeuDePlis(int &indexJoueur, std::vector<sf::Sprite> &cartesG, std::vector<Carte> &cartes)
 {
     afficherMainRetourneeGraphiqueHaut1(table.getMains()[(indexJoueur + 2) % 4].getMain().size());
     afficherMainRetourneeGraphiqueDroite1(table.getMains()[(indexJoueur + 3) % 4].getMain().size());
     afficherMainRetourneeGraphiqueGauche1(table.getMains()[(indexJoueur + 1) % 4].getMain().size());
     afficherMainGraphique(table.getMains()[indexJoueur]);
     afficherCartesSurTable();
-    showAtoutPreneur(atout, indexJoueur);
+    showAtoutPreneur(indexJoueur);
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !action)
     {
@@ -416,26 +439,7 @@ void Affichage::jeuDePlis(Couleur atout, int &indexJoueur, std::vector<sf::Sprit
     }
 }
 
-const char *AtouttoStr(Couleur c)
-{
-    switch (c)
-    {
-    case coeur:
-        return "coeur";
-    case carreau:
-        return "carreau";
-    case pique:
-        return "pique";
-    case trefle:
-        return "trefle";
-    case rien:
-        return "rien";
-    default:
-        return "erreur";
-    }
-}
-
-void Affichage::showAtoutPreneur(Couleur atout, int indexJoueur)
+void Affichage::showAtoutPreneur(int indexJoueur)
 {
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
     ImGui::Begin("Atout", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);

@@ -117,7 +117,7 @@ public:
      * @param mainJoueur The player's hand.
      * @return True if the card is valid, false otherwise.
      */
-    bool estValide(std::vector<Carte> CartesSurTable, Couleur atout, std::vector<Carte> mainJoueur, std::string &raison);
+    bool estValide(std::vector<Carte> CartesSurTable, Couleur atout, std::vector<Carte> mainJoueur, std::string &raison) const;
 
     /**
      * @brief Gets the value of the card as a trump card.

@@ -137,7 +137,7 @@ bool hasTrumpOnTable(const std::vector<Carte> &CartesSurTable, Couleur atout)
     return false;
 }
 
-bool Carte::estValide(std::vector<Carte> CartesSurTable, Couleur atout, std::vector<Carte> mainJoueur, std::string &raison)
+bool Carte::estValide(std::vector<Carte> CartesSurTable, Couleur atout, std::vector<Carte> mainJoueur, std::string &raison) const
 {
     if (CartesSurTable.size() == 0) // Si la carte est la première carte jouée, elle ne peut pas être invalide
     {
