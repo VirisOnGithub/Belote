@@ -140,6 +140,7 @@ void Affichage::jeuLoop(bool &prise, bool &jeu, int &indexJoueur, bool &premierT
     }
     else
     {
+        indexJoueur = 0;
         jeuDePlis(atout, indexJoueur, cartesG, table.getMains()[indexJoueur].getMain());
     }
 }
@@ -215,9 +216,9 @@ void Affichage::afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJo
                 }
             }
         }
-        //bouton de passe
+        // bouton de passe
         ImVec2 windowSize = ImGui::GetWindowSize();
-        ImVec2 buttonSize(100, 30);                 
+        ImVec2 buttonSize(100, 30);
 
         ImVec2 buttonPos = ImVec2((windowSize.x - buttonSize.x) / 2.0f, (windowSize.y - buttonSize.y) / 2.0f);
 
@@ -313,6 +314,7 @@ void Affichage::afficherMainRetourneeGraphiqueGauche1(int nbCartes)
 void Affichage::afficherMainGraphique(MainJoueur main)
 {
     int nbCartesAffichees = main.getCartesG().size();
+    main.trierMain();
     cartesG.clear();
     auto cartes = main.getCartesG();
 
@@ -367,21 +369,22 @@ void Affichage::afficherCartesSurTable()
     {
         sf::Sprite sprite;
         sprite.setTexture(*textures[cartes[i].getCarteG()]);
-        sprite.setPosition((window.getSize().x - sprite.getGlobalBounds().width) / 2 + i*sprite.getGlobalBounds().width/2., (window.getSize().y - sprite.getGlobalBounds().height) / 2);
+        sprite.setPosition((window.getSize().x - sprite.getGlobalBounds().width) / 2 + i * sprite.getGlobalBounds().width / 2., (window.getSize().y - sprite.getGlobalBounds().height) / 2);
         window.draw(sprite);
     }
 }
 
-void Affichage::jouerCarte(int indexJoueur, int indexCarte){
+void Affichage::jouerCarte(int indexJoueur, int indexCarte)
+{
     table.CartesSurTable.push_back(table.Mains[indexJoueur].getMain()[indexCarte]);
     table.Mains[indexJoueur].getMain().erase(table.Mains[indexJoueur].getMain().begin() + indexCarte);
 }
 
 void Affichage::jeuDePlis(Couleur atout, int &indexJoueur, std::vector<sf::Sprite> &cartesG, std::vector<Carte> &cartes)
 {
-    afficherMainRetourneeGraphiqueHaut1(table.getMains()[(indexJoueur + 2 )%4].getMain().size());
-    afficherMainRetourneeGraphiqueDroite1(table.getMains()[(indexJoueur + 3 )%4].getMain().size());
-    afficherMainRetourneeGraphiqueGauche1(table.getMains()[(indexJoueur + 1 )%4].getMain().size());
+    afficherMainRetourneeGraphiqueHaut1(table.getMains()[(indexJoueur + 2) % 4].getMain().size());
+    afficherMainRetourneeGraphiqueDroite1(table.getMains()[(indexJoueur + 3) % 4].getMain().size());
+    afficherMainRetourneeGraphiqueGauche1(table.getMains()[(indexJoueur + 1) % 4].getMain().size());
     afficherMainGraphique(table.getMains()[indexJoueur]);
     afficherCartesSurTable();
     showAtoutPreneur(atout, indexJoueur);
@@ -395,12 +398,14 @@ void Affichage::jeuDePlis(Couleur atout, int &indexJoueur, std::vector<sf::Sprit
         {
             if (cartesG[i].getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
             {
-                if(cartes[i].estValide(table.CartesSurTable, atout, table.Mains[indexJoueur].getMain(), raison)){
+                if (cartes[i].estValide(table.CartesSurTable, atout, table.Mains[indexJoueur].getMain(), raison))
+                {
                     jouerCarte(indexJoueur, i);
                     std::this_thread::sleep_for(std::chrono::milliseconds(500));
                     indexJoueur++;
                 }
-                else{
+                else
+                {
                     std::cout << raison << std::endl;
                 }
             }
@@ -409,7 +414,7 @@ void Affichage::jeuDePlis(Couleur atout, int &indexJoueur, std::vector<sf::Sprit
     }
 }
 
-const char * AtouttoStr(Couleur c)
+const char *AtouttoStr(Couleur c)
 {
     switch (c)
     {
@@ -435,7 +440,7 @@ void Affichage::showAtoutPreneur(Couleur atout, int indexJoueur)
     ImVec2 pos = ImVec2(50, window.getSize().y - 100);
     ImGui::SetWindowPos(pos, ImGuiCond_Once);
     ImGui::SetWindowSize(ImVec2(250, 50), ImGuiCond_Always);
-    ImGui::Text("Le preneur est le joueur %d", indexJoueur+1);
+    ImGui::Text("Le preneur est le joueur %d", indexJoueur + 1);
     ImGui::Text("L'atout est %s", AtouttoStr(atout));
     ImGui::End();
     ImGui::PopStyleColor(1);
