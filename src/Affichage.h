@@ -43,7 +43,7 @@ public:
     void afficherMainRetourneeGraphiqueGauche1(int nbCartes);
     void animDistribution(bool &prise, bool &jeu, int &indexJoueur, bool &premierTour);
 
-    void jeuDePlis(int &indexJoueur, std::vector<sf::Sprite> &cartesG, std::vector<Carte> &cartes);
+    void jeuDePlis(int &indexJoueur, std::vector<sf::Sprite> &cartesG);
     void showAtoutPreneur(int indexJoueur);
     void afficherCartesSurTable();
     void jouerCarte(int indexJoueur, int indexCarte);

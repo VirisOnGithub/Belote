@@ -160,7 +160,7 @@ void Affichage::jeuLoop(bool &prise, bool &jeu, int &indexJoueur, bool &premierT
     }
     else
     {
-        jeuDePlis(indexJoueur, cartesG, table.getMains()[indexJoueur].getMain());
+        jeuDePlis(indexJoueur, cartesG);
     }
 }
 
@@ -238,8 +238,6 @@ void Affichage::afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJo
                 {
                     ImGui::SameLine();
                 }
-                std::cout << AtouttoStr(atout) << std::endl;
-
             }
         }
         // bouton de passe
@@ -405,7 +403,7 @@ void Affichage::jouerCarte(int indexJoueur, int indexCarte)
     table.Mains[indexJoueur].getMain().erase(table.Mains[indexJoueur].getMain().begin() + indexCarte);
 }
 
-void Affichage::jeuDePlis(int &indexJoueur, std::vector<sf::Sprite> &cartesG, std::vector<Carte> &cartes)
+void Affichage::jeuDePlis(int &indexJoueur, std::vector<sf::Sprite> &cartesG)
 {
     afficherMainRetourneeGraphiqueHaut1(table.getMains()[(indexJoueur + 2) % 4].getMain().size());
     afficherMainRetourneeGraphiqueDroite1(table.getMains()[(indexJoueur + 3) % 4].getMain().size());
@@ -413,6 +411,7 @@ void Affichage::jeuDePlis(int &indexJoueur, std::vector<sf::Sprite> &cartesG, st
     afficherMainGraphique(table.getMains()[indexJoueur]);
     afficherCartesSurTable();
     showAtoutPreneur(indexJoueur);
+    bool action = false;
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !action)
     {
@@ -423,11 +422,12 @@ void Affichage::jeuDePlis(int &indexJoueur, std::vector<sf::Sprite> &cartesG, st
         {
             if (cartesG[i].getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
             {
-                if (cartes[i].estValide(table.CartesSurTable, atout, table.Mains[indexJoueur].getMain(), raison))
+                if (table.Mains[indexJoueur].getMain()[i].estValide(table.CartesSurTable, atout, table.Mains[indexJoueur].getMain(), raison))
                 {
+                    action = true;
                     jouerCarte(indexJoueur, i);
-                    std::this_thread::sleep_for(std::chrono::milliseconds(500));
                     indexJoueur++;
+                    action = false;
                 }
                 else
                 {
