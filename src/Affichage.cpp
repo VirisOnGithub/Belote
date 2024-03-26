@@ -429,6 +429,7 @@ void Affichage::jeuDePlis(int &indexJoueur, std::vector<sf::Sprite> &cartesG)
                 {
                     action = true;
                     jouerCarte(indexJoueur, i);
+                    std::this_thread::sleep_for(std::chrono::milliseconds(100));
                     indexJoueur++;
                     action = false;
                     raison = "";
@@ -442,7 +443,7 @@ void Affichage::jeuDePlis(int &indexJoueur, std::vector<sf::Sprite> &cartesG)
         action = false;
     }
     showError(raison);
-    if (indexJoueur == 4)
+    if (table.CartesSurTable.size() == 4)
     {
         indexJoueur = table.getGagnant(table.CartesJouees, atout);
         table.changementOrdreJoueur(indexJoueur);
