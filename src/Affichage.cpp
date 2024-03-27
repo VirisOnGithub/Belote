@@ -4,6 +4,7 @@
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/System/Clock.hpp>
+#include <SFML/System/Sleep.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
@@ -419,20 +420,18 @@ void Affichage::jeuDePlis(int &indexJoueur, std::vector<sf::Sprite> &cartesG)
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !action)
     {
-        action = true;
         sf::Vector2i mousePos = sf::Mouse::getPosition(window);
         for (int i = cartesG.size() - 1; i >= 0; i--)
         {
             if (cartesG[i].getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
             {
-                if (table.Mains[indexJoueur].getMain()[i].estValide(table.CartesSurTable, atout, table.Mains[indexJoueur].getMain(), raison))
+                if (table.Mains[indexJoueur].getMain()[i].estValide(table.CartesSurTable, atout, table.Mains[indexJoueur].getMain(), raison) && !action)
                 {
                     action = true;
                     jouerCarte(indexJoueur, i);
                     std::this_thread::sleep_for(std::chrono::milliseconds(100));
-                    indexJoueur++;
-                    action = false;
                     raison = "";
+                    break; // sort de la boucle une fois qu'une carte valide a été jouée
                 }
                 else
                 {
@@ -440,11 +439,17 @@ void Affichage::jeuDePlis(int &indexJoueur, std::vector<sf::Sprite> &cartesG)
                 }
             }
         }
-        action = false;
+        if (action)
+        {
+            indexJoueur++;
+            action = false;
+        }
+        sf::sleep(sf::milliseconds(200)); // Pause après chaque clic
     }
     showError(raison);
     if (table.CartesSurTable.size() == 4)
     {
+        sf::sleep(sf::milliseconds(1000));
         indexJoueur = table.getGagnant(table.CartesJouees, atout);
         table.changementOrdreJoueur(indexJoueur);
         for (int i = 0; i < 4; i++)

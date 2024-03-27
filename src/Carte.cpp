@@ -159,8 +159,12 @@ bool Carte::estValide(std::vector<Carte> CartesSurTable, Couleur atout, std::vec
                     }
                 }
 
-                if (getValeurAtout() > valeurMax) // Si la carte actuelle est plus forte que la carte la plus forte sur la table, elle est valide
+                if (getValeurAtout() >= valeurMax) // Si la carte actuelle est plus forte que la carte la plus forte sur la table, elle est valide
                 {
+                    if(getChiffre() == sept){
+                        raison = "Vous devez jouer une carte plus forte que la carte la plus forte sur la table";
+                        return false;
+                    }
                     return true;
                 }
                 else
