@@ -145,6 +145,7 @@ sf::Font Affichage::loadFont()
 void Affichage::showAtoutPreneur()
 {
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
     ImGui::Begin("Atout", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
     ImVec2 pos = ImVec2(50, 10);
     ImGui::SetWindowPos(pos, ImGuiCond_Once);
@@ -153,11 +154,13 @@ void Affichage::showAtoutPreneur()
     ImGui::Text("L'atout est %s", AtouttoStr(atout));
     ImGui::End();
     ImGui::PopStyleColor(1);
+    ImGui::PopStyleVar(1);
 }
 
 void Affichage::showError(std::string message)
 {
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
     ImGui::Begin("Erreur", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
     ImVec2 pos = ImVec2(window.getSize().x - 500, 0);
     ImGui::SetWindowPos(pos, ImGuiCond_Once);
@@ -165,31 +168,38 @@ void Affichage::showError(std::string message)
     ImGui::Text("%s", message.c_str());
     ImGui::End();
     ImGui::PopStyleColor(1);
+    ImGui::PopStyleVar(1);
 }
 
 void Affichage::showTrumpTakerBadge(int indexJoueur)
 {
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
     ImGui::Begin("AtoutBadge", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
     ImVec2 pos;
-    switch ((atoutPreneur-indexJoueur+4)%4) // Ensure the result is always positive
+    int res = (atoutPreneur-indexJoueur+4)%4;
+    float trumpSize = texturesCouleurs[atout].getSize().x;
+    std::cout << "res : " << res << std::endl;
+    float CardHeight = 303/2., CardWidth = 208/2.;
+    switch (res)
     {
         case 0:
-            pos = ImVec2(50, 10);
+            pos = ImVec2(window.getSize().x/2. - trumpSize/2, window.getSize().y - CardHeight - trumpSize);
             break;
         case 1:
-            pos = ImVec2(window.getSize().x - 300, 10);
+            pos = ImVec2(CardWidth + trumpSize, window.getSize().y/2. - trumpSize/2);
             break;
         case 2:
-            pos = ImVec2(50, window.getSize().y - 100);
+            pos = ImVec2(window.getSize().x/2. -trumpSize/2, CardHeight + trumpSize);
             break;
         default:
-            pos = ImVec2(window.getSize().x - 300, window.getSize().y - 100);
+            pos = ImVec2(window.getSize().x - CardWidth - trumpSize, window.getSize().y/2. - trumpSize/2);
             break;
     }
-    ImGui::SetWindowPos(pos, ImGuiCond_Once);
-    ImGui::SetWindowSize(ImVec2(100, 100), ImGuiCond_Always);
+    ImGui::SetWindowPos(pos, ImGuiCond_Always);
+    ImGui::SetWindowSize(ImVec2(trumpSize+2, trumpSize+2), ImGuiCond_Always);
     ImGui::Image((void *)(uintptr_t)texturesCouleurs[atout].getNativeHandle(), ImVec2(50, 50));
     ImGui::End();
     ImGui::PopStyleColor(1);
+    ImGui::PopStyleVar(1);
 }

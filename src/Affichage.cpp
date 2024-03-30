@@ -107,6 +107,7 @@ void Affichage::menuLoop(bool &menu, bool &prise)
     ImGui::SetNextWindowSize(ImVec2(600, 400), ImGuiCond_Once);
     ImGui::SetNextWindowPos(ImVec2(window.getSize().x / 2., window.getSize().y * 2 / 3.), ImGuiCond_Once, ImVec2(0.5f, 0.5f));
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
     ImGui::Begin("Menu", &menu, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
     const ImVec2 buttonSize(300, 60);
 
@@ -123,6 +124,7 @@ void Affichage::menuLoop(bool &menu, bool &prise)
     ImGui::PopStyleColor(2);
     ImGui::End();
     ImGui::PopStyleColor(1);
+    ImGui::PopStyleVar(1);
 }
 
 void Affichage::jeuLoop(bool &prise, bool &jeu, int &indexJoueur, bool &premierTour)
@@ -158,6 +160,7 @@ void Affichage::afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJo
         isCarteRetourneeSet = true;
     }
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
     ImGui::Begin("Prise", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
     int offset = premierTour ? 110 : 200;
     ImVec2 pos = ImVec2(window.getSize().x / 2. - offset, window.getSize().y / 2. + 200);
@@ -235,7 +238,8 @@ void Affichage::afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJo
     }
 
     ImGui::End();
-    ImGui::PopStyleColor(1); // Specify the argument type for the function call
+    ImGui::PopStyleColor(1);
+    ImGui::PopStyleVar(1);
     sprite.setTexture(*textures[carteRetournee.getCarteG()]);
     sprite.setPosition((window.getSize().x - sprite.getGlobalBounds().width) / 2, (window.getSize().y - sprite.getGlobalBounds().height) / 2);
     window.draw(sprite);
