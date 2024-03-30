@@ -30,6 +30,7 @@ private:
     std::vector<sf::Sprite> cartesG;
     bool action = false;
     std::string raison;
+    int atoutPreneur;
 
 public:
     void init();
@@ -45,10 +46,11 @@ public:
     void animDistribution(bool &prise, bool &jeu, int &indexJoueur, bool &premierTour);
 
     void jeuDePlis(int &indexJoueur, std::vector<sf::Sprite> &cartesG);
-    void showAtoutPreneur(int indexJoueur);
+    void showAtoutPreneur();
     void afficherCartesSurTable();
     void jouerCarte(int indexJoueur, int indexCarte);
     void showError(std::string message);
+    void showTrumpTakerBadge(int indexJoueur);
 };
 
 #endif // AFFICHAGE_H

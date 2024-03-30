@@ -1,15 +1,8 @@
 #include "Affichage.h"
 #include <SFML/Graphics.hpp>
-#include <SFML/Graphics/Font.hpp>
-#include <SFML/Graphics/Text.hpp>
-#include <SFML/Graphics/Texture.hpp>
 #include <SFML/System/Clock.hpp>
-#include <SFML/System/Sleep.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Window/Event.hpp>
-#include <SFML/Window/Keyboard.hpp>
-#include <cstdint>
-#include <cstdlib>
 #include <iostream>
 #include "Carte.h"
 #include "MainJoueur.h"
@@ -21,28 +14,6 @@
 #include <map>
 #include <string>
 #include <vector>
-#include "imgui-sfml/imgui-SFML.h"
-#include <chrono>
-#include <thread>
-
-const char *AtouttoStr(Couleur c)
-{
-    switch (c)
-    {
-    case coeur:
-        return "coeur";
-    case carreau:
-        return "carreau";
-    case pique:
-        return "pique";
-    case trefle:
-        return "trefle";
-    case rien:
-        return "rien";
-    default:
-        return "erreur";
-    }
-}
 
 void Affichage::init()
 {
@@ -199,6 +170,7 @@ void Affichage::afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJo
             std::cout << "Je prends" << std::endl;
             prise = false;
             jeu = true;
+            atoutPreneur = indexJoueur;
             atout = carteRetournee.getCouleur();
             table.getMains()[indexJoueur].addCarte(carteRetournee);
             table.distribuer2(p);
@@ -231,6 +203,7 @@ void Affichage::afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJo
                 {
                     prise = false;
                     atout = couleurBouton;
+                    atoutPreneur = indexJoueur;
                     jeu = true;
                     table.getMains()[indexJoueur].addCarte(carteRetournee);
                     table.distribuer2(p);
@@ -268,128 +241,6 @@ void Affichage::afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJo
     window.draw(sprite);
 }
 
-void Affichage::afficherMainRetourneeGraphiqueHaut1(int nbCartes)
-{
-    // Assurez-vous que la carte est définie
-    sf::Texture texture;
-    if (!texture.loadFromFile("../assets/back/BlueCardBack.png"))
-    {
-        std::cerr << "Erreur de chargement de la texture" << std::endl;
-    }
-    else
-    {
-        sf::Sprite sprite;
-        sprite.setTexture(texture);
-        sprite.setScale(0.55, 0.55);
-        int CardWidth = sprite.getGlobalBounds().width;
-        int CardHeight = sprite.getGlobalBounds().height;
-        for (int i = 0; i < nbCartes; i++)
-        {
-            sprite.setPosition((window.getSize().x - CardWidth * (nbCartes + 1) / 2.) / 2. + i * CardWidth / 2., -120);
-            window.draw(sprite);
-        }
-    }
-}
-
-void Affichage::afficherMainRetourneeGraphiqueDroite1(int nbCartes)
-{
-    sf::Texture texture;
-    if (!texture.loadFromFile("../assets/back/90DegBlueCardBack.png"))
-    {
-        std::cerr << "Erreur de chargement de la texture" << std::endl;
-    }
-    else
-    {
-        sf::Sprite sprite;
-        sprite.setTexture(texture);
-        sprite.setScale(0.55, 0.55);
-        int CardWidth = sprite.getGlobalBounds().width;
-        int CardHeight = sprite.getGlobalBounds().height;
-        for (int i = 0; i < nbCartes; i++)
-        {
-            sprite.setPosition(-120, (window.getSize().y - CardHeight * (nbCartes + 1) / 2.) / 2. + i * CardHeight / 2.);
-            window.draw(sprite);
-        }
-        sprite.setScale(1, 1);
-    }
-}
-
-void Affichage::afficherMainRetourneeGraphiqueGauche1(int nbCartes)
-{
-    sf::Texture texture;
-    if (!texture.loadFromFile("../assets/back/90DegBlueCardBack.png"))
-    {
-        std::cerr << "Erreur de chargement de la texture" << std::endl;
-    }
-    else
-    {
-        sf::Sprite sprite;
-        sprite.setTexture(texture);
-        sprite.setScale(0.55, 0.55);
-        int CardWidth = sprite.getGlobalBounds().width;
-        int CardHeight = sprite.getGlobalBounds().height;
-        for (int i = 0; i < nbCartes; i++)
-        {
-            sprite.setPosition(window.getSize().x - 120, (window.getSize().y - CardHeight * (nbCartes + 1) / 2.) / 2. + i * CardHeight / 2.);
-            window.draw(sprite);
-        }
-        sprite.setScale(1, 1);
-    }
-}
-
-void Affichage::afficherMainGraphique(MainJoueur main)
-{
-    int nbCartesAffichees = main.getCartesG().size();
-    cartesG.clear();
-    auto cartes = main.getCartesG();
-
-    for (int i = 0; i < nbCartesAffichees; i++)
-    {
-        sf::Sprite sprite;
-        sprite.setTexture(*textures[cartes[i]]);
-        sprite.setScale(0.9, 0.9);
-
-        // Vérifiez que les textures sont chargées correctement
-        if (textures[cartes[i]]->getSize().x == 0)
-        {
-            std::cout << "Erreur de chargement de la texture pour la carte : " << cartes[i].toAnsiString() << std::endl;
-        }
-
-        cartesG.push_back(sprite);
-    }
-
-    if (!cartesG.empty())
-    {
-        int CardWidth = textures[cartes[0]]->getSize().x * cartesG[0].getScale().x;  // Prendre en compte l'échelle de la carte
-        int CardHeight = textures[cartes[0]]->getSize().y * cartesG[0].getScale().y; // Prendre en compte l'échelle de la carte
-        float totalWidth = cartesG.size() * CardWidth;                               // La largeur totale des cartes
-
-        for (int i = 0; i < cartesG.size(); i++)
-        {
-            cartesG[i].setPosition((window.getSize().x - totalWidth) / 2.0f + i * (CardWidth), window.getSize().y - CardHeight / 2.);
-            window.draw(cartesG[i]);
-        }
-    }
-    else
-    {
-        std::cerr << "Erreur : aucune carte à dessiner" << std::endl;
-    }
-}
-
-sf::Font Affichage::loadFont()
-{
-    sf::Font font;
-    if (!font.loadFromFile("../src/fonts/GravitasOne-Regular.ttf"))
-    {
-        std::cerr << "Error loading font" << std::endl;
-    }
-    else
-    {
-        std::cout << "Font loaded" << std::endl;
-    }
-    return font;
-}
-
 void Affichage::afficherCartesSurTable()
 {
     std::vector<Carte> cartes = table.getCartesSurTable();
@@ -405,6 +256,10 @@ void Affichage::afficherCartesSurTable()
 void Affichage::jouerCarte(int indexJoueur, int indexCarte)
 {
     table.CartesSurTable.push_back(table.Mains[indexJoueur].getMain()[indexCarte]);
+    assert(indexJoueur >= 0);
+    assert(indexJoueur < table.Mains.size());
+    assert(indexCarte >= 0);
+    assert(indexCarte < table.Mains[indexJoueur].getMain().size());
     table.Mains[indexJoueur].getMain().erase(table.Mains[indexJoueur].getMain().begin() + indexCarte);
 }
 
@@ -415,7 +270,8 @@ void Affichage::jeuDePlis(int &indexJoueur, std::vector<sf::Sprite> &cartesG)
     afficherMainRetourneeGraphiqueGauche1(table.getMains()[(indexJoueur + 1) % 4].getMain().size());
     afficherMainGraphique(table.getMains()[indexJoueur]);
     afficherCartesSurTable();
-    showAtoutPreneur(indexJoueur);
+    showAtoutPreneur();
+    showTrumpTakerBadge(indexJoueur);
     bool action = false;
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !action)
@@ -458,29 +314,4 @@ void Affichage::jeuDePlis(int &indexJoueur, std::vector<sf::Sprite> &cartesG)
         }
         table.CartesSurTable.clear();
     }
-}
-
-void Affichage::showAtoutPreneur(int indexJoueur)
-{
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-    ImGui::Begin("Atout", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
-    ImVec2 pos = ImVec2(50, 10);
-    ImGui::SetWindowPos(pos, ImGuiCond_Once);
-    ImGui::SetWindowSize(ImVec2(250, 50), ImGuiCond_Always);
-    ImGui::Text("Le preneur est le joueur %d", indexJoueur + 1);
-    ImGui::Text("L'atout est %s", AtouttoStr(atout));
-    ImGui::End();
-    ImGui::PopStyleColor(1);
-}
-
-void Affichage::showError(std::string message)
-{
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-    ImGui::Begin("Erreur", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
-    ImVec2 pos = ImVec2(window.getSize().x - 500, 0);
-    ImGui::SetWindowPos(pos, ImGuiCond_Once);
-    ImGui::SetWindowSize(ImVec2(500, 50), ImGuiCond_Always);
-    ImGui::Text("%s", message.c_str());
-    ImGui::End();
-    ImGui::PopStyleColor(1);
 }

@@ -22,6 +22,7 @@ set(SOURCES
 
 set(GRAPHIQUES
     src/Affichage.cpp
+    src/Aff-static.cpp
     src/Affichage.h
     src/mainGraphique.cpp
     src/TableG.cpp
