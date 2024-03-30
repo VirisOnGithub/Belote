@@ -44,7 +44,7 @@ public:
      * @brief Setter for the player's hand.
      * @param main The new hand to set.
      */
-    void setMain(MainJoueur main);
+    void setMain(MainJoueur &main);
 
     /**
      * @brief Adds a card to the player's hand.

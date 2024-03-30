@@ -1,3 +1,4 @@
+#include <cassert>
 #include <iostream>
 #include <vector>
 #include "MainJoueur.h"
@@ -26,7 +27,7 @@ std::vector<Carte> &MainJoueur::getMain()
     return main;
 }
 
-void MainJoueur::setMain(MainJoueur main)
+void MainJoueur::setMain(MainJoueur &main)
 {
     this->main = main.main;
 }
@@ -69,5 +70,6 @@ void MainJoueur::trierMain()
 
 void MainJoueur::jouerCarte(int index)
 {
+    assert(index >= 0 && index < main.size());
     main.erase(main.begin() + index);
 }
