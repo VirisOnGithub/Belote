@@ -172,7 +172,7 @@ void Affichage::showTrumpTakerBadge(int indexJoueur)
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
     ImGui::Begin("AtoutBadge", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
     ImVec2 pos;
-    switch (atoutPreneur-indexJoueur)
+    switch ((atoutPreneur-indexJoueur+4)%4) // Ensure the result is always positive
     {
         case 0:
             pos = ImVec2(50, 10);
