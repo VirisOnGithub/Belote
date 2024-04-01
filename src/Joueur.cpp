@@ -187,12 +187,15 @@ int Joueur::botCarteForte( std::vector<Carte> mainJoueur, Couleur atout, std::ve
 
 int Joueur::botCarteRandom(std::vector<Carte> mainJoueur, Couleur atout, std::vector<Carte> CartesSurTable, std::string &raison)
 {
-    int indexCarteRandom = rand() % mainJoueur.size();
-    while(!mainJoueur[indexCarteRandom].estValide(CartesSurTable, atout, mainJoueur, raison))
+    for(int i = 0; i < mainJoueur.size(); i++)
     {
-        indexCarteRandom = rand() % mainJoueur.size();
+        if(mainJoueur[i].estValide(CartesSurTable, atout, mainJoueur, raison))
+        {
+            return i;
+        }
     }
-    return indexCarteRandom;
+
+    throw std::runtime_error("Aucune carte valide trouvee"); // Pas de carte valide
 }
 
 int Joueur::botAction(std::vector<Carte> CartesSurTable, Couleur atout, std::vector<Carte> mainJoueur, std::string &raison)
@@ -260,5 +263,7 @@ int Joueur::botAction(std::vector<Carte> CartesSurTable, Couleur atout, std::vec
         carteJouee=mainJoueur[index];
         return index;
     } */
-    return botCarteRandom(mainJoueur, atout, CartesSurTable, raison);
+    int index = botCarteRandom(mainJoueur, atout, CartesSurTable, raison);
+    std::cout<<"Le bot a joué : "<<mainJoueur[index].getChiffreStr()<<" "<<mainJoueur[index].getCouleurStr()<<std::endl;
+    return index+1;
 }
