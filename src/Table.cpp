@@ -110,9 +110,9 @@ void Table::jeu()
 {
     PaquetDeCarte paquet;
     Couleur atout = rien;
-    // Joueur premierJoueur(true);
-    // Joueurs[0]=premierJoueur;
-    // std::cout << "Le premier joueur est un bot : " << Joueurs[0].getEstBot() << std::endl;
+    Joueur premierJoueur(true);
+    Joueurs[0]=premierJoueur;
+   
 
     paquet.melanger();
     distribuer1(paquet);
@@ -210,6 +210,7 @@ void Table::tourDeJeu(Joueur &joueur, Couleur atout)
         break;
     }
     std::cout << "C'est au tour du joueur " << joueur.getRang() + 1 << std::endl;
+    std::cout << "Le joueur est un bot : " << Joueurs[joueur.getRang()].getEstBot() << std::endl;
     std::string raisonRefus = "";
     do
     {

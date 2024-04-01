@@ -154,18 +154,18 @@ std::pair<int,Couleur> Joueur::botPrise(Carte CarteAtout,  std::vector<Carte> ma
 
 int Joueur::botCarteFaible( std::vector<Carte> mainJoueur, Couleur atout, std::vector<Carte> CartesSurTable, std::string &raison)
 {
-    int indexCarteNonAtoutPlusFaible=0;
-        for(int i = 0; i < mainJoueur.size(); i++)
+    int indexCartePlusFaible = -1;
+    for(int i = 0; i < mainJoueur.size(); i++)
+    {
+        if(mainJoueur[i].getCouleur() != atout && mainJoueur[i].estValide(CartesSurTable, atout, mainJoueur, raison))
         {
-            if(mainJoueur[i].getCouleur() != atout && mainJoueur[i].estValide(CartesSurTable, atout, mainJoueur, raison))
+            if(indexCartePlusFaible == -1 || mainJoueur[indexCartePlusFaible].getValeurNonAtout() > mainJoueur[i].getValeurNonAtout())
             {
-                if(mainJoueur[indexCarteNonAtoutPlusFaible].getValeurNonAtout() > mainJoueur[i].getValeurNonAtout())
-                {
-                    indexCarteNonAtoutPlusFaible = i;
-                }
+                indexCartePlusFaible = i;
             }
         }
-        return indexCarteNonAtoutPlusFaible;
+    }
+    return indexCartePlusFaible;
 }
 
 int Joueur::botCarteForte( std::vector<Carte> mainJoueur, Couleur atout, std::vector<Carte> CartesSurTable, std::string &raison)
@@ -185,9 +185,19 @@ int Joueur::botCarteForte( std::vector<Carte> mainJoueur, Couleur atout, std::ve
 
 }
 
+int Joueur::botCarteRandom(std::vector<Carte> mainJoueur, Couleur atout, std::vector<Carte> CartesSurTable, std::string &raison)
+{
+    int indexCarteRandom = rand() % mainJoueur.size();
+    while(!mainJoueur[indexCarteRandom].estValide(CartesSurTable, atout, mainJoueur, raison))
+    {
+        indexCarteRandom = rand() % mainJoueur.size();
+    }
+    return indexCarteRandom;
+}
+
 int Joueur::botAction(std::vector<Carte> CartesSurTable, Couleur atout, std::vector<Carte> mainJoueur, std::string &raison)
 {
-    Carte carteJouee;
+    /* Carte carteJouee = mainJoueur[0];
     std::vector<Carte> cartesValides;
     
     for(int i = 0; i < mainJoueur.size(); i++)
@@ -206,20 +216,24 @@ int Joueur::botAction(std::vector<Carte> CartesSurTable, Couleur atout, std::vec
             {
                 std::cout<<std::endl;
                 std::cout<<"Le bot a joué le valet d'atout"<<std::endl;
+                carteJouee=mainJoueur[i];
                 return i+1;
             }
-            else if(mainJoueur[i].getChiffreStr() == "as" && mainJoueur[i].getCouleur() != atout && mainJoueur[i].estValide(CartesSurTable, atout, mainJoueur, raison))
+        }
+        for(int i = 0; i < mainJoueur.size(); i++)
+        {  
+            if(mainJoueur[i].getChiffreStr() == "as" && mainJoueur[i].getCouleur() != atout && mainJoueur[i].estValide(CartesSurTable, atout, mainJoueur, raison))
             {
                 std::cout<<std::endl;
                 std::cout<<"Le bot a joué un as de "<<mainJoueur[i].getCouleurStr()<<std::endl;
+                carteJouee=mainJoueur[i];
                 return i+1;
             }
-            carteJouee=mainJoueur[i];
         }
         
         // Si le bot n'a ni valet d'atout, ni d'as alors jouer la carte non atout la plus faible
         int index = botCarteFaible(mainJoueur, atout, CartesSurTable, raison);
-        carteJouee=mainJoueur[index];
+        carteJouee = mainJoueur[index];
         return index;
     }
     else if(mainJoueur.size() == 7)
@@ -232,7 +246,10 @@ int Joueur::botAction(std::vector<Carte> CartesSurTable, Couleur atout, std::vec
                 std::cout<<"Le bot a joué le neuf d'atout"<<std::endl;
                 return i+1;
             }
-            else if(carteJouee.getChiffreStr() == "as" && mainJoueur[i].getCouleur()!= atout && mainJoueur[i].estValide(CartesSurTable, atout, mainJoueur, raison) && mainJoueur[i].getChiffreStr() == "as")
+        }
+        for(int i = 0; i < mainJoueur.size(); i++)
+        {
+            if(carteJouee.getChiffreStr() == "as" && mainJoueur[i].getCouleur()!= atout && mainJoueur[i].estValide(CartesSurTable, atout, mainJoueur, raison) && mainJoueur[i].getChiffreStr() == "as")
             {
                 std::cout<<std::endl;
                 std::cout<<"Le bot a joué un as de "<<carteJouee.getCouleurStr()<<std::endl;
@@ -242,30 +259,6 @@ int Joueur::botAction(std::vector<Carte> CartesSurTable, Couleur atout, std::vec
         int index = botCarteFaible(mainJoueur, atout, CartesSurTable, raison);
         carteJouee=mainJoueur[index];
         return index;
-    }
-    else if(mainJoueur.size() == 6)
-    {
-        return 0;
-    }
-    else if(mainJoueur.size() == 5)
-    {
-        return 0;
-    }
-    else if(mainJoueur.size() == 4)
-    {
-      return 0;
-    }
-    else if(mainJoueur.size() == 3)
-    {
-        return 0;
-    }
-    else if(mainJoueur.size() == 2)
-    {
-        return 0;
-    }
-    else if(mainJoueur.size() == 1)
-    {
-       return 0;
-    }
-    return 0;
+    } */
+    return botCarteRandom(mainJoueur, atout, CartesSurTable, raison);
 }
