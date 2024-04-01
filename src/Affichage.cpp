@@ -36,11 +36,29 @@ void Affichage::init()
         }
     }
 
+    if(!settingsTexture.loadFromFile("../assets/settings.png"))
+    {
+        std::cerr << "Error loading settings texture" << std::endl;
+    }
+    else
+    {
+        std::cout << "Settings texture loaded" << std::endl;
+    }
+
+    if(!crossTexture.loadFromFile("../assets/cross.png"))
+    {
+        std::cerr << "Error loading cross texture" << std::endl;
+    }
+    else
+    {
+        std::cout << "Cross texture loaded" << std::endl;
+    }
+
     font = loadFont();
     window.create(sf::VideoMode(1920, 1080), "Belote");
     if (!ImGui::SFML::Init(window))
     {
-        std::cerr << "Erreur d'initialisation" << std::endl;
+        std::cerr << "Initialization error" << std::endl;
     }
     window.clear(sf::Color(0, 128, 0));
     titre.setFont(font);
@@ -73,13 +91,8 @@ void Affichage::init()
     texturesCouleurs[trefle].loadFromFile("../assets/couleurs/trefle.png");
 }
 
-void Affichage::jeu()
+void Affichage::mainJeu()
 {
-    bool menu = true;
-    bool prise = false;
-    bool jeu = false;
-    bool premierTour = true;
-    int indexJoueur = 0;
     sf::Clock deltaClock;
 
     while (window.isOpen())
@@ -94,52 +107,78 @@ void Affichage::jeu()
                 (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
                 window.close();
         }
-        menu ? menuLoop(menu, prise) : jeuLoop(prise, jeu, indexJoueur, premierTour);
+        menu ? menuLoop() : jeuLoop();
         ImGui::SFML::Render(window);
         window.display();
     }
     std::map<std::string, sf::Texture> textures;
 }
 
-void Affichage::menuLoop(bool &menu, bool &prise)
+void Affichage::menuLoop()
 {
-    window.draw(titre);
-    ImGui::SetNextWindowSize(ImVec2(600, 400), ImGuiCond_Once);
-    ImGui::SetNextWindowPos(ImVec2(window.getSize().x / 2., window.getSize().y * 2 / 3.), ImGuiCond_Once, ImVec2(0.5f, 0.5f));
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-    ImGui::Begin("Menu", &menu, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
-    const ImVec2 buttonSize(300, 60);
+    if(settings){
+        ImGui::SetNextWindowSize(ImVec2(600, 400), ImGuiCond_Once);
+        ImGui::SetNextWindowPos(ImVec2(window.getSize().x / 2., window.getSize().y * 2 / 3.), ImGuiCond_Once, ImVec2(0.5f, 0.5f));
+        ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+        ImGui::Begin("Settings", &settings, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+        ImGui::SetWindowSize(ImVec2(400, 300), ImGuiCond_Always);
+        ImGui::SetWindowPos(ImVec2(window.getSize().x / 2. - 200, window.getSize().y / 2. - 150), ImGuiCond_Always);
+        ImGui::Text("Settings");
+        ImGui::Separator();
+        ImGui::Text("Volume");
+        ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
+        ImGui::PushStyleColor(ImGuiCol_SliderGrabActive, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 0.0f, 0.1f));
+        ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.0f, 0.0f, 0.0f, 0.1f));
+        ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(0.0f, 0.0f, 0.0f, 0.1f));
+        ImGui::SliderFloat("##", &musicVolume, 0.0f, 100.0f, "", ImGuiSliderFlags_NoRoundToFormat);
+        ImGui::PopStyleColor(5);
+        ImGui::Separator();
+        ImGui::End();
+        ImGui::PopStyleColor(1);
+        ImGui::PopStyleVar(1);
+    } else {
+        window.draw(titre);
+        ImGui::SetNextWindowSize(ImVec2(600, 400), ImGuiCond_Once);
+        ImGui::SetNextWindowPos(ImVec2(window.getSize().x / 2., window.getSize().y * 2 / 3.), ImGuiCond_Once, ImVec2(0.5f, 0.5f));
+        ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+        ImGui::Begin("Menu", &menu, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+        const ImVec2 buttonSize(300, 60);
 
-    ImGui::SetCursorPosX((ImGui::GetWindowSize().x - buttonSize.x) / 2.0f);
-    ImGui::SetCursorPosY((ImGui::GetWindowSize().y - buttonSize.y) / 2.0f);
+        ImGui::SetCursorPosX((ImGui::GetWindowSize().x - buttonSize.x) / 2.0f);
+        ImGui::SetCursorPosY((ImGui::GetWindowSize().y - buttonSize.y) / 2.0f);
 
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.0f, 0.0f, 0.0f, 0.3f));
-    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.1f));
-    if (ImGui::Button("Jouer", buttonSize))
-    {
-        menu = false;
-        prise = true;
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.0f, 0.0f, 0.0f, 0.3f));
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.1f));
+        if (ImGui::Button("Jouer", buttonSize))
+        {
+            menu = false;
+            prise = true;
+        }
+        ImGui::PopStyleColor(2);
+        ImGui::End();
+        ImGui::PopStyleColor(1);
+        ImGui::PopStyleVar(1);
     }
-    ImGui::PopStyleColor(2);
-    ImGui::End();
-    ImGui::PopStyleColor(1);
-    ImGui::PopStyleVar(1);
+
+    showParameters();
 }
 
-void Affichage::jeuLoop(bool &prise, bool &jeu, int &indexJoueur, bool &premierTour)
+void Affichage::jeuLoop()
 {
     if (prise)
     {
-        animDistribution(prise, jeu, indexJoueur, premierTour);
+        animDistribution();
     }
     else
     {
-        jeuDePlis(indexJoueur, cartesG);
+        jeuDePlis(cartesG);
     }
 }
 
-void Affichage::animDistribution(bool &prise, bool &jeu, int &indexJoueur, bool &premierTour)
+void Affichage::animDistribution()
 {
 
     afficherMainRetourneeGraphiqueHaut1(5);
@@ -147,10 +186,10 @@ void Affichage::animDistribution(bool &prise, bool &jeu, int &indexJoueur, bool 
     afficherMainRetourneeGraphiqueGauche1(5);
     afficherMainGraphique(table.getMains()[indexJoueur]);
 
-    afficherCartePriseGraphique(prise, jeu, indexJoueur, premierTour);
+    afficherCartePriseGraphique();
 }
 
-void Affichage::afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJoueur, bool &premierTour)
+void Affichage::afficherCartePriseGraphique()
 {
     static bool isCarteRetourneeSet = false;
     if (!isCarteRetourneeSet && carteRetournee.getCouleur() == rien)
@@ -267,7 +306,7 @@ void Affichage::jouerCarte(int indexJoueur, int indexCarte)
     table.Mains[indexJoueur].getMain().erase(table.Mains[indexJoueur].getMain().begin() + indexCarte);
 }
 
-void Affichage::jeuDePlis(int &indexJoueur, std::vector<sf::Sprite> &cartesG)
+void Affichage::jeuDePlis(std::vector<sf::Sprite> &cartesG)
 {
     afficherMainRetourneeGraphiqueHaut1(table.getMains()[(indexJoueur + 2) % 4].getMain().size());
     afficherMainRetourneeGraphiqueDroite1(table.getMains()[(indexJoueur + 3) % 4].getMain().size());

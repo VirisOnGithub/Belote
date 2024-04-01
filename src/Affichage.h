@@ -26,31 +26,35 @@ private:
     Couleur atout;
     Carte carteRetournee;
     sf::Sprite sprite;
+    sf::Texture settingsTexture, crossTexture;
+    float musicVolume = 50;
     std::map<Couleur, sf::Texture> texturesCouleurs;
     std::vector<sf::Sprite> cartesG;
-    bool action = false;
+    bool action = false, menu = true, prise = false, jeu = false, premierTour = true, settings = false;
+    int indexJoueur = 0;
     std::string raison;
     int atoutPreneur;
 
 public:
     void init();
-    void jeu();
-    void menuLoop(bool &menu, bool &prise);
-    void jeuLoop(bool &prise, bool &jeu, int &indexJoueur, bool &premierTour);
+    void mainJeu();
+    void menuLoop();
+    void jeuLoop();
     sf::Font loadFont();
     void afficherMainGraphique(MainJoueur main);
-    void afficherCartePriseGraphique(bool &prise, bool &jeu, int &indexJoueur, bool &premierTour);
+    void afficherCartePriseGraphique();
     void afficherMainRetourneeGraphiqueHaut1(int nbCartes);
     void afficherMainRetourneeGraphiqueDroite1(int nbCartes);
     void afficherMainRetourneeGraphiqueGauche1(int nbCartes);
-    void animDistribution(bool &prise, bool &jeu, int &indexJoueur, bool &premierTour);
+    void animDistribution();
 
-    void jeuDePlis(int &indexJoueur, std::vector<sf::Sprite> &cartesG);
+    void jeuDePlis(std::vector<sf::Sprite> &cartesG);
     void showAtoutPreneur();
     void afficherCartesSurTable();
     void jouerCarte(int indexJoueur, int indexCarte);
     void showError(std::string message);
     void showTrumpTakerBadge(int indexJoueur);
+    void showParameters();
 };
 
 #endif // AFFICHAGE_H

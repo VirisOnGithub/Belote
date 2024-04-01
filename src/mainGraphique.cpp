@@ -5,6 +5,6 @@
 int main(){
     Affichage a;
     a.init();
-    a.jeu();
+    a.mainJeu();
     return 0;
 }

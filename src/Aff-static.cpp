@@ -1,5 +1,6 @@
 #include "Affichage.h"
 #include "imgui-master/imgui.h"
+#include <SFML/Graphics/Texture.hpp>
 
 const char *AtouttoStr(Couleur c)
 {
@@ -199,6 +200,22 @@ void Affichage::showTrumpTakerBadge(int indexJoueur)
     ImGui::SetWindowPos(pos, ImGuiCond_Always);
     ImGui::SetWindowSize(ImVec2(trumpSize+2, trumpSize+2), ImGuiCond_Always);
     ImGui::Image((void *)(uintptr_t)texturesCouleurs[atout].getNativeHandle(), ImVec2(50, 50));
+    ImGui::End();
+    ImGui::PopStyleColor(1);
+    ImGui::PopStyleVar(1);
+}
+
+void Affichage::showParameters(){
+    sf::Texture &texture = settings ? crossTexture : settingsTexture;
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+    ImGui::Begin("Parametres", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+    ImVec2 pos = ImVec2(window.getSize().x - 100, 50);
+    ImGui::SetWindowPos(pos, ImGuiCond_Once);
+    ImGui::SetWindowSize(ImVec2(75, 75), ImGuiCond_Always);
+    if (ImGui::ImageButton((void *)(uintptr_t)texture.getNativeHandle(), ImVec2(50, 50))) {
+        settings = !settings;
+    }
     ImGui::End();
     ImGui::PopStyleColor(1);
     ImGui::PopStyleVar(1);
