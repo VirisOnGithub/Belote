@@ -9,26 +9,24 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <vector>
 
-Table::Table()
-{
-    nbPlis = 0;
-    Equipe1 = Equipe();
-    Equipe2 = Equipe();
-    Mains = std::vector<MainJoueur>();
-    for (int i = 0; i < 4; i++)
-    {
-        MainJoueur m;
-        Mains.push_back(m);
-    }
-    CartesSurTable = std::vector<Carte>();
-    CartesJouees = std::vector<Carte>();
-    for (int i = 0; i < 4; i++)
-    {
-        Joueur j;
-        j.setRang(i);
-        Joueurs.push_back(j);
-    }
+Table::Table() {
+  nbPlis = 0;
+  Equipe1 = Equipe();
+  Equipe2 = Equipe();
+  Mains = std::vector<MainJoueur>();
+  for (int i = 0; i < 4; i++) {
+    MainJoueur m;
+    Mains.push_back(m);
+  }
+  CartesSurTable = std::vector<Carte>();
+  CartesJouees = std::vector<Carte>();
+  for (int i = 0; i < 4; i++) {
+    Joueur j;
+    j.setRang(i);
+    Joueurs.push_back(j);
+  }
 }
 
 void Table::setJoueurs(std::vector<Joueur> j)
@@ -396,6 +394,18 @@ void Table::changementOrdreJoueur(int index)
     std::sort(Joueurs.begin(), Joueurs.end(), [](const Joueur &a, const Joueur &b)
               { return a.getRang() < b.getRang(); });
     std::rotate(Joueurs.begin(), Joueurs.begin() + index, Joueurs.end());
+}
+
+void Table::changementOrdreMains(int index, std::vector<Joueur> &joueurs)
+{
+    std::vector<MainJoueur> newOrderMains;
+    for (const auto &joueur : joueurs)
+    {
+        newOrderMains.push_back(Mains[joueur.getRang()]);
+    }
+    Mains = newOrderMains;
+    std::rotate(Mains.begin(), Mains.begin() + index, Mains.end());
+    
 }
 
 int Table::getGagnant(std::vector<Carte> CartesSurTable, Couleur atout)

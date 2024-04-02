@@ -182,10 +182,15 @@ public:
 
     /**
      * @brief Changes the order of the players.
-     * @param joueurs The vector of players.
      * @param index The index of the player to be moved.
      */
     void changementOrdreJoueur(int index);
+
+    /**
+     * @brief Changes the order of the hands.
+     * @param index The index of the hand to be moved.
+     */
+    void changementOrdreMains(int index, std::vector<Joueur> &joueurs);
 
     /**
      * @brief Returns the index of the winner of a trick.

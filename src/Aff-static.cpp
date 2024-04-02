@@ -21,8 +21,7 @@ const char *AtouttoStr(Couleur c)
     }
 }
 
-void Affichage::afficherMainRetourneeGraphiqueHaut1(int nbCartes)
-{
+void Affichage::afficherMainRetourneeGraphiqueHaut1(int nbCartes){
     // Assurez-vous que la carte est définie
     sf::Texture texture;
     if (!texture.loadFromFile("../assets/back/BlueCardBack.png"))
@@ -166,13 +165,13 @@ void Affichage::showError(std::string message)
     ImVec2 pos = ImVec2(window.getSize().x - 500, 0);
     ImGui::SetWindowPos(pos, ImGuiCond_Once);
     ImGui::SetWindowSize(ImVec2(500, 50), ImGuiCond_Always);
-    ImGui::Text("%s", message.c_str());
+    ImGui::TextWrapped("%s", message.c_str());
     ImGui::End();
     ImGui::PopStyleColor(1);
     ImGui::PopStyleVar(1);
 }
 
-void Affichage::showTrumpTakerBadge(int indexJoueur)
+void Affichage::showTrumpTakerBadge()
 {
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);

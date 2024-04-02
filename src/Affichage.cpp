@@ -308,13 +308,13 @@ void Affichage::jouerCarte(int indexJoueur, int indexCarte)
 
 void Affichage::jeuDePlis(std::vector<sf::Sprite> &cartesG)
 {
-    afficherMainRetourneeGraphiqueHaut1(table.getMains()[(indexJoueur + 2) % 4].getMain().size());
-    afficherMainRetourneeGraphiqueDroite1(table.getMains()[(indexJoueur + 3) % 4].getMain().size());
-    afficherMainRetourneeGraphiqueGauche1(table.getMains()[(indexJoueur + 1) % 4].getMain().size());
-    afficherMainGraphique(table.getMains()[indexJoueur]);
+    afficherMainRetourneeGraphiqueHaut1(table.Mains[(indexJoueur + 2) % 4].main.size());
+    afficherMainRetourneeGraphiqueDroite1(table.Mains[(indexJoueur + 3) % 4].main.size());
+    afficherMainRetourneeGraphiqueGauche1(table.Mains[(indexJoueur + 1) % 4].main.size());
+    afficherMainGraphique(table.Mains[indexJoueur]);
     afficherCartesSurTable();
     showAtoutPreneur();
-    showTrumpTakerBadge(indexJoueur);
+    showTrumpTakerBadge();
     bool action = false;
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !action)
@@ -324,7 +324,7 @@ void Affichage::jeuDePlis(std::vector<sf::Sprite> &cartesG)
         {
             if (cartesG[i].getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
             {
-                if (table.Mains[indexJoueur].getMain()[i].estValide(table.CartesSurTable, atout, table.Mains[indexJoueur].getMain(), raison) && !action)
+                if (table.Mains[indexJoueur].main[i].estValide(table.CartesSurTable, atout, table.Mains[indexJoueur].main, raison) && !action)
                 {
                     action = true;
                     jouerCarte(indexJoueur, i);
@@ -351,9 +351,10 @@ void Affichage::jeuDePlis(std::vector<sf::Sprite> &cartesG)
         sf::sleep(sf::milliseconds(1000));
         indexJoueur = table.getGagnant(table.CartesJouees, atout);
         table.changementOrdreJoueur(indexJoueur);
+        table.changementOrdreMains(indexJoueur, table.Joueurs);
         for (int i = 0; i < 4; i++)
         {
-            table.CartesJouees.push_back(table.getCartesSurTable()[i]);
+            table.CartesJouees.push_back(table.CartesSurTable[i]);
         }
         table.CartesSurTable.clear();
     }

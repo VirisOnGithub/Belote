@@ -53,7 +53,7 @@ public:
     void afficherCartesSurTable();
     void jouerCarte(int indexJoueur, int indexCarte);
     void showError(std::string message);
-    void showTrumpTakerBadge(int indexJoueur);
+    void showTrumpTakerBadge();
     void showParameters();
 };
 
