@@ -1,6 +1,7 @@
 #include "Affichage.h"
 #include "imgui-master/imgui.h"
 #include <SFML/Graphics/Texture.hpp>
+#include <cassert>
 
 const char *AtouttoStr(Couleur c)
 {
@@ -91,6 +92,7 @@ void Affichage::afficherMainRetourneeGraphiqueGauche1(int nbCartes)
 
 void Affichage::afficherMainGraphique(MainJoueur main)
 {
+    assert(!main.main.empty());
     int nbCartesAffichees = main.getCartesG().size();
     cartesG.clear();
     auto cartes = main.getCartesG();
@@ -114,11 +116,11 @@ void Affichage::afficherMainGraphique(MainJoueur main)
     {
         int CardWidth = textures[cartes[0]]->getSize().x * cartesG[0].getScale().x;  // Prendre en compte l'échelle de la carte
         int CardHeight = textures[cartes[0]]->getSize().y * cartesG[0].getScale().y; // Prendre en compte l'échelle de la carte
-        float totalWidth = cartesG.size() * CardWidth;                               // La largeur totale des cartes
+        float totalWidth = (cartesG.size()+1)/2. * CardWidth;                               // La largeur totale des cartes
 
         for (int i = 0; i < cartesG.size(); i++)
         {
-            cartesG[i].setPosition((window.getSize().x - totalWidth) / 2.0f + i * (CardWidth), window.getSize().y - CardHeight / 2.);
+            cartesG[i].setPosition((window.getSize().x - totalWidth) / 2.0f + i * (CardWidth/2.0f), window.getSize().y - CardHeight / 2.);
             window.draw(cartesG[i]);
         }
     }
@@ -214,6 +216,20 @@ void Affichage::showParameters(){
     if (ImGui::ImageButton((void *)(uintptr_t)texture.getNativeHandle(), ImVec2(50, 50))) {
         settings = !settings;
     }
+    ImGui::End();
+    ImGui::PopStyleColor(1);
+    ImGui::PopStyleVar(1);
+}
+
+void Affichage::showScores(){
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+    ImGui::Begin("Scores", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+    ImVec2 pos = ImVec2(150, window.getSize().y - 50);
+    ImGui::SetWindowPos(pos, ImGuiCond_Once);
+    ImGui::SetWindowSize(ImVec2(250, 50), ImGuiCond_Always);
+    ImGui::Text("Score equipe 1 : %d", table.Equipe1.getScore());
+    ImGui::Text("Score equipe 2 : %d", table.Equipe2.getScore());
     ImGui::End();
     ImGui::PopStyleColor(1);
     ImGui::PopStyleVar(1);

@@ -136,9 +136,8 @@ public:
 
     /**
      * @brief Sorts the players' hands.
-     * @param m The vector of hands to be sorted.
      */
-    void trierMains(std::vector<MainJoueur> &m);
+    void trierMains();
 
     /**
      * @brief Distributes 3 cards to a player.

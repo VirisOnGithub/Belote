@@ -120,7 +120,7 @@ void Table::jeu()
     if (atout != rien)
     {
         distribuer2(paquet);
-        trierMains(Mains);
+        trierMains();
         afficherMains();
         mettreCarteAtout(Mains, atout);
         for (int i = 0; i < 8; i++)
@@ -170,7 +170,7 @@ void Table::jeu()
     }
 }
 
-void Table::trierMains(std::vector<MainJoueur> &m)
+void Table::trierMains()
 {
     for (int i = 0; i < 4; i++)
     {

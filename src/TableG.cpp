@@ -8,4 +8,5 @@ void Table::jeuGraphique(PaquetDeCarte &p, Couleur atout){
     atout = rien;
     p.melanger();
     distribuer1(p);
+    trierMains();
 }

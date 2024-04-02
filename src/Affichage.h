@@ -5,6 +5,7 @@
 #include "MainJoueur.h"
 #include "PaquetDeCarte.h"
 #include "Table.h"
+#include "imgui-master/imgui.h"
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
@@ -34,6 +35,7 @@ private:
     int indexJoueur = 0;
     std::string raison;
     int atoutPreneur;
+    int cptTour;
 
 public:
     void init();
@@ -55,6 +57,7 @@ public:
     void showError(std::string message);
     void showTrumpTakerBadge();
     void showParameters();
+    void showScores();
 };
 
 #endif // AFFICHAGE_H

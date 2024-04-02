@@ -3,6 +3,7 @@
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Window/Event.hpp>
+#include <cassert>
 #include <iostream>
 #include "Carte.h"
 #include "MainJoueur.h"
@@ -89,6 +90,7 @@ void Affichage::init()
     texturesCouleurs[carreau].loadFromFile("../assets/couleurs/carreau.png");
     texturesCouleurs[pique].loadFromFile("../assets/couleurs/pique.png");
     texturesCouleurs[trefle].loadFromFile("../assets/couleurs/trefle.png");
+    cptTour = 0;
 }
 
 void Affichage::mainJeu()
@@ -216,6 +218,7 @@ void Affichage::afficherCartePriseGraphique()
             atout = carteRetournee.getCouleur();
             table.getMains()[indexJoueur].addCarte(carteRetournee);
             table.distribuer2(p);
+            table.trierMains();
         }
         ImGui::SameLine();
         if (ImGui::Button("Je passe", ImVec2(100, 30)))
@@ -249,6 +252,7 @@ void Affichage::afficherCartePriseGraphique()
                     jeu = true;
                     table.getMains()[indexJoueur].addCarte(carteRetournee);
                     table.distribuer2(p);
+                    table.trierMains();
                 }
                 ImGui::PopStyleColor(2);
                 if (couleurBouton != couleurs.back() || couleurBouton == atout)
@@ -314,6 +318,7 @@ void Affichage::jeuDePlis(std::vector<sf::Sprite> &cartesG)
     afficherMainGraphique(table.Mains[indexJoueur]);
     afficherCartesSurTable();
     showAtoutPreneur();
+    showScores();
     showTrumpTakerBadge();
     bool action = false;
 
@@ -348,8 +353,26 @@ void Affichage::jeuDePlis(std::vector<sf::Sprite> &cartesG)
     showError(raison);
     if (table.CartesSurTable.size() == 4)
     {
+        cptTour++;
         sf::sleep(sf::milliseconds(1000));
-        indexJoueur = table.getGagnant(table.CartesJouees, atout);
+        indexJoueur = table.getGagnant(table.CartesSurTable, atout);
+        int points = table.getPointsSurTable(atout);
+        if (indexJoueur == 0 || indexJoueur == 2)
+        {
+            table.Equipe1.addScore(points);
+            if (cptTour == 7)
+            {
+                table.Equipe1.addScore(10);
+            }
+        }
+        else
+        {
+            table.Equipe2.addScore(points);
+            if (cptTour == 7)
+            {
+                table.Equipe2.addScore(10);
+            }
+        }
         table.changementOrdreJoueur(indexJoueur);
         table.changementOrdreMains(indexJoueur, table.Joueurs);
         for (int i = 0; i < 4; i++)
