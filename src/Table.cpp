@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
+#include <cassert>
 #include <cstdlib>
 #include <iostream>
 #include <string>
@@ -190,6 +191,7 @@ void Table::coupe(PaquetDeCarte &p)
 
 void Table::tourDeJeu(Joueur &joueur, Couleur atout)
 {
+    std::this_thread::sleep_for(std::chrono::seconds(2));
     int indexCarte;
     std::string nomAtout;
     switch (atout)
@@ -209,8 +211,11 @@ void Table::tourDeJeu(Joueur &joueur, Couleur atout)
     default:
         break;
     }
+    for(auto& joueur : Joueurs){
+        std::cout << "Joueur " << joueur.getRang() + 1 << " est un bot : " << joueur.getEstBot() << std::endl;
+    }
     std::cout << "C'est au tour du joueur " << joueur.getRang() + 1 << std::endl;
-    std::cout << "Le joueur est un bot : " << Joueurs[joueur.getRang()].getEstBot() << std::endl;
+    std::cout << "Le joueur est un bot : " << joueur.getEstBot() << std::endl;
     std::string raisonRefus = "";
     do
     {
@@ -226,7 +231,7 @@ void Table::tourDeJeu(Joueur &joueur, Couleur atout)
                   << std::endl;
         Mains[joueur.getRang()].afficherMain();
 
-        indexCarte = Joueurs[joueur.getRang()].demanderCarte(CartesSurTable, atout, Mains[joueur.getRang()].getMain(), raisonRefus) - 1; // -1 car l'index commence à 0
+        indexCarte = joueur.demanderCarte(CartesSurTable, atout, Mains[joueur.getRang()].getMain(), raisonRefus) - 1; // -1 car l'index commence à 0
     } while (indexCarte < 0 || indexCarte >= Mains[joueur.getRang()].getMain().size() || !Mains[joueur.getRang()].getMain()[indexCarte].estValide(CartesSurTable, atout, Mains[joueur.getRang()].getMain(), raisonRefus));
 
     CartesSurTable.push_back(Mains[joueur.getRang()].getMain()[indexCarte]);
@@ -358,6 +363,7 @@ void Table::prise(PaquetDeCarte &p, Couleur &atout)
                 {
                     std::cin >> couleur;
                 }
+                assert(couleur >= 0 && couleur <= 3);
                 atout = static_cast<Couleur>(couleur);
                 Mains[i].addCarte(carteRetournee);
                 break;

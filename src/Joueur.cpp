@@ -47,7 +47,7 @@ void Joueur::setMain(const MainJoueur& main) {
     this->main = main;
 }
 
-bool Joueur::getEstBot()
+bool Joueur::getEstBot() const
 {
     return estBot;
 }
@@ -70,7 +70,7 @@ int Joueur::demanderCarte(std::vector<Carte> CartesSurTable, Couleur atout, std:
     if(estBot)
     {
         return botAction(CartesSurTable, atout, mainJoueur, raison);
-        std::cout << std::endl;
+        std::cout << std::endl << std::endl;
     }
     else
     {

@@ -70,7 +70,7 @@ public:
      * 
      * @return true if the player is a bot, false otherwise.
      */
-    bool getEstBot();
+    bool getEstBot() const;
 
     /**
      * @brief Sets the flag indicating whether the player is a bot or not.
