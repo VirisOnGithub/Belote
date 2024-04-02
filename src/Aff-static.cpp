@@ -180,7 +180,6 @@ void Affichage::showTrumpTakerBadge(int indexJoueur)
     ImVec2 pos;
     int res = (atoutPreneur-indexJoueur+4)%4;
     float trumpSize = texturesCouleurs[atout].getSize().x;
-    std::cout << "res : " << res << std::endl;
     float CardHeight = 303/2., CardWidth = 208/2.;
     switch (res)
     {
