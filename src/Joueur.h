@@ -15,6 +15,7 @@ private:
     std::string nom; // The player's name
     int rang;        // The player's rank
     bool estBot;     // True if the player is a bot, false otherwise
+    bool aPris;
 
 public:
     /**
@@ -79,6 +80,10 @@ public:
      */
     void setEstBot(bool estBot);
 
+    bool getAPris() const;
+
+    void setAPris(bool aPris);
+
     /**
      * @brief Displays information about the player.
      */
@@ -88,7 +93,7 @@ public:
      * @brief Asks the player to choose a card.
      * @return The index of the chosen card.
      */
-    int demanderCarte(std::vector<Carte> CartesSurTable, Couleur atout, std::vector<Carte> mainJoueur, std::string &raison);
+    int demanderCarte(int indice,std::vector<Carte> CartesSurTable, Couleur atout, std::vector<Carte> mainJoueur,std::vector<Joueur> Joueurs, std::string &raison);
 
     /**
      * @brief Displays the player's hand.
@@ -105,11 +110,15 @@ public:
      */
     std::pair<int, Couleur> botPrise(Carte CarteAtout, std::vector<Carte> mainBot,bool tour2);
 
-    int botAction(std::vector<Carte> CartesSurTable, Couleur atout, std::vector<Carte> mainJoueur, std::string &raison);
+    int botAction(int indice,std::vector<Carte> CartesSurTable, Couleur atout, std::vector<Carte> mainJoueur,std::vector<Joueur> Joueurs, std::string &raison);
 
     int botCarteFaible(std::vector<Carte> mainJoueur, Couleur atout, std::vector<Carte> CartesSurTable, std::string &raison);
 
-    int botCarteForte( std::vector<Carte> mainJoueur, Couleur atout, std::vector<Carte> CartesSurTable, std::string &raison);
+    int botCarteFaibleAtout(std::vector<Carte> mainJoueur, Couleur atout, std::vector<Carte> CartesSurTable, std::string &raison);
+
+    int botCarteForte(std::vector<Carte> mainJoueur, Couleur atout, std::vector<Carte> CartesSurTable, std::string &raison);
+
+    int botCarteForteAtout(std::vector<Carte> mainJoueur, Couleur atout, std::vector<Carte> CartesSurTable, std::string &raison);
 
     int botCarteRandom(std::vector<Carte> mainJoueur, Couleur atout, std::vector<Carte> CartesSurTable, std::string &raison);
 };

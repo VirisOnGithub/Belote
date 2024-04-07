@@ -229,7 +229,7 @@ void Table::tourDeJeu(Joueur &joueur, Couleur atout)
                   << std::endl;
         Mains[joueur.getRang()].afficherMain();
 
-        indexCarte = joueur.demanderCarte(CartesSurTable, atout, Mains[joueur.getRang()].getMain(), raisonRefus) - 1; // -1 car l'index commence à 0
+        indexCarte = joueur.demanderCarte(joueur.getRang(),CartesSurTable, atout, Mains[joueur.getRang()].getMain(),Joueurs, raisonRefus) - 1; // -1 car l'index commence à 0
     } while (indexCarte < 0 || indexCarte >= Mains[joueur.getRang()].getMain().size() || !Mains[joueur.getRang()].getMain()[indexCarte].estValide(CartesSurTable, atout, Mains[joueur.getRang()].getMain(), raisonRefus));
 
     CartesSurTable.push_back(Mains[joueur.getRang()].getMain()[indexCarte]);
@@ -320,6 +320,7 @@ void Table::prise(PaquetDeCarte &p, Couleur &atout)
 
         if (prise)
         {
+            Joueurs[i].setAPris(true);
             atout = carteRetournee.getCouleur();
             Mains[i].addCarte(carteRetournee);
             break;
