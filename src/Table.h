@@ -217,18 +217,43 @@ public:
      */
     void coupe(PaquetDeCarte &p);
 
+    /**
+     * @brief Waits for user input.
+     */
     void attente();
 
+    /**
+     * @brief Returns the points on the table for a given trump suit.
+     * @param atout The trump suit.
+     * @return The points on the table.
+     */
     unsigned int getPointsSurTable(Couleur atout);
 
+    /**
+     * @brief Initializes the game.
+     */
     void initGame();
 
+    /**
+     * @brief Plays the game.
+     */
     void playGame();
 
+    /**
+     * @brief Plays the game with graphical interface.
+     * @param p The deck of cards.
+     * @param atout The trump suit.
+     */
     void jeuGraphique(PaquetDeCarte &p, Couleur atout);
 
+    /**
+     * @brief Shows the cards in graphical interface.
+     */
     void montrerCartesG();
 
+    /**
+     * @brief Performs regression testing.
+     */
     void testregression();
 };
 

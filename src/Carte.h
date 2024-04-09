@@ -131,8 +131,20 @@ public:
      */
     ValeurCarteNonAtout getValeurNonAtout() const;
 
+    /**
+     * Determines whether the current card is better than the given card.
+     *
+     * @param carte1 The card to compare with.
+     * @param atout The trump suit.
+     * @return True if the current card is better, false otherwise.
+     */
     bool estMeilleure(Carte carte1, Couleur atout) const;
 
+    /**
+     * @brief Get the CarteG object as an sf::String.
+     *
+     * @return sf::String The CarteG object as an sf::String.
+     */
     sf::String getCarteG();
 };
 

@@ -13,67 +13,74 @@ class MainJoueur
 {
     friend class Table;
     friend class Affichage;
-    private:
-        std::vector<Carte> main; /**< The vector of cards representing the player's hand. */
 
-    public:
-        /**
-        * @brief Default constructor for MainJoueur.
-        */
-        MainJoueur();
+private:
+    std::vector<Carte> main; /**< The vector of cards representing the player's hand. */
 
-        /**
-        * @brief Assignment operator for MainJoueur.
-        * @param autre The MainJoueur object to assign from.
-        * @return A reference to the assigned MainJoueur object.
-        */
-        MainJoueur &operator=(const MainJoueur &autre);
+public:
+    /**
+     * @brief Default constructor for MainJoueur.
+     */
+    MainJoueur();
 
-        /**
-        * @brief Index operator for accessing cards in the player's hand.
-        * @param index The index of the card to access.
-        * @return The value of the card at the specified index.
-        */
-        int operator[](int index);
+    /**
+     * @brief Assignment operator for MainJoueur.
+     * @param autre The MainJoueur object to assign from.
+     * @return A reference to the assigned MainJoueur object.
+     */
+    MainJoueur &operator=(const MainJoueur &autre);
 
-        /**
-        * @brief Getter for the player's hand.
-        * @return A reference to the vector of cards representing the player's hand.
-        */
-        std::vector<Carte> &getMain();
+    /**
+     * @brief Index operator for accessing cards in the player's hand.
+     * @param index The index of the card to access.
+     * @return The value of the card at the specified index.
+     */
+    int operator[](int index);
 
-        /**
-        * @brief Setter for the player's hand.
-        * @param main The new hand to set.
-        */
-        void setMain(MainJoueur &main);
+    /**
+     * @brief Getter for the player's hand.
+     * @return A reference to the vector of cards representing the player's hand.
+     */
+    std::vector<Carte> &getMain();
 
-        /**
-        * @brief Adds a card to the player's hand.
-        * @param carte The card to add.
-        */
-        void addCarte(Carte carte);
+    /**
+     * @brief Setter for the player's hand.
+     * @param main The new hand to set.
+     */
+    void setMain(MainJoueur &main);
 
-        /**
-        * @brief Displays the player's hand.
-        */
-        void afficherMain() const;
+    /**
+     * @brief Adds a card to the player's hand.
+     * @param carte The card to add.
+     */
+    void addCarte(Carte carte);
 
-        /**
-        * @brief Sorts the player's hand in ascending order.
-        */
-        void trierMain();
+    /**
+     * @brief Displays the player's hand.
+     */
+    void afficherMain() const;
 
-        /**
-        * @brief Plays a card from the player's hand at the specified index.
-        * @param index The index of the card to play.
-        */
-        void jouerCarte(int index);
+    /**
+     * @brief Sorts the player's hand in ascending order.
+     */
+    void trierMain();
 
+    /**
+     * @brief Plays a card from the player's hand at the specified index.
+     * @param index The index of the card to play.
+     */
+    void jouerCarte(int index);
 
+    // GRAPHIQUE
 
-        // GRAPHIQUE
-
+    /**
+     * @brief A container that represents a dynamic array of sf::String objects.
+     *
+     * This container provides a flexible way to store and manipulate a collection of sf::String objects.
+     * It automatically manages the memory allocation and deallocation for the stored objects.
+     *
+     * @tparam T The type of elements stored in the vector.
+     */
     std::vector<sf::String> getCartesG();
 };
 
