@@ -22,7 +22,8 @@ const char *AtouttoStr(Couleur c)
     }
 }
 
-void Affichage::afficherMainRetourneeGraphiqueHaut1(int nbCartes){
+void Affichage::afficherMainRetourneeGraphiqueHaut1(int nbCartes)
+{
     // Assurez-vous que la carte est définie
     sf::Texture texture;
     if (!texture.loadFromFile("../assets/back/BlueCardBack.png"))
@@ -116,11 +117,11 @@ void Affichage::afficherMainGraphique(MainJoueur main)
     {
         int CardWidth = textures[cartes[0]]->getSize().x * cartesG[0].getScale().x;  // Prendre en compte l'échelle de la carte
         int CardHeight = textures[cartes[0]]->getSize().y * cartesG[0].getScale().y; // Prendre en compte l'échelle de la carte
-        float totalWidth = (cartesG.size()+1)/2. * CardWidth;                               // La largeur totale des cartes
+        float totalWidth = (cartesG.size() + 1) / 2. * CardWidth;                    // La largeur totale des cartes
 
         for (int i = 0; i < cartesG.size(); i++)
         {
-            cartesG[i].setPosition((window.getSize().x - totalWidth) / 2.0f + i * (CardWidth/2.0f), window.getSize().y - CardHeight / 2.);
+            cartesG[i].setPosition((window.getSize().x - totalWidth) / 2.0f + i * (CardWidth / 2.0f), window.getSize().y - CardHeight / 2.);
             window.draw(cartesG[i]);
         }
     }
@@ -179,33 +180,34 @@ void Affichage::showTrumpTakerBadge()
     ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
     ImGui::Begin("AtoutBadge", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
     ImVec2 pos;
-    int res = (atoutPreneur-indexJoueur+4)%4;
+    int res = (atoutPreneur - indexJoueur + 4) % 4;
     float trumpSize = texturesCouleurs[atout].getSize().x;
-    float CardHeight = 303/2., CardWidth = 208/2.;
+    float CardHeight = 303 / 2., CardWidth = 208 / 2.;
     switch (res)
     {
-        case 0:
-            pos = ImVec2(window.getSize().x/2. - trumpSize/2, window.getSize().y - CardHeight - trumpSize);
-            break;
-        case 1:
-            pos = ImVec2(CardWidth + trumpSize, window.getSize().y/2. - trumpSize/2);
-            break;
-        case 2:
-            pos = ImVec2(window.getSize().x/2. -trumpSize/2, CardHeight + trumpSize);
-            break;
-        default:
-            pos = ImVec2(window.getSize().x - CardWidth - trumpSize, window.getSize().y/2. - trumpSize/2);
-            break;
+    case 0:
+        pos = ImVec2(window.getSize().x / 2. - trumpSize / 2, window.getSize().y - CardHeight - trumpSize);
+        break;
+    case 1:
+        pos = ImVec2(CardWidth + trumpSize, window.getSize().y / 2. - trumpSize / 2);
+        break;
+    case 2:
+        pos = ImVec2(window.getSize().x / 2. - trumpSize / 2, CardHeight + trumpSize);
+        break;
+    default:
+        pos = ImVec2(window.getSize().x - CardWidth - trumpSize, window.getSize().y / 2. - trumpSize / 2);
+        break;
     }
     ImGui::SetWindowPos(pos, ImGuiCond_Always);
-    ImGui::SetWindowSize(ImVec2(trumpSize+2, trumpSize+2), ImGuiCond_Always);
+    ImGui::SetWindowSize(ImVec2(trumpSize + 2, trumpSize + 2), ImGuiCond_Always);
     ImGui::Image((void *)(uintptr_t)texturesCouleurs[atout].getNativeHandle(), ImVec2(50, 50));
     ImGui::End();
     ImGui::PopStyleColor(1);
     ImGui::PopStyleVar(1);
 }
 
-void Affichage::showParameters(){
+void Affichage::showParameters()
+{
     sf::Texture &texture = settings ? crossTexture : settingsTexture;
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
@@ -213,7 +215,8 @@ void Affichage::showParameters(){
     ImVec2 pos = ImVec2(window.getSize().x - 100, 50);
     ImGui::SetWindowPos(pos, ImGuiCond_Once);
     ImGui::SetWindowSize(ImVec2(75, 75), ImGuiCond_Always);
-    if (ImGui::ImageButton((void *)(uintptr_t)texture.getNativeHandle(), ImVec2(50, 50))) {
+    if (ImGui::ImageButton((void *)(uintptr_t)texture.getNativeHandle(), ImVec2(50, 50)))
+    {
         settings = !settings;
     }
     ImGui::End();
@@ -221,7 +224,8 @@ void Affichage::showParameters(){
     ImGui::PopStyleVar(1);
 }
 
-void Affichage::showScores(){
+void Affichage::showScores()
+{
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
     ImGui::Begin("Scores", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
@@ -230,6 +234,20 @@ void Affichage::showScores(){
     ImGui::SetWindowSize(ImVec2(250, 50), ImGuiCond_Always);
     ImGui::Text("Score equipe 1 : %d", table.Equipe1.getScore());
     ImGui::Text("Score equipe 2 : %d", table.Equipe2.getScore());
+    ImGui::End();
+    ImGui::PopStyleColor(1);
+    ImGui::PopStyleVar(1);
+}
+
+void Affichage::showJoueur()
+{
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+    ImGui::Begin("Joueur", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+    ImVec2 pos = ImVec2(50, window.getSize().y - 50);
+    ImGui::SetWindowPos(pos, ImGuiCond_Once);
+    ImGui::SetWindowSize(ImVec2(250, 50), ImGuiCond_Always);
+    ImGui::Text("Joueur %d", indexJoueur + 1);
     ImGui::End();
     ImGui::PopStyleColor(1);
     ImGui::PopStyleVar(1);

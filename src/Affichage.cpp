@@ -37,7 +37,7 @@ void Affichage::init()
         }
     }
 
-    if(!settingsTexture.loadFromFile("../assets/settings.png"))
+    if (!settingsTexture.loadFromFile("../assets/settings.png"))
     {
         std::cerr << "Error loading settings texture" << std::endl;
     }
@@ -46,7 +46,7 @@ void Affichage::init()
         std::cout << "Settings texture loaded" << std::endl;
     }
 
-    if(!crossTexture.loadFromFile("../assets/cross.png"))
+    if (!crossTexture.loadFromFile("../assets/cross.png"))
     {
         std::cerr << "Error loading cross texture" << std::endl;
     }
@@ -118,7 +118,8 @@ void Affichage::mainJeu()
 
 void Affichage::menuLoop()
 {
-    if(settings){
+    if (settings)
+    {
         ImGui::SetNextWindowSize(ImVec2(600, 400), ImGuiCond_Once);
         ImGui::SetNextWindowPos(ImVec2(window.getSize().x / 2., window.getSize().y * 2 / 3.), ImGuiCond_Once, ImVec2(0.5f, 0.5f));
         ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
@@ -140,7 +141,9 @@ void Affichage::menuLoop()
         ImGui::End();
         ImGui::PopStyleColor(1);
         ImGui::PopStyleVar(1);
-    } else {
+    }
+    else
+    {
         window.draw(titre);
         ImGui::SetNextWindowSize(ImVec2(600, 400), ImGuiCond_Once);
         ImGui::SetNextWindowPos(ImVec2(window.getSize().x / 2., window.getSize().y * 2 / 3.), ImGuiCond_Once, ImVec2(0.5f, 0.5f));
@@ -189,6 +192,7 @@ void Affichage::animDistribution()
     afficherMainGraphique(table.getMains()[indexJoueur]);
 
     afficherCartePriseGraphique();
+    showJoueur();
 }
 
 void Affichage::afficherCartePriseGraphique()
@@ -320,6 +324,7 @@ void Affichage::jeuDePlis(std::vector<sf::Sprite> &cartesG)
     showAtoutPreneur();
     showScores();
     showTrumpTakerBadge();
+    showJoueur();
     bool action = false;
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !action)

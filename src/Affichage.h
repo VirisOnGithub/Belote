@@ -58,6 +58,7 @@ public:
     void showTrumpTakerBadge();
     void showParameters();
     void showScores();
+    void showJoueur();
 };
 
 #endif // AFFICHAGE_H
