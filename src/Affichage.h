@@ -6,6 +6,7 @@
 #include "PaquetDeCarte.h"
 #include "Table.h"
 #include "imgui-master/imgui.h"
+#include <SFML/Audio/Music.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
@@ -32,6 +33,7 @@ private:
     sf::RenderWindow window;                                                                            /**< The game window for rendering graphics. */
     sf::Font font;                                                                                      /**< The font used for displaying text. */
     sf::Text titre;                                                                                     /**< The title text displayed on the game window. */
+    sf::Music music;                                                                                    /**< The background music for the game. */
     std::map<sf::String, std::shared_ptr<sf::Texture>> textures;                                        /**< A map of textures used in the game. */
     Table table;                                                                                        /**< The game table where cards are played. */
     PaquetDeCarte p;                                                                                    /**< The deck of cards used in the game. */
@@ -68,6 +70,10 @@ public:
      * @brief Starts the game loop.
      */
     void jeuLoop();
+    /**
+     * @brief Loads the game music.
+    */
+    void loadMusic();
 
     /**
      * @brief Loads the game font.

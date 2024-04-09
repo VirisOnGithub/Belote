@@ -58,6 +58,7 @@ void Affichage::init()
     }
 
     font = loadFont();
+    loadMusic();
     window.create(sf::VideoMode(1920, 1080), "Belote");
     if (!ImGui::SFML::Init(window))
     {
@@ -138,6 +139,7 @@ void Affichage::menuLoop()
         ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.0f, 0.0f, 0.0f, 0.1f));
         ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(0.0f, 0.0f, 0.0f, 0.1f));
         ImGui::SliderFloat("##", &musicVolume, 0.0f, 100.0f, "", ImGuiSliderFlags_NoRoundToFormat);
+        music.setVolume(musicVolume);
         ImGui::PopStyleColor(5);
         ImGui::Separator();
         ImGui::End();

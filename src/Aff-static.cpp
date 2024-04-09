@@ -2,6 +2,7 @@
 #include "imgui-master/imgui.h"
 #include <SFML/Graphics/Texture.hpp>
 #include <cassert>
+#include <SFML/Audio/Music.hpp>
 
 const char *AtouttoStr(Couleur c)
 {
@@ -20,6 +21,17 @@ const char *AtouttoStr(Couleur c)
     default:
         return "erreur";
     }
+}
+
+void Affichage::loadMusic()
+{
+    if (!music.openFromFile("../assets/mix.ogg"))
+    {
+        std::cerr << "Erreur de chargement de la musique" << std::endl;
+    }
+    music.setLoop(true);
+    music.setVolume(0);
+    music.play();
 }
 
 void Affichage::afficherMainRetourneeGraphiqueHaut1(int nbCartes)
