@@ -15,7 +15,7 @@ private:
     std::string nom; // The player's name
     int rang;        // The player's rank
     bool estBot;     // True if the player is a bot, false otherwise
-    bool aPris;
+    bool aPris;      // True if the player takes the card in the middle
 
 public:
     /**

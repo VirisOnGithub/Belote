@@ -9,6 +9,7 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <utility>
 #include <vector>
 
 Table::Table() {
@@ -406,7 +407,7 @@ void Table::changementOrdreMains(int index, std::vector<Joueur> &joueurs)
     }
     Mains = newOrderMains;
     std::rotate(Mains.begin(), Mains.begin() + index, Mains.end());
-    
+    std::swap(Mains[1], Mains[3]);
 }
 
 int Table::getGagnant(std::vector<Carte> CartesSurTable, Couleur atout)

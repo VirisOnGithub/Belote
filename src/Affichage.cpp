@@ -13,6 +13,7 @@
 #include "imgui-sfml/imgui-SFML.h"
 #include <memory>
 #include <map>
+#include <ostream>
 #include <string>
 #include <vector>
 
@@ -361,6 +362,7 @@ void Affichage::jeuDePlis(std::vector<sf::Sprite> &cartesG)
         cptTour++;
         sf::sleep(sf::milliseconds(1000));
         indexJoueur = table.getGagnant(table.CartesSurTable, atout);
+        std::cout << indexJoueur << std::endl;
         int points = table.getPointsSurTable(atout);
         if (indexJoueur == 0 || indexJoueur == 2)
         {
