@@ -183,9 +183,12 @@ void Affichage::jeuLoop()
     }
     else
     {
-        try {
+        try
+        {
             jeuDePlis(cartesG);
-        } catch (const std::bad_array_new_length &e) {
+        }
+        catch (const std::bad_array_new_length &e)
+        {
             std::cerr << e.what() << std::endl;
         }
     }
@@ -197,7 +200,10 @@ void Affichage::animDistribution()
     afficherMainRetourneeGraphiqueHaut1(5);
     afficherMainRetourneeGraphiqueDroite1(5);
     afficherMainRetourneeGraphiqueGauche1(5);
-    afficherMainGraphique(table.getMains()[indexJoueur]);
+    if (!table.Mains[indexJoueur].main.empty())
+    {
+        afficherMainGraphique(table.Mains[indexJoueur]);
+    }
 
     afficherCartePriseGraphique();
     showJoueur();
@@ -314,7 +320,15 @@ void Affichage::afficherCartesSurTable()
 
 void Affichage::jouerCarte(int indexJoueur, int indexCarte)
 {
-    table.CartesSurTable.push_back(table.Mains[indexJoueur].getMain()[indexCarte]);
+    if (table.Mains[indexJoueur].getMain().empty())
+    {
+        // Le vecteur est vide, ne pas l'utiliser
+    }
+    else
+    {
+        // Le vecteur n'est pas vide, vous pouvez l'utiliser
+        table.CartesSurTable.push_back(table.Mains[indexJoueur].getMain()[indexCarte]);
+    }
     assert(indexJoueur >= 0);
     assert(indexJoueur < table.Mains.size());
     assert(indexCarte >= 0);
@@ -324,10 +338,14 @@ void Affichage::jouerCarte(int indexJoueur, int indexCarte)
 
 void Affichage::jeuDePlis(std::vector<sf::Sprite> &cartesG)
 {
+    // std::lock_guard<std::mutex> lock(mtx);
     afficherMainRetourneeGraphiqueHaut1(table.Mains[(indexJoueur + 2) % 4].main.size());
     afficherMainRetourneeGraphiqueDroite1(table.Mains[(indexJoueur + 3) % 4].main.size());
     afficherMainRetourneeGraphiqueGauche1(table.Mains[(indexJoueur + 1) % 4].main.size());
-    afficherMainGraphique(table.Mains[indexJoueur]);
+    if (!table.Mains[indexJoueur].main.empty())
+    {
+        afficherMainGraphique(table.Mains[indexJoueur]);
+    }
     afficherCartesSurTable();
     showAtoutPreneur();
     showScores();
@@ -342,7 +360,10 @@ void Affichage::jeuDePlis(std::vector<sf::Sprite> &cartesG)
         {
             if (cartesG[i].getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
             {
-                if (table.Mains[indexJoueur].main[i].estValide(table.CartesSurTable, atout, table.Mains[indexJoueur].main, raison) && !action)
+                mtx.lock();
+                bool estValide = table.Mains[indexJoueur].main[i].estValide(table.CartesSurTable, atout, table.Mains[indexJoueur].main, raison);
+                mtx.unlock();
+                if (estValide && !action)
                 {
                     action = true;
                     jouerCarte(indexJoueur, i);

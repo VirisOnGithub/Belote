@@ -15,6 +15,7 @@
 #include <unordered_map>
 #include <memory>
 #include <vector>
+#include <mutex>
 
 /**
  * @class Affichage
@@ -49,6 +50,7 @@ private:
     std::string raison;                                                                                 /**< The reason for an error or game event. */
     int atoutPreneur;                                                                                   /**< The index of the player who chose the trump suit. */
     int cptTour;                                                                                        /**< The current round number. */
+    std::mutex mtx;
 
 public:
     /**
