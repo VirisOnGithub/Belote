@@ -42,7 +42,7 @@ private:
     Carte carteRetournee;                                                                               /**< The card that is turned face up. */
     sf::Sprite sprite;                                                                                  /**< The sprite used for displaying cards. */
     sf::Texture settingsTexture, crossTexture;                                                          /**< Textures used for displaying game settings. */
-    float musicVolume = 50;                                                                             /**< The volume level for game music. */
+    float musicVolume = 0;                                                                              /**< The volume level for game music. */
     std::map<Couleur, sf::Texture> texturesCouleurs;                                                    /**< A map of textures for different card suits. */
     std::vector<sf::Sprite> cartesG;                                                                    /**< The graphical representation of player cards. */
     bool action = false, menu = true, prise = false, jeu = false, premierTour = true, settings = false; /**< Flags for different game states. */
