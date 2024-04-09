@@ -13,6 +13,7 @@
 #include "imgui-sfml/imgui-SFML.h"
 #include <memory>
 #include <map>
+#include <new>
 #include <ostream>
 #include <string>
 #include <vector>
@@ -180,7 +181,11 @@ void Affichage::jeuLoop()
     }
     else
     {
-        jeuDePlis(cartesG);
+        try {
+            jeuDePlis(cartesG);
+        } catch (const std::bad_array_new_length &e) {
+            std::cerr << e.what() << std::endl;
+        }
     }
 }
 
