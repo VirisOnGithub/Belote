@@ -53,7 +53,7 @@ void PaquetDeCarte::afficherPaquet() const
 
 void PaquetDeCarte::melanger()
 {
-    srand(time(0));
+    srand(0);
     int n = paquet.size();
     for (int i = n - 1; i > 0; i--)
     {

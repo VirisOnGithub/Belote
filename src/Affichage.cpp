@@ -13,7 +13,6 @@
 #include "imgui-sfml/imgui-SFML.h"
 #include <memory>
 #include <map>
-#include <new>
 #include <ostream>
 #include <string>
 #include <vector>
@@ -183,14 +182,7 @@ void Affichage::jeuLoop()
     }
     else
     {
-        try
-        {
-            jeuDePlis(cartesG);
-        }
-        catch (const std::bad_array_new_length &e)
-        {
-            std::cerr << e.what() << std::endl;
-        }
+        jeuDePlis(cartesG);
     }
 }
 
@@ -379,7 +371,7 @@ void Affichage::jeuDePlis(std::vector<sf::Sprite> &cartesG)
         }
         if (action)
         {
-            indexJoueur++;
+            indexJoueur=(indexJoueur+1)%4;
             action = false;
         }
         sf::sleep(sf::milliseconds(200)); // Pause après chaque clic

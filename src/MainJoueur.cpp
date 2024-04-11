@@ -71,5 +71,6 @@ void MainJoueur::trierMain()
 void MainJoueur::jouerCarte(int index)
 {
     assert(index >= 0 && index < main.size());
-    main.erase(main.begin() + index);
+    assert(main.size() > 0);
+    main.erase(std::next(main.begin(), index));
 }
