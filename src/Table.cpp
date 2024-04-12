@@ -12,22 +12,25 @@
 #include <utility>
 #include <vector>
 
-Table::Table() {
-  nbPlis = 0;
-  Equipe1 = Equipe();
-  Equipe2 = Equipe();
-  Mains = std::vector<MainJoueur>();
-  for (int i = 0; i < 4; i++) {
-    MainJoueur m;
-    Mains.push_back(m);
-  }
-  CartesSurTable = std::vector<Carte>();
-  CartesJouees = std::vector<Carte>();
-  for (int i = 0; i < 4; i++) {
-    Joueur j;
-    j.setRang(i);
-    Joueurs.push_back(j);
-  }
+Table::Table()
+{
+    nbPlis = 0;
+    Equipe1 = Equipe();
+    Equipe2 = Equipe();
+    Mains = std::vector<MainJoueur>();
+    for (int i = 0; i < 4; i++)
+    {
+        MainJoueur m;
+        Mains.push_back(m);
+    }
+    CartesSurTable = std::vector<Carte>();
+    CartesJouees = std::vector<Carte>();
+    for (int i = 0; i < 4; i++)
+    {
+        Joueur j;
+        j.setRang(i);
+        Joueurs.push_back(j);
+    }
 }
 
 void Table::setJoueurs(std::vector<Joueur> j)
@@ -111,8 +114,7 @@ void Table::jeu()
     PaquetDeCarte paquet;
     Couleur atout = rien;
     Joueur premierJoueur(true);
-    Joueurs[0]=premierJoueur;
-   
+    Joueurs[0] = premierJoueur;
 
     paquet.melanger();
     distribuer1(paquet);
@@ -210,7 +212,8 @@ void Table::tourDeJeu(Joueur &joueur, Couleur atout)
     default:
         break;
     }
-    for(auto& joueur : Joueurs){
+    for (auto &joueur : Joueurs)
+    {
         std::cout << "Joueur " << joueur.getRang() + 1 << " est un bot : " << joueur.getEstBot() << std::endl;
     }
     std::cout << "C'est au tour du joueur " << joueur.getRang() + 1 << std::endl;
@@ -230,7 +233,7 @@ void Table::tourDeJeu(Joueur &joueur, Couleur atout)
                   << std::endl;
         Mains[joueur.getRang()].afficherMain();
 
-        indexCarte = joueur.demanderCarte(joueur.getRang(),CartesSurTable, atout, Mains[joueur.getRang()].getMain(),Joueurs, raisonRefus) - 1; // -1 car l'index commence à 0
+        indexCarte = joueur.demanderCarte(joueur.getRang(), CartesSurTable, atout, Mains[joueur.getRang()].getMain(), Joueurs, raisonRefus) - 1; // -1 car l'index commence à 0
     } while (indexCarte < 0 || indexCarte >= Mains[joueur.getRang()].getMain().size() || !Mains[joueur.getRang()].getMain()[indexCarte].estValide(CartesSurTable, atout, Mains[joueur.getRang()].getMain(), raisonRefus));
 
     CartesSurTable.push_back(Mains[joueur.getRang()].getMain()[indexCarte]);
@@ -416,9 +419,10 @@ int Table::getGagnant(std::vector<Carte> CartesSurTable, Couleur atout)
     {
         if (CartesSurTable[i].estMeilleure(CartesSurTable[gagnant], atout))
         {
-            gagnant = Joueurs[i].getRang();
+            gagnant = i;
         }
     }
+    gagnant = Joueurs[gagnant].getRang();
     std::cout << "Le gagnant du pli est le joueur " << gagnant + 1 << std::endl;
     return gagnant;
 }

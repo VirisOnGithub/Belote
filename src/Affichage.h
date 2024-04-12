@@ -74,7 +74,7 @@ public:
     void jeuLoop();
     /**
      * @brief Loads the game music.
-    */
+     */
     void loadMusic();
 
     /**

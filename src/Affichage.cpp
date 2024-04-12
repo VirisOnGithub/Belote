@@ -330,7 +330,6 @@ void Affichage::jouerCarte(int indexJoueur, int indexCarte)
 
 void Affichage::jeuDePlis(std::vector<sf::Sprite> &cartesG)
 {
-    // std::lock_guard<std::mutex> lock(mtx);
     afficherMainRetourneeGraphiqueHaut1(table.Mains[(indexJoueur + 2) % 4].main.size());
     afficherMainRetourneeGraphiqueDroite1(table.Mains[(indexJoueur + 3) % 4].main.size());
     afficherMainRetourneeGraphiqueGauche1(table.Mains[(indexJoueur + 1) % 4].main.size());
@@ -371,7 +370,7 @@ void Affichage::jeuDePlis(std::vector<sf::Sprite> &cartesG)
         }
         if (action)
         {
-            indexJoueur=(indexJoueur+1)%4;
+            indexJoueur = (indexJoueur + 1) % 4;
             action = false;
         }
         sf::sleep(sf::milliseconds(200)); // Pause après chaque clic
@@ -401,7 +400,6 @@ void Affichage::jeuDePlis(std::vector<sf::Sprite> &cartesG)
             }
         }
         table.changementOrdreJoueur(indexJoueur);
-        table.changementOrdreMains(indexJoueur, table.Joueurs);
         for (int i = 0; i < 4; i++)
         {
             table.CartesJouees.push_back(table.CartesSurTable[i]);
