@@ -28,7 +28,7 @@ public:
      * 
      * @param estBot A boolean value indicating whether the player is a bot or not.
      */
-    Joueur(bool estBot);
+    Joueur(bool estBot,int rang);
 
     /**
      * @brief Gets the player's name.
