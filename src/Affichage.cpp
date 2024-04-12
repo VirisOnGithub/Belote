@@ -285,7 +285,7 @@ void Affichage::afficherCartePriseGraphique()
             indexJoueur++;
             if (indexJoueur == 4)
             {
-                exit(1); // A FAIRE
+                window.close(); // A FAIRE
             }
         }
     }
