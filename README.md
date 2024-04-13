@@ -61,7 +61,7 @@ make
 Vous pouvez lancer le projet avec la commande suivante :
 
 ```bash
-./Belote
+./Graphique
 ```
 
 ## Documentation
