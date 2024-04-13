@@ -114,49 +114,20 @@ void Affichage::afficherMainGraphique(MainJoueur main)
     cartesG.clear();
     auto cartes = main.getCartesG();
 
-    if(table.CartesSurTable.size() == 0)
+
+    for (int i = 0; i < nbCartesAffichees; i++)
     {
-        for (int i = 0; i < nbCartesAffichees; i++)
+        sf::Sprite sprite;
+        sprite.setTexture(*textures[cartes[i]]);
+        sprite.setScale(0.9, 0.9);
+
+        // Vérifiez que les textures sont chargées correctement
+        if (textures[cartes[i]]->getSize().x == 0)
         {
-            sf::Sprite sprite;
-            sprite.setTexture(*textures[cartes[i]]);
-            sprite.setScale(0.9, 0.9);
-
-            // Vérifiez que les textures sont chargées correctement
-            if (textures[cartes[i]]->getSize().x == 0)
-            {
-                std::cout << "Erreur de chargement de la texture pour la carte : " << cartes[i].toAnsiString() << std::endl;
-            }
-
-            cartesG.push_back(sprite);
+            std::cout << "Erreur de chargement de la texture pour la carte : " << cartes[i].toAnsiString() << std::endl;
         }
-    } else {
-        for (int i = 0; i < nbCartesAffichees; i++)
-        {
-            sf::Sprite sprite;
-            sprite.setTexture(*textures[cartes[i]]);
-            sprite.setScale(0.9, 0.9);
 
-            // Vérifiez que les textures sont chargées correctement
-            if (textures[cartes[i]]->getSize().x == 0)
-            {
-                std::cout << "Erreur de chargement de la texture pour la carte : " << cartes[i].toAnsiString() << std::endl;
-            }
-            std::string raison;
-            if (!main.main[i].estValide(table.CartesSurTable, atout, main.main, raison))
-            {
-                sf::RenderTexture renderTexture;
-                renderTexture.create(textures[cartes[i]]->getSize().x, textures[cartes[i]]->getSize().y);
-                renderTexture.draw(sprite);
-
-                sf::Texture texture;
-                texture = renderTexture.getTexture();
-                sprite.setTexture(texture, true);
-                sprite.setColor(sf::Color(128, 128, 128, 128));
-            }
-
-            cartesG.push_back(sprite);
-        }
+        cartesG.push_back(sprite);
     }
 
     if (!cartesG.empty())
@@ -167,8 +138,16 @@ void Affichage::afficherMainGraphique(MainJoueur main)
 
         for (int i = 0; i < cartesG.size(); i++)
         {
-            cartesG[i].setPosition((window.getSize().x - totalWidth) / 2.0f + i * (CardWidth / 2.0f), window.getSize().y - CardHeight / 2.);
+            ImVec2 pos = ImVec2((window.getSize().x - totalWidth) / 2.0f + i * (CardWidth / 2.0f), window.getSize().y - CardHeight / 2.);
+            cartesG[i].setPosition(pos.x, pos.y);
             window.draw(cartesG[i]);
+            if(!main.main[i].estValide(table.CartesSurTable, atout, main.main, raison)) {
+                sf::RectangleShape rectangle;
+                rectangle.setSize(sf::Vector2f(CardWidth, CardHeight));
+                rectangle.setFillColor(sf::Color(128, 128, 128, 128));
+                rectangle.setPosition(pos.x, pos.y);
+                window.draw(rectangle);
+            }
         }
     }
     else
