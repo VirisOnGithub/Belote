@@ -1,6 +1,9 @@
 #include "Affichage.h"
 #include "imgui-master/imgui.h"
+#include <SFML/Graphics/BlendMode.hpp>
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/RenderTexture.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <cassert>
 #include <SFML/Audio/Music.hpp>
 
@@ -111,19 +114,49 @@ void Affichage::afficherMainGraphique(MainJoueur main)
     cartesG.clear();
     auto cartes = main.getCartesG();
 
-    for (int i = 0; i < nbCartesAffichees; i++)
+    if(table.CartesSurTable.size() == 0)
     {
-        sf::Sprite sprite;
-        sprite.setTexture(*textures[cartes[i]]);
-        sprite.setScale(0.9, 0.9);
-
-        // Vérifiez que les textures sont chargées correctement
-        if (textures[cartes[i]]->getSize().x == 0)
+        for (int i = 0; i < nbCartesAffichees; i++)
         {
-            std::cout << "Erreur de chargement de la texture pour la carte : " << cartes[i].toAnsiString() << std::endl;
-        }
+            sf::Sprite sprite;
+            sprite.setTexture(*textures[cartes[i]]);
+            sprite.setScale(0.9, 0.9);
 
-        cartesG.push_back(sprite);
+            // Vérifiez que les textures sont chargées correctement
+            if (textures[cartes[i]]->getSize().x == 0)
+            {
+                std::cout << "Erreur de chargement de la texture pour la carte : " << cartes[i].toAnsiString() << std::endl;
+            }
+
+            cartesG.push_back(sprite);
+        }
+    } else {
+        for (int i = 0; i < nbCartesAffichees; i++)
+        {
+            sf::Sprite sprite;
+            sprite.setTexture(*textures[cartes[i]]);
+            sprite.setScale(0.9, 0.9);
+
+            // Vérifiez que les textures sont chargées correctement
+            if (textures[cartes[i]]->getSize().x == 0)
+            {
+                std::cout << "Erreur de chargement de la texture pour la carte : " << cartes[i].toAnsiString() << std::endl;
+            }
+            std::string raison;
+            if (!main.main[i].estValide(table.CartesSurTable, atout, main.main, raison))
+            {
+                sf::RenderTexture renderTexture;
+                renderTexture.create(textures[cartes[i]]->getSize().x, textures[cartes[i]]->getSize().y);
+                renderTexture.draw(sprite);
+
+                sf::Texture texture;
+                texture = renderTexture.getTexture();
+                sprite.setTexture(texture, true);
+                sprite.setColor(sf::Color(128, 128, 128, 128));
+            }
+
+            cartesG.push_back(sprite);
+        }
     }
 
     if (!cartesG.empty())
