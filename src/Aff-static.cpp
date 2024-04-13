@@ -148,6 +148,13 @@ void Affichage::afficherMainGraphique(MainJoueur main)
                 rectangle.setPosition(pos.x, pos.y);
                 window.draw(rectangle);
             }
+            if(main.main[i].getCouleur() == atout) {
+                sf::RectangleShape rectangle;
+                rectangle.setSize(sf::Vector2f(CardWidth, CardHeight));
+                rectangle.setFillColor(sf::Color(255, 255, 0, 64));
+                rectangle.setPosition(pos.x, pos.y);
+                window.draw(rectangle);
+            }
         }
     }
     else
