@@ -4,8 +4,10 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/System/String.hpp>
 #include <cassert>
 #include <SFML/Audio/Music.hpp>
+#include <vector>
 
 const char *AtouttoStr(Couleur c)
 {
@@ -161,6 +163,21 @@ void Affichage::afficherMainGraphique(MainJoueur main)
     {
         std::cerr << "Erreur : aucune carte à dessiner" << std::endl;
     }
+
+    if(cptTour > 0 && showLatestCards){
+        //Afficher les cartes déjà jouées
+        std::vector<sf::String> cartesJouees = cartesPrécedentes.getCartesG();
+        for(int i = 0; i < cartesJouees.size(); i++){
+            sf::Sprite sprite;
+            sprite.setTexture(*textures[cartesJouees[i]]);
+            sprite.setScale(0.4, 0.4);
+            int CardWidth = textures[cartesJouees[i]]->getSize().x * sprite.getScale().x;  // Prendre en compte l'échelle de la carte
+            int CardHeight = textures[cartesJouees[i]]->getSize().y * sprite.getScale().y; // Prendre en compte l'échelle de la carte
+            ImVec2 pos = ImVec2(window.getSize().x - (5*CardWidth)/2. - i * CardWidth / 2., window.getSize().y - CardHeight);
+            sprite.setPosition(pos.x, pos.y);
+            window.draw(sprite);
+        }
+    }
 }
 
 sf::Font Affichage::loadFont()
@@ -227,7 +244,7 @@ void Affichage::showTrumpTakerBadge()
         pos = ImVec2(window.getSize().x / 2. - trumpSize / 2, CardHeight + trumpSize);
         break;
     default:
-        pos = ImVec2(window.getSize().x - CardWidth - trumpSize, window.getSize().y / 2. - trumpSize / 2);
+        pos = ImVec2(window.getSize().x - CardWidth - trumpSize*2, window.getSize().y / 2. - trumpSize / 2);
         break;
     }
     ImGui::SetWindowPos(pos, ImGuiCond_Always);

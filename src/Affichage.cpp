@@ -127,10 +127,13 @@ void Affichage::menuLoop()
         ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
         ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
         ImGui::Begin("Settings", &settings, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+
         ImGui::SetWindowSize(ImVec2(400, 300), ImGuiCond_Always);
         ImGui::SetWindowPos(ImVec2(window.getSize().x / 2. - 200, window.getSize().y / 2. - 150), ImGuiCond_Always);
         ImGui::Text("Settings");
+
         ImGui::Separator();
+
         ImGui::Text("Volume");
         ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
         ImGui::PushStyleColor(ImGuiCol_SliderGrabActive, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
@@ -139,6 +142,13 @@ void Affichage::menuLoop()
         ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(0.0f, 0.0f, 0.0f, 0.1f));
         ImGui::SliderFloat("##", &musicVolume, 0.0f, 100.0f, "", ImGuiSliderFlags_NoRoundToFormat);
         music.setVolume(musicVolume);
+
+        ImGui::Separator();
+
+        ImGui::Checkbox("Montrer les raisons de refus de la carte", &displayErrors);
+        ImGui::Checkbox("Montrer les scores pendant le match", &showScoresDuringMatch);
+        ImGui::Checkbox("Montrer les cartes jouées précédemment", &showLatestCards);
+
         ImGui::PopStyleColor(5);
         ImGui::Separator();
         ImGui::End();
@@ -341,7 +351,9 @@ void Affichage::jeuDePlis(std::vector<sf::Sprite> &cartesG)
     }
     afficherCartesSurTable();
     showAtoutPreneur();
-    showScores();
+    if(showScoresDuringMatch) {
+        showScores();
+    }
     showTrumpTakerBadge();
     showJoueur();
     bool action = false;
@@ -377,9 +389,12 @@ void Affichage::jeuDePlis(std::vector<sf::Sprite> &cartesG)
         }
         sf::sleep(sf::milliseconds(200)); // Pause après chaque clic
     }
-    showError(raison);
+    if (displayErrors) {
+        showError(raison);
+    }
     if (table.CartesSurTable.size() == 4)
     {
+        cartesPrécedentes = MainJoueur(table.CartesSurTable); //on garde les cartes pour les afficher au tour suivant
         cptTour++;
         sf::sleep(sf::milliseconds(1000));
         indexJoueur = table.getGagnant(table.CartesSurTable, atout);

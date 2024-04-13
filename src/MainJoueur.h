@@ -24,6 +24,12 @@ public:
     MainJoueur();
 
     /**
+     * @brief Copy constructor for MainJoueur.
+     * @param autre The MainJoueur object to copy from.
+     */
+    MainJoueur(const std::vector<Carte> &autre);
+
+    /**
      * @brief Assignment operator for MainJoueur.
      * @param autre The MainJoueur object to assign from.
      * @return A reference to the assigned MainJoueur object.

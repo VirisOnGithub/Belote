@@ -51,6 +51,8 @@ private:
     int atoutPreneur;                                                                                   /**< The index of the player who chose the trump suit. */
     int cptTour;                                                                                        /**< The current round number. */
     std::mutex mtx;
+    bool displayErrors = true, showScoresDuringMatch = true, showLatestCards = true;                    /**< Flag for settings. */
+    MainJoueur cartesPrécedentes;                                                                       /**< The cards played in the previous round. */
 
 public:
     /**

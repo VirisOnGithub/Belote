@@ -2,10 +2,16 @@
 #include <iostream>
 #include <vector>
 #include "MainJoueur.h"
+#include "Carte.h"
 
 MainJoueur::MainJoueur()
 {
     main = std::vector<Carte>();
+}
+
+MainJoueur::MainJoueur(const std::vector<Carte> &autre)
+{
+    main = autre;
 }
 
 MainJoueur &MainJoueur::operator=(const MainJoueur &autre)
