@@ -93,7 +93,7 @@ public:
      * @brief Asks the player to choose a card.
      * @return The index of the chosen card.
      */
-    int demanderCarte(int indice,std::vector<Carte> CartesSurTable, Couleur atout, std::vector<Carte> mainJoueur,std::vector<Joueur> Joueurs, std::string &raison);
+    int demanderCarte(int indice,std::vector<Carte> CartesSurTable,std::vector<Carte> cartesJouees, Couleur atout, std::vector<Carte> mainJoueur,std::vector<Joueur> Joueurs, std::string &raison);
 
     /**
      * @brief Displays the player's hand.
@@ -110,7 +110,7 @@ public:
      */
     std::pair<int, Couleur> botPrise(Carte CarteAtout, std::vector<Carte> mainBot,bool tour2);
 
-    int botAction(int indice,std::vector<Carte> CartesSurTable, Couleur atout, std::vector<Carte> mainJoueur,std::vector<Joueur> Joueurs, std::string &raison);
+    int botAction(int indice,std::vector<Carte> CartesSurTable,std::vector<Carte> cartesJouees, Couleur atout, std::vector<Carte> mainJoueur,std::vector<Joueur> Joueurs, std::string &raison);
 
     int botCarteFaible(std::vector<Carte> mainJoueur, Couleur atout, std::vector<Carte> CartesSurTable, std::string &raison);
 
@@ -120,7 +120,7 @@ public:
 
     int botCarteForteAtout(std::vector<Carte> mainJoueur, Couleur atout, std::vector<Carte> CartesSurTable, std::string &raison);
 
-    int botCarteRandom(std::vector<Carte> mainJoueur, Couleur atout, std::vector<Carte> CartesSurTable, std::string &raison);
+    int botCarteMaitre(std::vector<Carte> mainJoueur, Couleur atout, std::vector<Carte> CartesSurTable, std::string &raison, bool const equipeEstMaitre, Carte carteMaitre);
 };
 
 #endif

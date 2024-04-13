@@ -124,7 +124,7 @@ void Table::jeu()
     paquet.melanger();
     distribuer1(paquet);
     prise(paquet, atout);
-    system("clear");
+    /* system("clear"); */
     if (atout != rien)
     {
         distribuer2(paquet);
@@ -136,9 +136,9 @@ void Table::jeu()
             for (int j = 0; j < 4; j++)
             {
                 tourDeJeu(Joueurs[j], atout);
-                std::this_thread::sleep_for(std::chrono::seconds(5));
+                /* std::this_thread::sleep_for(std::chrono::seconds(5));
                 system("clear");
-                attente();
+                attente(); */
             }
             std::cout << "Fin du pli" << std::endl;
             for (int k = 0; k < 4; k++)
@@ -169,7 +169,7 @@ void Table::jeu()
             std::cout << "L'équipe 2 a " << Equipe2.getScore() << " points" << std::endl;
             std::this_thread::sleep_for(std::chrono::seconds(5));
             CartesSurTable = std::vector<Carte>();
-            system("clear");
+            /* system("clear"); */
         }
     }
     else
@@ -238,7 +238,8 @@ void Table::tourDeJeu(Joueur &joueur, Couleur atout)
                   << std::endl;
         Mains[joueur.getRang()].afficherMain();
 
-        indexCarte = joueur.demanderCarte(joueur.getRang(),CartesSurTable, atout, Mains[joueur.getRang()].getMain(),Joueurs, raisonRefus) - 1; // -1 car l'index commence à 0
+        indexCarte = joueur.demanderCarte(joueur.getRang(),CartesSurTable, CartesJouees, atout, Mains[joueur.getRang()].getMain(),Joueurs, raisonRefus) - 1; // -1 car l'index commence à 0
+        std::cout << "Index carte: " << indexCarte << std::endl;
     } while (indexCarte < 0 || indexCarte >= Mains[joueur.getRang()].getMain().size() || !Mains[joueur.getRang()].getMain()[indexCarte].estValide(CartesSurTable, atout, Mains[joueur.getRang()].getMain(), raisonRefus));
 
     CartesSurTable.push_back(Mains[joueur.getRang()].getMain()[indexCarte]);
@@ -334,8 +335,8 @@ void Table::prise(PaquetDeCarte &p, Couleur &atout)
             Mains[i].addCarte(carteRetournee);
             break;
         }
-        system("clear");
-        attente();
+        /* system("clear");
+        attente(); */
     }
     if (!prise)
     {
@@ -376,11 +377,11 @@ void Table::prise(PaquetDeCarte &p, Couleur &atout)
                 Mains[i].addCarte(carteRetournee);
                 break;
             }
-            system("clear");
+            /* system("clear");
             if (i != 3)
             {
                 attente();
-            }
+            } */
         }
     }
 }
