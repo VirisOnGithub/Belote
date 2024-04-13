@@ -165,6 +165,8 @@ public:
      * @brief Shows the current player.
      */
     void showJoueur();
+
+    void finDePartie();
 };
 
 #endif // AFFICHAGE_H

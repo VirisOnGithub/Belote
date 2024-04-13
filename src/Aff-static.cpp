@@ -199,7 +199,7 @@ void Affichage::showTrumpTakerBadge()
     switch (res)
     {
     case 0:
-        pos = ImVec2(window.getSize().x / 2. - trumpSize / 2, window.getSize().y - CardHeight - trumpSize);
+        pos = ImVec2(window.getSize().x / 2. - trumpSize / 2, window.getSize().y - CardHeight - trumpSize*2);
         break;
     case 1:
         pos = ImVec2(CardWidth + trumpSize, window.getSize().y / 2. - trumpSize / 2);

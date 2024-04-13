@@ -180,9 +180,11 @@ void Affichage::jeuLoop()
     {
         animDistribution();
     }
-    else
+    else if(jeu)
     {
         jeuDePlis(cartesG);
+    } else {
+        finDePartie();
     }
 }
 
@@ -405,5 +407,39 @@ void Affichage::jeuDePlis(std::vector<sf::Sprite> &cartesG)
             table.CartesJouees.push_back(table.CartesSurTable[i]);
         }
         table.CartesSurTable.clear();
+        if (cptTour == 7) {
+            jeu = false;
+        }
     }
+}
+
+void Affichage::finDePartie()
+{
+    ImGui::SetNextWindowSize(ImVec2(600, 400), ImGuiCond_Once);
+    ImGui::SetNextWindowPos(ImVec2(window.getSize().x / 2., window.getSize().y * 2 / 3.), ImGuiCond_Once, ImVec2(0.5f, 0.5f));
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+    ImGui::Begin("Fin de partie", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+    ImGui::SetWindowSize(ImVec2(400, 300), ImGuiCond_Always);
+    ImGui::SetWindowPos(ImVec2(window.getSize().x / 2. - 200, window.getSize().y / 2. - 150), ImGuiCond_Always);
+    ImGui::Text("Fin de partie");
+    ImGui::Separator();
+    if(table.Equipe1.getScore() > table.Equipe2.getScore()) {
+        ImGui::Text("L'equipe 1 a gagne");
+        if(atoutPreneur == 0 || atoutPreneur == 2) {
+            ImGui::Text("%s", ("C'est fait ! \n L'équipe 1 marque " + std::to_string(table.Equipe1.getScore()) + " points").c_str());
+        } else {
+            ImGui::Text("C'est chuté ! \n L'équipe 1 marque 162 points");
+        }
+    } else {
+        ImGui::Text("L'equipe 2 a gagne");
+        if(atoutPreneur == 1 || atoutPreneur == 3) {
+            ImGui::Text("%s", ("C'est fait ! \n L'équipe 2 marque " + std::to_string(table.Equipe1.getScore()) + " points").c_str());
+        } else {
+            ImGui::Text("C'est chuté ! \n L'équipe 2 marque 162 points");
+        }
+    }
+    ImGui::End();
+    ImGui::PopStyleColor(1);
+    ImGui::PopStyleVar(1);
 }
