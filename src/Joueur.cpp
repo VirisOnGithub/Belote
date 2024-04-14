@@ -139,7 +139,7 @@ std::pair<int,Couleur> Joueur::botPrise(Carte CarteAtout,  std::vector<Carte> ma
             }
         }
     }
-    std::cout<<std::endl;
+    /* std::cout<<std::endl;
     std::cout<<"Valet"<<hasValet<<std::endl;
     std::cout<<"Neuf"<<hasNeuf<<std::endl;
     std::cout<<"As"<<hasAs<<std::endl;
@@ -147,7 +147,7 @@ std::pair<int,Couleur> Joueur::botPrise(Carte CarteAtout,  std::vector<Carte> ma
     std::cout<<"Neuf2"<<hasNeuf2<<std::endl;
     std::cout<<"CouleurAtout2"<<CouleurAtout2<<std::endl;
     std::cout<<"nbCarteAtout"<<nbCarteAtout<<std::endl;
-    std::cout<<"tour2"<<tour2<<std::endl; 
+    std::cout<<"tour2"<<tour2<<std::endl; */ 
 
     if((hasValet && hasNeuf && !tour2) || (hasValet && hasAs && CarteAtout.getChiffreStr() == "neuf" && !tour2) || (CarteAtout.getChiffreStr() == "valet" && !tour2) || (hasValet && hasAs && !tour2) || (hasValet && nbCarteAtout >= 3 && !tour2) || (hasValet2 && hasNeuf2 && tour2) ||(hasValet2 && CarteAtout.getChiffreStr() == "as" && tour2) || (hasValet2 && hasAs && tour2))
     {
@@ -340,6 +340,7 @@ int Joueur::botCarteMaitre(std::vector<Carte> mainJoueur, Couleur atout, std::ve
 int Joueur::botAction(int indice,std::vector<Carte> CartesSurTable,std::vector<Carte> cartesJouees, Couleur atout, std::vector<Carte> mainJoueur,std::vector<Joueur> Joueurs, std::string &raison)
 {
     Couleur couleurDemandee;
+    Couleur couleurMaitre;
     Carte carteMaitre;
 
     bool EquipeAPris = false;
@@ -359,9 +360,9 @@ int Joueur::botAction(int indice,std::vector<Carte> CartesSurTable,std::vector<C
     int indexMaitre = 0;
     int index = 0;
 
-    for(int i = 0; i < mainJoueur.size(); i++) // verifie si le joueur a un as
+    for(int i = 0; i < mainJoueur.size(); i++) 
     {
-        if(mainJoueur[i].getChiffreStr() == "as" && mainJoueur[i].getCouleur() != atout)
+        if(mainJoueur[i].getChiffreStr() == "as" && mainJoueur[i].getCouleur() != atout && mainJoueur[i].estValide(CartesSurTable, atout, mainJoueur, raison)) // verifie si le joueur a un as
         {
             hasAs = true;
             indexAs = i;
@@ -376,11 +377,11 @@ int Joueur::botAction(int indice,std::vector<Carte> CartesSurTable,std::vector<C
             hasValet = true;
             indexValet = i;
         }
-        {
-            hasValet = true;
-            indexValet = i;
-        }
-    } 
+    }
+    std::cout<<std::endl;
+    std::cout<<"Valet"<<hasValet<<std::endl;
+    std::cout<<"Neuf"<<hasNeuf<<std::endl;
+    std::cout<<"As"<<hasAs<<std::endl;
 
     for(int i = 0; i < cartesJouees.size(); i++) // verifie le nombre de carte atout jouee
     {
@@ -399,24 +400,28 @@ int Joueur::botAction(int indice,std::vector<Carte> CartesSurTable,std::vector<C
     {
         carteMaitre = CartesSurTable[0];
         couleurDemandee = CartesSurTable[0].getCouleur();
+        couleurMaitre = CartesSurTable[0].getCouleur();
         
         for(int i = 0; i < CartesSurTable.size();i++)
         {
-            if(CartesSurTable[i].getCouleur() == atout && CartesSurTable[0].getCouleur() != atout) //verifie si un joueur a coupe
+            if(CartesSurTable[i].getCouleur() == atout && couleurDemandee != atout) //verifie si un joueur a coupe
             {
                 aCoupe = true;
                 indexCoupe = i;
             }
+        }
 
-            if(CartesSurTable[0].getCouleur() != atout && !aCoupe) //tour sans atout
+        for(int i = 0; i < CartesSurTable.size();i++)
+        {
+            if(couleurDemandee != atout && !aCoupe) //tour sans atout
             {
-                if (CartesSurTable[0].getCouleur() == CartesSurTable[i].getCouleur() && CartesSurTable[0].getValeurNonAtout() < CartesSurTable[i].getValeurNonAtout())
+                if (couleurMaitre == CartesSurTable[i].getCouleur() && carteMaitre.getValeurNonAtout() < CartesSurTable[i].getValeurNonAtout())
                 {
                     carteMaitre = CartesSurTable[i];
                     indexMaitre = i;
                 }           
             }
-            else if(CartesSurTable[0].getCouleur() != atout && aCoupe) //tour avec coupe
+            else if(couleurDemandee != atout && aCoupe) //tour avec coupe
             {
                 for(int j = indexCoupe; j < CartesSurTable.size(); j++)
                 {
@@ -433,9 +438,9 @@ int Joueur::botAction(int indice,std::vector<Carte> CartesSurTable,std::vector<C
                 }
                 
             }
-            else if(CartesSurTable[0].getCouleur() == atout) //tour avec atout
+            else if(couleurDemandee == atout) //tour avec atout
             {
-                if(CartesSurTable[0].getValeurAtout() < CartesSurTable[i].getValeurAtout())
+                if(carteMaitre.getValeurAtout() < CartesSurTable[i].getValeurAtout())
                 {
                     carteMaitre = CartesSurTable[i];
                     indexMaitre = i;
@@ -460,11 +465,7 @@ int Joueur::botAction(int indice,std::vector<Carte> CartesSurTable,std::vector<C
             }
             
         }
-      
 
-    }
-    if(CartesSurTable.size() >= 1) //verifie si une carte a ete jouee pour pouvoir initialiser la carte maitre et les comparer
-    {       
         for(int i = 0; i < CartesSurTable.size();i++)
         {
             if (mainJoueur[i].getCouleur() != atout && carteMaitre.getCouleur() != atout && mainJoueur[i].getCouleur() == carteMaitre.getCouleur() && mainJoueur[i].getValeurNonAtout() > carteMaitre.getValeurNonAtout() && mainJoueur[i].estValide(CartesSurTable, atout, mainJoueur, raison))
@@ -473,7 +474,9 @@ int Joueur::botAction(int indice,std::vector<Carte> CartesSurTable,std::vector<C
                 indexMeilleureCarte = i;
             }
         }
+
     }
+    
 
     if(mainJoueur.size() == 8)
     {
@@ -504,8 +507,8 @@ int Joueur::botAction(int indice,std::vector<Carte> CartesSurTable,std::vector<C
         
         if(CartesSurTable.size() >= 1)
         {
-            /* std::cout << "hasMeilleureCarte: " << hasMeilleureCarte << std::endl;
-            std::cout << "!aCoupe: " << !aCoupe << std::endl; */
+            std::cout << "hasMeilleureCarte: " << hasMeilleureCarte << std::endl;
+            std::cout << "!aCoupe: " << !aCoupe << std::endl;
 
             if(hasMeilleureCarte && !aCoupe && mainJoueur[indexMeilleureCarte].estValide(CartesSurTable, atout, mainJoueur, raison))
             {
@@ -549,23 +552,23 @@ int Joueur::botAction(int indice,std::vector<Carte> CartesSurTable,std::vector<C
                 index = botCarteFaibleAtout(mainJoueur, atout, CartesSurTable, raison);
                 return index;
             }
-            else if(hasAs && mainJoueur[indexAs].estValide(CartesSurTable, atout, mainJoueur, raison) && !aCoupe)
+        }
+
+        if(hasAs && mainJoueur[indexAs].estValide(CartesSurTable, atout, mainJoueur, raison) && !aCoupe)
+        {
+            if(CartesSurTable.size() >= 1 && CartesSurTable[0].getCouleur() != atout)
             {
-                if(CartesSurTable.size() == 1 && CartesSurTable[0].getCouleur() != atout)
-                {
-                    std::cout<<std::endl;
-                    std::cout<<"Le bot a joué un as de "<<mainJoueur[indexAs].getCouleurStr()<<std::endl;
-                    return indexAs+1;
-                }
+                std::cout<<std::endl;
+                std::cout<<"Le bot a joué un as de "<<mainJoueur[indexAs].getCouleurStr()<<std::endl;
+                return indexAs+1;
             }
         }
 
         if(CartesSurTable.size() >= 1)
         {
-            /* std::cout << "hasMeilleureCarte: " << hasMeilleureCarte << std::endl;
+            std::cout << "hasMeilleureCarte: " << hasMeilleureCarte << std::endl;
             std::cout << "!aCoupe: " << !aCoupe << std::endl;
-            std::cout << "mainJoueur[indexMeilleureCarte].estValide(CartesSurTable, atout, mainJoueur, raison): " << mainJoueur[indexMeilleureCarte].estValide(CartesSurTable, atout, mainJoueur, raison) << std::endl;
-              */
+             
             if(hasMeilleureCarte && !aCoupe && mainJoueur[indexMeilleureCarte].estValide(CartesSurTable, atout, mainJoueur, raison))
             {
                 std::cout<<std::endl;
@@ -584,6 +587,28 @@ int Joueur::botAction(int indice,std::vector<Carte> CartesSurTable,std::vector<C
         }
     }
 
+    if(hasAs && mainJoueur[indexAs].estValide(CartesSurTable, atout, mainJoueur, raison) && !aCoupe)
+    {
+        if(CartesSurTable.size() == 0)
+        {
+            std::cout<<std::endl;
+            std::cout<<"Le bot a joué un as de "<<mainJoueur[indexAs].getCouleurStr()<<std::endl;
+            return indexAs+1;
+        }
+        else if(CartesSurTable.size() >= 1 && CartesSurTable[0].getCouleur() != atout)
+        {
+            std::cout<<std::endl;
+            std::cout<<"Le bot a joué un as de "<<mainJoueur[indexAs].getCouleurStr()<<std::endl;
+            return indexAs+1;
+        }
+        else if(CartesSurTable.size() >= 1 && CartesSurTable[0].getCouleur() == CartesSurTable[indexAs].getCouleur())
+        {
+            std::cout<<std::endl;
+            std::cout<<"Le bot a joué un as de "<<mainJoueur[indexAs].getCouleurStr()<<std::endl;
+            return indexAs+1;
+        }
+    }
+
     if(hasValet && mainJoueur[indexValet].estValide(CartesSurTable, atout, mainJoueur, raison))
     {
         std::cout<<std::endl;
@@ -593,11 +618,9 @@ int Joueur::botAction(int indice,std::vector<Carte> CartesSurTable,std::vector<C
 
     if(CartesSurTable.size() >= 1)
     {
-        std::cout << "hasMeilleureCarte: " << hasMeilleureCarte << std::endl;
-        std::cout << "!aCoupe: " << !aCoupe << std::endl;
-        std::cout << "mainJoueur[indexMeilleureCarte].estValide(CartesSurTable, atout, mainJoueur, raison): " << mainJoueur[indexMeilleureCarte].estValide(CartesSurTable, atout, mainJoueur, raison) << std::endl;
-        std::cout << "CartesSurTable.size() >= 1: " << (CartesSurTable.size() >= 1) << std::endl;
-        std::cout << "mainJoueur[indexMeilleureCarte].getValeurNonAtout() > carteMaitre.getValeurNonAtout(): " << (mainJoueur[indexMeilleureCarte].getValeurNonAtout() > carteMaitre.getValeurNonAtout()) << std::endl;
+        /* std::cout << "hasMeilleureCarte: " << hasMeilleureCarte << std::endl;
+        std::cout << "!aCoupe: " << !aCoupe << std::endl; */
+
         if(hasMeilleureCarte && !aCoupe && mainJoueur[indexMeilleureCarte].estValide(CartesSurTable, atout, mainJoueur, raison))
         {
             std::cout<<std::endl;
@@ -609,7 +632,7 @@ int Joueur::botAction(int indice,std::vector<Carte> CartesSurTable,std::vector<C
             return botCarteMaitre(mainJoueur, atout, CartesSurTable, raison, equipeEstMaitre, carteMaitre);
         }
     }
-    else
+    else //par défaut
     {
         index = botCarteFaible(mainJoueur, atout, CartesSurTable, raison);
         return index;
