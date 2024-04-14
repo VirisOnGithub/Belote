@@ -27,6 +27,7 @@ public:
      * @brief Constructs a new Joueur object.
      * 
      * @param estBot A boolean value indicating whether the player is a bot or not.
+     * @param rang The player's rank.
      */
     Joueur(bool estBot,int rang);
 
@@ -80,8 +81,18 @@ public:
      */
     void setEstBot(bool estBot);
 
+    /**
+     * @brief Returns whether the player takes the card in the middle.
+     * 
+     * @return true if the player takes the card in the middle, false otherwise.
+     */    
     bool getAPris() const;
 
+    /**
+     * @brief Sets the flag indicating whether the player takes the card in the middle.
+     * 
+     * @param aPris True if the player takes the card in the middle, false otherwise.
+     */
     void setAPris(bool aPris);
 
     /**
@@ -92,6 +103,15 @@ public:
     /**
      * @brief Asks the player to choose a card.
      * @return The index of the chosen card.
+     * 
+     * @param indice The index of the player.
+     * @param CartesSurTable The cards currently on the table.
+     * @param cartesJouees The cards played so far.
+     * @param atout The trump suit.
+     * @param mainJoueur The player's hand.
+     * @param Joueurs The players in the game.
+     * @param raison The reason for the decision.
+     * 
      */
     int demanderCarte(int indice,std::vector<Carte> CartesSurTable,std::vector<Carte> cartesJouees, Couleur atout, std::vector<Carte> mainJoueur,std::vector<Joueur> Joueurs, std::string &raison);
 
@@ -110,16 +130,75 @@ public:
      */
     std::pair<int, Couleur> botPrise(Carte CarteAtout, std::vector<Carte> mainBot,bool tour2);
 
+    /**
+     * Makes a decision for the bot to play a card.
+     * 
+     * @param indice The index of the player.
+     * @param CartesSurTable The cards currently on the table.
+     * @param cartesJouees The cards played so far.
+     * @param atout The trump suit.
+     * @param mainJoueur The player's hand.
+     * @param Joueurs The players in the game.
+     * @param raison The reason for the decision.
+     * @return The index of the chosen card.
+     */
     int botAction(int indice,std::vector<Carte> CartesSurTable,std::vector<Carte> cartesJouees, Couleur atout, std::vector<Carte> mainJoueur,std::vector<Joueur> Joueurs, std::string &raison);
 
+    /**
+     * Return the index of the weakest non trump card in the player's hand.
+     * 
+     * @param mainJoueur The player's hand.
+     * @param atout The trump suit.
+     * @param CartesSurTable The cards currently on the table.
+     * @param raison The reason for the decision.
+     * @return The index of the chosen card.
+     */
     int botCarteFaible(std::vector<Carte> mainJoueur, Couleur atout, std::vector<Carte> CartesSurTable, std::string &raison);
 
+    /**
+     * Return the index of the weakest trump card in the player's hand.
+     * 
+     * @param mainJoueur The player's hand.
+     * @param atout The trump suit.
+     * @param CartesSurTable The cards currently on the table.
+     * @param raison The reason for the decision.
+     * @return The index of the chosen card.
+     */
     int botCarteFaibleAtout(std::vector<Carte> mainJoueur, Couleur atout, std::vector<Carte> CartesSurTable, std::string &raison);
 
+    /**
+     * Return the index of the strongest non trump card in the player's hand.
+     * 
+     * @param mainJoueur The player's hand.
+     * @param atout The trump suit.
+     * @param CartesSurTable The cards currently on the table.
+     * @param raison The reason for the decision.
+     * @return The index of the chosen card.
+     */
     int botCarteForte(std::vector<Carte> mainJoueur, Couleur atout, std::vector<Carte> CartesSurTable, std::string &raison);
 
+    /**
+     * Return the index of the strongest trump card in the player's hand.
+     * 
+     * @param mainJoueur The player's hand.
+     * @param atout The trump suit.
+     * @param CartesSurTable The cards currently on the table.
+     * @param raison The reason for the decision.
+     * @return The index of the chosen card.
+     */
     int botCarteForteAtout(std::vector<Carte> mainJoueur, Couleur atout, std::vector<Carte> CartesSurTable, std::string &raison);
 
+    /**
+     * Return the index of the card to play according to the best card on the table.
+     * 
+     * @param mainJoueur The player's hand.
+     * @param atout The trump suit.
+     * @param CartesSurTable The cards currently on the table.
+     * @param raison The reason for the decision.
+     * @param equipeEstMaitre Indicates if the player's team is currently winning the trick.
+     * @param carteMaitre The card that is currently winning the trick.
+     * @return The index of the chosen card.
+     */
     int botCarteMaitre(std::vector<Carte> mainJoueur, Couleur atout, std::vector<Carte> CartesSurTable, std::string &raison, bool const equipeEstMaitre, Carte carteMaitre);
 };
 

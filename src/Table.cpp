@@ -318,10 +318,8 @@ void Table::prise(PaquetDeCarte &p, Couleur &atout)
 
         if (Joueurs[i].getEstBot())
         {
-            Joueurs[i].getEstBot();
             priseCouleur = Joueurs[i].botPrise(carteRetournee, Mains[i].getMain(), tour2);
             prise = priseCouleur.first;
-            std::this_thread::sleep_for(std::chrono::seconds(5));
         }
         else
         {
