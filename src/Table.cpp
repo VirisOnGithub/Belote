@@ -113,13 +113,12 @@ void Table::jeu()
 {
     PaquetDeCarte paquet;
     Couleur atout = rien;
-    Joueur premierJoueur(true,0);
-    Joueurs[0]=premierJoueur;
-    Joueur deuxiemeJoueur(true,1);
-    Joueurs[1]=deuxiemeJoueur;
-    Joueur troisiemeJoueur(true,2);
-    Joueurs[2]=troisiemeJoueur;
-   
+    Joueur premierJoueur(true, 0);
+    Joueurs[0] = premierJoueur;
+    Joueur deuxiemeJoueur(true, 1);
+    Joueurs[1] = deuxiemeJoueur;
+    Joueur troisiemeJoueur(true, 2);
+    Joueurs[2] = troisiemeJoueur;
 
     paquet.melanger();
     distribuer1(paquet);
@@ -238,7 +237,7 @@ void Table::tourDeJeu(Joueur &joueur, Couleur atout)
                   << std::endl;
         Mains[joueur.getRang()].afficherMain();
 
-        indexCarte = joueur.demanderCarte(joueur.getRang(),CartesSurTable, CartesJouees, atout, Mains[joueur.getRang()].getMain(),Joueurs, raisonRefus) - 1; // -1 car l'index commence à 0
+        indexCarte = joueur.demanderCarte(joueur.getRang(), CartesSurTable, CartesJouees, atout, Mains[joueur.getRang()].getMain(), Joueurs, raisonRefus) - 1; // -1 car l'index commence à 0
         std::cout << "Index carte: " << indexCarte << std::endl;
     } while (indexCarte < 0 || indexCarte >= Mains[joueur.getRang()].getMain().size() || !Mains[joueur.getRang()].getMain()[indexCarte].estValide(CartesSurTable, atout, Mains[joueur.getRang()].getMain(), raisonRefus));
 

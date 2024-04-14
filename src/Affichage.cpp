@@ -177,9 +177,10 @@ void Affichage::menuLoop()
         }
 
         ImGui::SetCursorPosX((ImGui::GetWindowSize().x - buttonSize.x) / 2.0f);
-        ImGui::SetCursorPosY((ImGui::GetWindowSize().y + buttonSize.y*3/2) / 2.0f);
+        ImGui::SetCursorPosY((ImGui::GetWindowSize().y + buttonSize.y * 3 / 2) / 2.0f);
 
-        if(ImGui::Button("Jouer avec les bots", buttonSize)){
+        if (ImGui::Button("Jouer avec les bots", buttonSize))
+        {
             menu = false;
             bots = true;
             prise = true;
@@ -195,19 +196,25 @@ void Affichage::menuLoop()
 
 void Affichage::jeuLoop()
 {
-    if(bots){
-        if(prise){
-            animDistribution();
+    if (bots)
+    {
+        if (prise)
+        {
+            animDistributionBot();
         }
-    } else {
+    }
+    else
+    {
         if (prise)
         {
             animDistribution();
         }
-        else if(jeu)
+        else if (jeu)
         {
             jeuDePlis(cartesG);
-        } else {
+        }
+        else
+        {
             finDePartie();
         }
     }
@@ -366,7 +373,8 @@ void Affichage::jeuDePlis(std::vector<sf::Sprite> &cartesG)
     }
     afficherCartesSurTable();
     showAtoutPreneur();
-    if(showScoresDuringMatch) {
+    if (showScoresDuringMatch)
+    {
         showScores();
     }
     showTrumpTakerBadge();
@@ -404,12 +412,13 @@ void Affichage::jeuDePlis(std::vector<sf::Sprite> &cartesG)
         }
         sf::sleep(sf::milliseconds(200)); // Pause après chaque clic
     }
-    if (displayErrors) {
+    if (displayErrors)
+    {
         showError(raison);
     }
     if (table.CartesSurTable.size() == 4)
     {
-        cartesPrécedentes = MainJoueur(table.CartesSurTable); //on garde les cartes pour les afficher au tour suivant
+        cartesPrécedentes = MainJoueur(table.CartesSurTable); // on garde les cartes pour les afficher au tour suivant
         cptTour++;
         sf::sleep(sf::milliseconds(1000));
         indexJoueur = table.getGagnant(table.CartesSurTable, atout);
@@ -437,7 +446,8 @@ void Affichage::jeuDePlis(std::vector<sf::Sprite> &cartesG)
             table.CartesJouees.push_back(table.CartesSurTable[i]);
         }
         table.CartesSurTable.clear();
-        if (cptTour == 7) {
+        if (cptTour == 7)
+        {
             jeu = false;
         }
     }
@@ -454,18 +464,27 @@ void Affichage::finDePartie()
     ImGui::SetWindowPos(ImVec2(window.getSize().x / 2. - 200, window.getSize().y / 2. - 150), ImGuiCond_Always);
     ImGui::Text("Fin de partie");
     ImGui::Separator();
-    if(table.Equipe1.getScore() > table.Equipe2.getScore()) {
+    if (table.Equipe1.getScore() > table.Equipe2.getScore())
+    {
         ImGui::Text("L'equipe 1 a gagne");
-        if(atoutPreneur == 0 || atoutPreneur == 2) {
+        if (atoutPreneur == 0 || atoutPreneur == 2)
+        {
             ImGui::Text("%s", ("C'est fait ! \n L'équipe 1 marque " + std::to_string(table.Equipe1.getScore()) + " points").c_str());
-        } else {
+        }
+        else
+        {
             ImGui::Text("C'est chuté ! \n L'équipe 1 marque 162 points");
         }
-    } else {
+    }
+    else
+    {
         ImGui::Text("L'equipe 2 a gagne");
-        if(atoutPreneur == 1 || atoutPreneur == 3) {
+        if (atoutPreneur == 1 || atoutPreneur == 3)
+        {
             ImGui::Text("%s", ("C'est fait ! \n L'équipe 2 marque " + std::to_string(table.Equipe1.getScore()) + " points").c_str());
-        } else {
+        }
+        else
+        {
             ImGui::Text("C'est chuté ! \n L'équipe 2 marque 162 points");
         }
     }

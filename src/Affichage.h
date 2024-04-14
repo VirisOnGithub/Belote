@@ -51,10 +51,10 @@ private:
     int atoutPreneur;                                                                                   /**< The index of the player who chose the trump suit. */
     int cptTour;                                                                                        /**< The current round number. */
     std::mutex mtx;
-    bool displayErrors = true, showScoresDuringMatch = true, showLatestCards = true;                    /**< Flag for settings. */
-    MainJoueur cartesPrécedentes;                                                                       /**< The cards played in the previous round. */
+    bool displayErrors = true, showScoresDuringMatch = true, showLatestCards = true; /**< Flag for settings. */
+    MainJoueur cartesPrécedentes;                                                    /**< The cards played in the previous round. */
 
-    bool bots=false;
+    bool bots = false;
 
 public:
     /**
@@ -98,6 +98,8 @@ public:
      */
     void afficherCartePriseGraphique();
 
+    void afficherCartePriseGraphiqueBot();
+
     /**
      * @brief Displays the face-down cards of the player at the top position.
      * @param nbCartes The number of face-down cards to display.
@@ -120,6 +122,8 @@ public:
      * @brief Animates the card distribution.
      */
     void animDistribution();
+
+    void animDistributionBot();
 
     /**
      * @brief Plays the game of plis.
