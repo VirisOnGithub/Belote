@@ -283,8 +283,8 @@ void Affichage::afficherCartePriseGraphique()
             prise = false;
             jeu = true;
             atoutPreneur = indexJoueur;
-            atout = carteRetournee.getCouleur();
             table.changementOrdreJoueur(indexJoueur);
+            atout = carteRetournee.getCouleur();
             table.getMains()[indexJoueur].addCarte(carteRetournee);
             table.distribuer2(p);
             table.trierMains();
