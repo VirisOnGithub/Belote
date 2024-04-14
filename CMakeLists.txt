@@ -28,6 +28,7 @@ set(GRAPHIQUES
     src/TableG.cpp
     src/CarteG.cpp
     src/MainJoueurG.cpp
+    src/Affichage-bot.cpp
 )
 
 set(IMGUI

@@ -54,6 +54,8 @@ private:
     bool displayErrors = true, showScoresDuringMatch = true, showLatestCards = true;                    /**< Flag for settings. */
     MainJoueur cartesPrécedentes;                                                                       /**< The cards played in the previous round. */
 
+    bool bots;
+
 public:
     /**
      * @brief Initializes the game window, fonts, and textures.

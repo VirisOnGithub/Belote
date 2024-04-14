@@ -175,6 +175,15 @@ void Affichage::menuLoop()
             menu = false;
             prise = true;
         }
+
+        ImGui::SetCursorPosX((ImGui::GetWindowSize().x - buttonSize.x) / 2.0f);
+        ImGui::SetCursorPosY((ImGui::GetWindowSize().y + buttonSize.y*3/2) / 2.0f);
+
+        if(ImGui::Button("Jouer avec les bots", buttonSize)){
+            menu = false;
+            bots = true;
+            prise = true;
+        }
         ImGui::PopStyleColor(2);
         ImGui::End();
         ImGui::PopStyleColor(1);
@@ -186,15 +195,21 @@ void Affichage::menuLoop()
 
 void Affichage::jeuLoop()
 {
-    if (prise)
-    {
-        animDistribution();
-    }
-    else if(jeu)
-    {
-        jeuDePlis(cartesG);
+    if(bots){
+        if(prise){
+            animDistribution();
+        }
     } else {
-        finDePartie();
+        if (prise)
+        {
+            animDistribution();
+        }
+        else if(jeu)
+        {
+            jeuDePlis(cartesG);
+        } else {
+            finDePartie();
+        }
     }
 }
 
