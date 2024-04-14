@@ -201,8 +201,9 @@ void Affichage::jeuLoop()
 {
     if (bots)
     {
-        if(sleep_next_time){
-            std::this_thread::sleep_for(std::chrono::milliseconds((6-playingTime)*300));
+        if (sleep_next_time)
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds((6 - playingTime) * 300));
             sleep_next_time = false;
         }
         if (prise)
@@ -211,6 +212,10 @@ void Affichage::jeuLoop()
         }
         else if (jeu)
         {
+            for (int i = 0; i < 4; i++)
+            {
+                std::cout << table.Joueurs[i].getRang() << std::endl;
+            }
             jeuDePlisBot(cartesG);
         }
         else
@@ -226,6 +231,10 @@ void Affichage::jeuLoop()
         }
         else if (jeu)
         {
+            for (int i = 0; i < 4; i++)
+            {
+                std::cout << table.Joueurs[i].getRang() << std::endl;
+            }
             jeuDePlis(cartesG);
         }
         else
@@ -275,6 +284,7 @@ void Affichage::afficherCartePriseGraphique()
             jeu = true;
             atoutPreneur = indexJoueur;
             atout = carteRetournee.getCouleur();
+            table.changementOrdreJoueur(indexJoueur);
             table.getMains()[indexJoueur].addCarte(carteRetournee);
             table.distribuer2(p);
             table.trierMains();
@@ -309,6 +319,7 @@ void Affichage::afficherCartePriseGraphique()
                     atout = couleurBouton;
                     atoutPreneur = indexJoueur;
                     jeu = true;
+                    table.changementOrdreJoueur(indexJoueur);
                     table.getMains()[indexJoueur].addCarte(carteRetournee);
                     table.distribuer2(p);
                     table.trierMains();
@@ -361,7 +372,8 @@ void Affichage::afficherCartesSurTable()
 
 void Affichage::jouerCarte(int indexJoueur, int indexCarte)
 {
-    if (!table.Mains[indexJoueur].getMain().empty()){
+    if (!table.Mains[indexJoueur].getMain().empty())
+    {
         table.CartesSurTable.push_back(table.Mains[indexJoueur].getMain()[indexCarte]);
     }
     assert(indexJoueur >= 0);

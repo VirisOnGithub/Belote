@@ -22,12 +22,8 @@ void Affichage::animDistributionBot()
     afficherMainRetourneeGraphiqueGauche1(5);
     if (!table.Mains[0].main.empty() && !table.Joueurs[indexJoueur].getEstBot())
     {
-        afficherMainGraphique(table.Mains[0]);
+        afficherMainGraphique(table.Mains[indexJoueur]);
     }
-    {
-        afficherMainGraphique(table.Mains[0]);
-    }
-
     afficherCartePriseGraphiqueBot();
     showJoueur();
 }
@@ -58,6 +54,7 @@ void Affichage::afficherCartePriseGraphiqueBot()
             if (jeu)
             {
                 prise = false;
+                table.changementOrdreJoueur(indexJoueur);
                 atoutPreneur = indexJoueur;
                 atout = carteRetournee.getCouleur();
                 table.getMains()[indexJoueur].addCarte(carteRetournee);
@@ -110,6 +107,7 @@ void Affichage::afficherCartePriseGraphiqueBot()
             if (jeu)
             {
                 prise = false;
+                table.changementOrdreJoueur(indexJoueur);
                 atoutPreneur = indexJoueur;
                 atout = priseCouleur.second;
                 table.getMains()[indexJoueur].addCarte(carteRetournee);
@@ -189,9 +187,12 @@ void Affichage::jeuDePlisBot(std::vector<sf::Sprite> &cartesG)
     afficherMainRetourneeGraphiqueHaut1(table.Mains[(indexJoueur + 2) % 4].main.size());
     afficherMainRetourneeGraphiqueDroite1(table.Mains[(indexJoueur + 3) % 4].main.size());
     afficherMainRetourneeGraphiqueGauche1(table.Mains[(indexJoueur + 1) % 4].main.size());
-    if (!table.Mains[0].main.empty()) //on veut constamment afficher la main du joueur, pas celle des bots
+    for (int i = 0; i < 4; i++)
     {
-        afficherMainGraphique(table.Mains[0]);
+        if (!table.Mains[i].main.empty() && !table.Joueurs[i].getEstBot()) // on veut constamment afficher la main du joueur, pas celle des bots
+        {
+            afficherMainGraphique(table.Mains[i]);
+        }
     }
     afficherCartesSurTable();
     showAtoutPreneur();

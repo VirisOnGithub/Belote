@@ -46,13 +46,14 @@ private:
     std::map<Couleur, sf::Texture> texturesCouleurs;                                                    /**< A map of textures for different card suits. */
     std::vector<sf::Sprite> cartesG;                                                                    /**< The graphical representation of player cards. */
     bool action = false, menu = true, prise = false, jeu = false, premierTour = true, settings = false; /**< Flags for different game states. */
-    int indexJoueur = 0;                                                                                /**< The index of the current player. */
+    int indexJoueur = table.Joueurs[0].getRang();                                                       /**< The index of the current player. */
     std::string raison;                                                                                 /**< The reason for an error or game event. */
     int atoutPreneur;                                                                                   /**< The index of the player who chose the trump suit. */
     int cptTour;                                                                                        /**< The current round number. */
     std::mutex mtx;
-    bool displayErrors = true, showScoresDuringMatch = true, showLatestCards = true; int playingTime = 1;/**< Flag for settings. */
-    MainJoueur cartesPrécedentes;                                                    /**< The cards played in the previous round. */
+    bool displayErrors = true, showScoresDuringMatch = true, showLatestCards = true;
+    int playingTime = 1;          /**< Flag for settings. */
+    MainJoueur cartesPrécedentes; /**< The cards played in the previous round. */
 
     bool bots = false, sleep_next_time = false;
 
