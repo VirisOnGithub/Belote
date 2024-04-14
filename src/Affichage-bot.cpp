@@ -180,3 +180,102 @@ void Affichage::afficherCartePriseGraphiqueBot()
     sprite.setPosition((window.getSize().x - sprite.getGlobalBounds().width) / 2, (window.getSize().y - sprite.getGlobalBounds().height) / 2);
     window.draw(sprite);
 }
+
+void Affichage::jeuDePlisBot(std::vector<sf::Sprite> &cartesG)
+{
+    afficherMainRetourneeGraphiqueHaut1(table.Mains[(indexJoueur + 2) % 4].main.size());
+    afficherMainRetourneeGraphiqueDroite1(table.Mains[(indexJoueur + 3) % 4].main.size());
+    afficherMainRetourneeGraphiqueGauche1(table.Mains[(indexJoueur + 1) % 4].main.size());
+    if (!table.Mains[indexJoueur].main.empty())
+    {
+        afficherMainGraphique(table.Mains[indexJoueur]);
+    }
+    afficherCartesSurTable();
+    showAtoutPreneur();
+    if (showScoresDuringMatch)
+    {
+        showScores();
+    }
+    showTrumpTakerBadge();
+    showJoueur();
+    bool action = false;
+
+    if (table.Joueurs[indexJoueur].getEstBot())
+    {
+        jouerCarte(indexJoueur, table.Joueurs[indexJoueur].demanderCarte(indexJoueur, table.CartesSurTable, table.CartesJouees, atout, table.Mains[indexJoueur].main, table.Joueurs, raison) - 1);
+        indexJoueur = (indexJoueur + 1) % 4;
+    }
+    else
+    {
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !action)
+        {
+            sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+            for (int i = cartesG.size() - 1; i >= 0; i--)
+            {
+                if (cartesG[i].getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos)))
+                {
+                    mtx.lock();
+                    bool estValide = table.Mains[indexJoueur].main[i].estValide(table.CartesSurTable, atout, table.Mains[indexJoueur].main, raison);
+                    mtx.unlock();
+                    if (estValide && !action)
+                    {
+                        action = true;
+                        jouerCarte(indexJoueur, i);
+                        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                        raison = "";
+                        break; // sort de la boucle une fois qu'une carte valide a été jouée
+                    }
+                    else
+                    {
+                        std::cout << raison << std::endl;
+                    }
+                }
+            }
+            if (action)
+            {
+                indexJoueur = (indexJoueur + 1) % 4;
+                action = false;
+            }
+            sf::sleep(sf::milliseconds(200)); // Pause après chaque clic
+        }
+    }
+    if (displayErrors)
+    {
+        showError(raison);
+    }
+    if (table.CartesSurTable.size() == 4)
+    {
+        cartesPrécedentes = MainJoueur(table.CartesSurTable); // on garde les cartes pour les afficher au tour suivant
+        cptTour++;
+        sf::sleep(sf::milliseconds(1000));
+        indexJoueur = table.getGagnant(table.CartesSurTable, atout);
+        std::cout << indexJoueur << std::endl;
+        int points = table.getPointsSurTable(atout);
+        if (indexJoueur == 0 || indexJoueur == 2)
+        {
+            table.Equipe1.addScore(points);
+            if (cptTour == 8)
+            {
+                table.Equipe1.addScore(10);
+            }
+        }
+        else
+        {
+            table.Equipe2.addScore(points);
+            if (cptTour == 8)
+            {
+                table.Equipe2.addScore(10);
+            }
+        }
+        table.changementOrdreJoueur(indexJoueur);
+        for (int i = 0; i < 4; i++)
+        {
+            table.CartesJouees.push_back(table.CartesSurTable[i]);
+        }
+        table.CartesSurTable.clear();
+        if (cptTour == 8)
+        {
+            jeu = false;
+        }
+    }
+}

@@ -131,6 +131,8 @@ public:
      */
     void jeuDePlis(std::vector<sf::Sprite> &cartesG);
 
+    void jeuDePlisBot(std::vector<sf::Sprite> &cartesG);
+
     /**
      * @brief Shows the player who chose the trump suit.
      */

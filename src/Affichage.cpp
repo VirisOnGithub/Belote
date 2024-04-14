@@ -202,6 +202,14 @@ void Affichage::jeuLoop()
         {
             animDistributionBot();
         }
+        else if (jeu)
+        {
+            jeuDePlisBot(cartesG);
+        }
+        else
+        {
+            finDePartie();
+        }
     }
     else
     {
@@ -427,7 +435,7 @@ void Affichage::jeuDePlis(std::vector<sf::Sprite> &cartesG)
         if (indexJoueur == 0 || indexJoueur == 2)
         {
             table.Equipe1.addScore(points);
-            if (cptTour == 7)
+            if (cptTour == 8)
             {
                 table.Equipe1.addScore(10);
             }
@@ -435,7 +443,7 @@ void Affichage::jeuDePlis(std::vector<sf::Sprite> &cartesG)
         else
         {
             table.Equipe2.addScore(points);
-            if (cptTour == 7)
+            if (cptTour == 8)
             {
                 table.Equipe2.addScore(10);
             }
@@ -446,7 +454,7 @@ void Affichage::jeuDePlis(std::vector<sf::Sprite> &cartesG)
             table.CartesJouees.push_back(table.CartesSurTable[i]);
         }
         table.CartesSurTable.clear();
-        if (cptTour == 7)
+        if (cptTour == 8)
         {
             jeu = false;
         }
