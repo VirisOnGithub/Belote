@@ -3,6 +3,10 @@ project(Belote)
 
 set(CMAKE_CXX_STANDARD 14)
 
+add_custom_target(
+    doc
+    COMMAND doxygen ../doc/doxyfile
+)
 # Add your source files here
 set(SOURCES
     src/Carte.cpp

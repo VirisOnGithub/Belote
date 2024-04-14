@@ -1,13 +1,14 @@
 /*!
- * \mainpage Ma documentation
+ * \mainpage BelotePro
  * 
  * \section intro_sec Introduction
  * 
- * Cette page est la page principale de ma documentation.
+ * Ici vous pourrez trouver toute la documentation à propos du projet
  * 
- * \section install_sec Installation
+ * \section diag_sec Diagramme des classes 
  * 
- * \subsection step1 Étape 1: Ouvrir le terminal
- * 
- * etc...
+ * <a href="../../diagramme-des-classes.class.violet.html">Lien vers le diagramme UML</a>
+ *
+ *
+ *
  */
