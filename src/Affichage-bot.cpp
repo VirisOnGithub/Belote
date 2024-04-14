@@ -3,7 +3,6 @@
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Window/Event.hpp>
-#include <cassert>
 #include <iostream>
 #include "Carte.h"
 #include "MainJoueur.h"
@@ -11,7 +10,6 @@
 #include "Table.h"
 #include "imgui-master/imgui.h"
 #include "imgui-sfml/imgui-SFML.h"
-#include <memory>
 #include <map>
 #include <ostream>
 #include <string>
@@ -22,9 +20,12 @@ void Affichage::animDistributionBot()
     afficherMainRetourneeGraphiqueHaut1(5);
     afficherMainRetourneeGraphiqueDroite1(5);
     afficherMainRetourneeGraphiqueGauche1(5);
-    if (!table.Mains[indexJoueur].main.empty())
+    if (!table.Mains[0].main.empty() && !table.Joueurs[indexJoueur].getEstBot())
     {
-        afficherMainGraphique(table.Mains[indexJoueur]);
+        afficherMainGraphique(table.Mains[0]);
+    }
+    {
+        afficherMainGraphique(table.Mains[0]);
     }
 
     afficherCartePriseGraphiqueBot();
@@ -72,6 +73,7 @@ void Affichage::afficherCartePriseGraphiqueBot()
                     premierTour = false;
                 }
             }
+            sleep_next_time = true;
         }
         else
         {
@@ -114,6 +116,7 @@ void Affichage::afficherCartePriseGraphiqueBot()
                 table.distribuer2(p);
                 table.trierMains();
                 std::cout << "Atout : " << atout << std::endl;
+                sleep_next_time = true;
             }
             else
             {
@@ -186,9 +189,9 @@ void Affichage::jeuDePlisBot(std::vector<sf::Sprite> &cartesG)
     afficherMainRetourneeGraphiqueHaut1(table.Mains[(indexJoueur + 2) % 4].main.size());
     afficherMainRetourneeGraphiqueDroite1(table.Mains[(indexJoueur + 3) % 4].main.size());
     afficherMainRetourneeGraphiqueGauche1(table.Mains[(indexJoueur + 1) % 4].main.size());
-    if (!table.Mains[indexJoueur].main.empty())
+    if (!table.Mains[0].main.empty()) //on veut constamment afficher la main du joueur, pas celle des bots
     {
-        afficherMainGraphique(table.Mains[indexJoueur]);
+        afficherMainGraphique(table.Mains[0]);
     }
     afficherCartesSurTable();
     showAtoutPreneur();
@@ -203,6 +206,7 @@ void Affichage::jeuDePlisBot(std::vector<sf::Sprite> &cartesG)
     if (table.Joueurs[indexJoueur].getEstBot())
     {
         jouerCarte(indexJoueur, table.Joueurs[indexJoueur].demanderCarte(indexJoueur, table.CartesSurTable, table.CartesJouees, atout, table.Mains[indexJoueur].main, table.Joueurs, raison) - 1);
+        sleep_next_time = true;
         indexJoueur = (indexJoueur + 1) % 4;
     }
     else
@@ -221,7 +225,7 @@ void Affichage::jeuDePlisBot(std::vector<sf::Sprite> &cartesG)
                     {
                         action = true;
                         jouerCarte(indexJoueur, i);
-                        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                        sleep_next_time = true;
                         raison = "";
                         break; // sort de la boucle une fois qu'une carte valide a été jouée
                     }
@@ -247,7 +251,7 @@ void Affichage::jeuDePlisBot(std::vector<sf::Sprite> &cartesG)
     {
         cartesPrécedentes = MainJoueur(table.CartesSurTable); // on garde les cartes pour les afficher au tour suivant
         cptTour++;
-        sf::sleep(sf::milliseconds(1000));
+        sleep_next_time = true;
         indexJoueur = table.getGagnant(table.CartesSurTable, atout);
         std::cout << indexJoueur << std::endl;
         int points = table.getPointsSurTable(atout);

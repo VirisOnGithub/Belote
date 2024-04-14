@@ -379,9 +379,9 @@ int Joueur::botAction(int indice,std::vector<Carte> CartesSurTable,std::vector<C
         }
     }
     std::cout<<std::endl;
-    std::cout<<"Valet"<<hasValet<<std::endl;
-    std::cout<<"Neuf"<<hasNeuf<<std::endl;
-    std::cout<<"As"<<hasAs<<std::endl;
+    std::cout<<"Valet: "<<hasValet<<std::endl;
+    std::cout<<"Neuf: "<<hasNeuf<<std::endl;
+    std::cout<<"As: "<<hasAs<<std::endl;
 
     for(int i = 0; i < cartesJouees.size(); i++) // verifie le nombre de carte atout jouee
     {
@@ -396,7 +396,7 @@ int Joueur::botAction(int indice,std::vector<Carte> CartesSurTable,std::vector<C
         EquipeAPris = true;
     }
 
-    if(CartesSurTable.size() >= 1) //verifie si une carte a ete jouee pour pouvoir initialiser la carte maitre et les comparer
+    if(!CartesSurTable.empty()) //verifie si une carte a ete jouee pour pouvoir initialiser la carte maitre et les comparer
     {
         carteMaitre = CartesSurTable[0];
         couleurDemandee = CartesSurTable[0].getCouleur();
@@ -589,19 +589,9 @@ int Joueur::botAction(int indice,std::vector<Carte> CartesSurTable,std::vector<C
 
     if(hasAs && mainJoueur[indexAs].estValide(CartesSurTable, atout, mainJoueur, raison) && !aCoupe)
     {
-        if(CartesSurTable.size() == 0)
-        {
-            std::cout<<std::endl;
-            std::cout<<"Le bot a joué un as de "<<mainJoueur[indexAs].getCouleurStr()<<std::endl;
-            return indexAs+1;
-        }
-        else if(CartesSurTable.size() >= 1 && CartesSurTable[0].getCouleur() != atout)
-        {
-            std::cout<<std::endl;
-            std::cout<<"Le bot a joué un as de "<<mainJoueur[indexAs].getCouleurStr()<<std::endl;
-            return indexAs+1;
-        }
-        else if(CartesSurTable.size() >= 1 && CartesSurTable[0].getCouleur() == CartesSurTable[indexAs].getCouleur())
+        if((CartesSurTable.size() == 0)
+            || (CartesSurTable.size() >= 1 && CartesSurTable[0].getCouleur() != atout) 
+            || (CartesSurTable.size() >= 1 && CartesSurTable[0].getCouleur() == mainJoueur[indexAs].getCouleur()))
         {
             std::cout<<std::endl;
             std::cout<<"Le bot a joué un as de "<<mainJoueur[indexAs].getCouleurStr()<<std::endl;

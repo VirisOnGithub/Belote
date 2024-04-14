@@ -112,7 +112,7 @@ void Affichage::afficherMainGraphique(MainJoueur main)
 {
     assert(!main.main.empty());
     assert(main.main.size() <= 8 && main.main.size() > 0);
-    int nbCartesAffichees = main.getCartesG().size();
+    int nbCartesAffichees = main.main.size();
     cartesG.clear();
     auto cartes = main.getCartesG();
 

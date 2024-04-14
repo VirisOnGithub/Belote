@@ -134,13 +134,12 @@ void Affichage::menuLoop()
 
         ImGui::Separator();
 
-        ImGui::Text("Volume");
         ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
         ImGui::PushStyleColor(ImGuiCol_SliderGrabActive, ImVec4(0.0f, 0.0f, 0.0f, 0.5f));
         ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 0.0f, 0.1f));
         ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.0f, 0.0f, 0.0f, 0.1f));
         ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImVec4(0.0f, 0.0f, 0.0f, 0.1f));
-        ImGui::SliderFloat("##", &musicVolume, 0.0f, 100.0f, "", ImGuiSliderFlags_NoRoundToFormat);
+        ImGui::SliderFloat("Volume", &musicVolume, 0.0f, 100.0f, "", ImGuiSliderFlags_NoRoundToFormat);
         music.setVolume(musicVolume);
 
         ImGui::Separator();
@@ -148,6 +147,10 @@ void Affichage::menuLoop()
         ImGui::Checkbox("Montrer les raisons de refus de la carte", &displayErrors);
         ImGui::Checkbox("Montrer les scores pendant le match", &showScoresDuringMatch);
         ImGui::Checkbox("Montrer les cartes jouées précédemment", &showLatestCards);
+
+        ImGui::Separator();
+
+        ImGui::SliderInt("Vitesse de jeu", &playingTime, 1, 5);
 
         ImGui::PopStyleColor(5);
         ImGui::Separator();
@@ -198,6 +201,10 @@ void Affichage::jeuLoop()
 {
     if (bots)
     {
+        if(sleep_next_time){
+            std::this_thread::sleep_for(std::chrono::milliseconds((6-playingTime)*300));
+            sleep_next_time = false;
+        }
         if (prise)
         {
             animDistributionBot();
@@ -354,13 +361,7 @@ void Affichage::afficherCartesSurTable()
 
 void Affichage::jouerCarte(int indexJoueur, int indexCarte)
 {
-    if (table.Mains[indexJoueur].getMain().empty())
-    {
-        // Le vecteur est vide, ne pas l'utiliser
-    }
-    else
-    {
-        // Le vecteur n'est pas vide, vous pouvez l'utiliser
+    if (!table.Mains[indexJoueur].getMain().empty()){
         table.CartesSurTable.push_back(table.Mains[indexJoueur].getMain()[indexCarte]);
     }
     assert(indexJoueur >= 0);
