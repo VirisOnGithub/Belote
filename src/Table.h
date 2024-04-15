@@ -189,7 +189,7 @@ public:
      * @brief Changes the order of the hands.
      * @param index The index of the hand to be moved.
      */
-    void changementOrdreMains(int index, std::vector<Joueur> &joueurs);
+    void changementOrdreMains(int index);
 
     /**
      * @brief Returns the index of the winner of a trick.

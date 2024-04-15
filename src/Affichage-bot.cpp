@@ -20,9 +20,9 @@ void Affichage::animDistributionBot()
     afficherMainRetourneeGraphiqueHaut1(5);
     afficherMainRetourneeGraphiqueDroite1(5);
     afficherMainRetourneeGraphiqueGauche1(5);
-    if (!table.Mains[0].main.empty() && !table.Joueurs[indexJoueur].getEstBot())
+    if (!table.Mains[0].main.empty())
     {
-        afficherMainGraphique(table.Mains[indexJoueur]);
+        afficherMainGraphique(table.Mains[0]);
     }
     afficherCartePriseGraphiqueBot();
     showJoueur();
@@ -49,7 +49,7 @@ void Affichage::afficherCartePriseGraphiqueBot()
     {
         if (table.Joueurs[indexJoueur].getEstBot())
         {
-            priseCouleur = table.Joueurs[indexJoueur].botPrise(carteRetournee, table.Mains[indexJoueur].getMain(), !premierTour);
+            priseCouleur = table.Joueurs[indexJoueur].botPrise(carteRetournee, table.Mains[indexJoueur].main, !premierTour);
             jeu = priseCouleur.first;
             if (jeu)
             {
@@ -57,7 +57,7 @@ void Affichage::afficherCartePriseGraphiqueBot()
                 table.changementOrdreJoueur(indexJoueur);
                 atoutPreneur = indexJoueur;
                 atout = carteRetournee.getCouleur();
-                table.getMains()[indexJoueur].addCarte(carteRetournee);
+                table.Mains[indexJoueur].addCarte(carteRetournee);
                 table.distribuer2(p);
                 table.trierMains();
             }
@@ -82,7 +82,7 @@ void Affichage::afficherCartePriseGraphiqueBot()
                 atoutPreneur = indexJoueur;
                 atout = carteRetournee.getCouleur();
                 table.changementOrdreJoueur(indexJoueur);
-                table.getMains()[indexJoueur].addCarte(carteRetournee);
+                table.Mains[indexJoueur].addCarte(carteRetournee);
                 table.distribuer2(p);
                 table.trierMains();
             }
@@ -111,7 +111,7 @@ void Affichage::afficherCartePriseGraphiqueBot()
                 table.changementOrdreJoueur(indexJoueur);
                 atoutPreneur = indexJoueur;
                 atout = priseCouleur.second;
-                table.getMains()[indexJoueur].addCarte(carteRetournee);
+                table.Mains[indexJoueur].addCarte(carteRetournee);
                 table.distribuer2(p);
                 table.trierMains();
                 std::cout << "Atout : " << atout << std::endl;
@@ -122,7 +122,8 @@ void Affichage::afficherCartePriseGraphiqueBot()
                 indexJoueur++;
                 if (indexJoueur == 4)
                 {
-                    window.close(); // A FAIRE
+                    std::cout << "Personne n'a pris" << std::endl;
+                    window.close();
                 }
             }
             sleep_next_time = true;
@@ -146,7 +147,7 @@ void Affichage::afficherCartePriseGraphiqueBot()
                         atoutPreneur = indexJoueur;
                         table.changementOrdreJoueur(indexJoueur);
                         jeu = true;
-                        table.getMains()[indexJoueur].addCarte(carteRetournee);
+                        table.Mains[indexJoueur].addCarte(carteRetournee);
                         table.distribuer2(p);
                         table.trierMains();
                     }
@@ -187,12 +188,24 @@ void Affichage::afficherCartePriseGraphiqueBot()
 
 void Affichage::jeuDePlisBot(std::vector<sf::Sprite> &cartesG)
 {
-    afficherMainRetourneeGraphiqueHaut1(table.Mains[1].main.size());
-    afficherMainRetourneeGraphiqueDroite1(table.Mains[2].main.size());
-    afficherMainRetourneeGraphiqueGauche1(table.Mains[3].main.size());
-    afficherMainGraphique(table.Mains[0]);
+    afficherMainRetourneeGraphiqueHaut1(table.Mains[(indexJoueur + 2) % 4].main.size());
+    afficherMainRetourneeGraphiqueDroite1(table.Mains[(indexJoueur + 3) % 4].main.size());
+    afficherMainRetourneeGraphiqueGauche1(table.Mains[(indexJoueur + 1) % 4].main.size());
+    for (int i = 0; i < 4; i++) //Pour gérer les tours des bots
+    {
+        if (!table.Mains[0].main.empty())
+        {
+            afficherMainGraphique(table.Mains[0]);
+        }
+    }
     afficherCartesSurTable();
     showAtoutPreneur();
+    {
+        table.Joueurs[0].setEstBot(0);
+        table.Joueurs[1].setEstBot(1);
+        table.Joueurs[2].setEstBot(1);
+        table.Joueurs[3].setEstBot(1);
+    }
     if (showScoresDuringMatch)
     {
         showScores();
@@ -273,6 +286,7 @@ void Affichage::jeuDePlisBot(std::vector<sf::Sprite> &cartesG)
             }
         }
         table.changementOrdreJoueur(indexJoueur);
+        //table.changementOrdreMains(indexJoueur);
         for (int i = 0; i < 4; i++)
         {
             table.CartesJouees.push_back(table.CartesSurTable[i]);

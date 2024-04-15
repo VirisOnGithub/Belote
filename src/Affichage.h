@@ -19,17 +19,13 @@
 
 /**
  * @class Affichage
- * @brief The Affichage class represents the graphical interface for the Belote game.
- *
- * This class is responsible for managing the game window, rendering graphics, and handling user input.
- * It provides methods for initializing the game, running the main game loop, and displaying various game elements.
- *
- * The Affichage class also holds information about the game state, such as the current table, deck of cards, and player actions.
- * It uses SFML library for rendering graphics and handling user input.
+ * @brief The Affichage class represents the graphical interface of the Belote game.
+ * 
+ * This class handles the game window, fonts, textures, and various game states.
+ * It provides methods for initializing the game, starting the main game loop, and displaying game elements.
+ * The Affichage class also includes methods for playing cards, showing error messages, and managing game settings.
  */
-
-class Affichage
-{
+class Affichage {
 private:
     sf::RenderWindow window;                                                                            /**< The game window for rendering graphics. */
     sf::Font font;                                                                                      /**< The font used for displaying text. */
@@ -50,10 +46,10 @@ private:
     std::string raison;                                                                                 /**< The reason for an error or game event. */
     int atoutPreneur;                                                                                   /**< The index of the player who chose the trump suit. */
     int cptTour;                                                                                        /**< The current round number. */
-    std::mutex mtx;
-    bool displayErrors = true, showScoresDuringMatch = true, showLatestCards = true;
-    int playingTime = 1;          /**< Flag for settings. */
-    MainJoueur cartesPrécedentes; /**< The cards played in the previous round. */
+    std::mutex mtx;                                                                                     /**< Mutex for thread synchronization. */
+    bool displayErrors = true, showScoresDuringMatch = true, showLatestCards = true;                    /**< Flags for game settings. */
+    int playingTime = 1;                                                                                /**< Flag for settings. */
+    MainJoueur cartesPrécedentes;                                                                       /**< The cards played in the previous round. */
 
     bool bots = false, sleep_next_time = false;
 
@@ -77,6 +73,7 @@ public:
      * @brief Starts the game loop.
      */
     void jeuLoop();
+
     /**
      * @brief Loads the game music.
      */
@@ -99,6 +96,9 @@ public:
      */
     void afficherCartePriseGraphique();
 
+    /**
+     * @brief Displays the taken card graphically for a bot player.
+     */
     void afficherCartePriseGraphiqueBot();
 
     /**
@@ -124,6 +124,9 @@ public:
      */
     void animDistribution();
 
+    /**
+     * @brief Animates the card distribution for a bot player.
+     */
     void animDistributionBot();
 
     /**
@@ -132,6 +135,10 @@ public:
      */
     void jeuDePlis(std::vector<sf::Sprite> &cartesG);
 
+    /**
+     * @brief Plays the game of plis for a bot player.
+     * @param cartesG The graphical representation of player cards.
+     */
     void jeuDePlisBot(std::vector<sf::Sprite> &cartesG);
 
     /**
@@ -177,6 +184,9 @@ public:
      */
     void showJoueur();
 
+    /**
+     * @brief Ends the game.
+     */
     void finDePartie();
 };
 

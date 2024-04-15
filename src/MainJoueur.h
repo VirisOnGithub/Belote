@@ -1,21 +1,24 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef MAINJOUEUR_H
+#define MAINJOUEUR_H
 
-#include "Carte.h"
-#include <SFML/System/String.hpp>
 #include <vector>
-#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics.hpp>
+#include "Carte.h"
 
 /**
- * @brief The MainJoueur class represents a player's hand in a card game.
+ * @class MainJoueur
+ * @brief Represents the player's hand in the Belote card game.
+ *
+ * The MainJoueur class stores a vector of cards representing the player's hand.
+ * It provides various methods to manipulate and interact with the player's hand.
  */
-class MainJoueur
-{
+class MainJoueur {
     friend class Table;
     friend class Affichage;
 
 private:
     std::vector<Carte> main; /**< The vector of cards representing the player's hand. */
+    int rang;               /**< The rank of the player's hand. */
 
 public:
     /**
@@ -44,35 +47,47 @@ public:
     int operator[](int index);
 
     /**
-     * @brief Getter for the player's hand.
+     * @brief Get the rank of the player's hand.
+     * @return The rank of the player's hand.
+     */
+    int getRang() const;
+
+    /**
+     * @brief Set the rank of the player's hand.
+     * @param rang The rank to set.
+     */
+    void setRang(int rang);
+
+    /**
+     * @brief Get a reference to the vector of cards representing the player's hand.
      * @return A reference to the vector of cards representing the player's hand.
      */
     std::vector<Carte> &getMain();
 
     /**
-     * @brief Setter for the player's hand.
+     * @brief Set the player's hand.
      * @param main The new hand to set.
      */
     void setMain(MainJoueur &main);
 
     /**
-     * @brief Adds a card to the player's hand.
+     * @brief Add a card to the player's hand.
      * @param carte The card to add.
      */
     void addCarte(Carte carte);
 
     /**
-     * @brief Displays the player's hand.
+     * @brief Display the player's hand.
      */
     void afficherMain() const;
 
     /**
-     * @brief Sorts the player's hand in ascending order.
+     * @brief Sort the player's hand in ascending order.
      */
     void trierMain();
 
     /**
-     * @brief Plays a card from the player's hand at the specified index.
+     * @brief Play a card from the player's hand at the specified index.
      * @param index The index of the card to play.
      */
     void jouerCarte(int index);
@@ -80,14 +95,10 @@ public:
     // GRAPHIQUE
 
     /**
-     * @brief A container that represents a dynamic array of sf::String objects.
-     *
-     * This container provides a flexible way to store and manipulate a collection of sf::String objects.
-     * It automatically manages the memory allocation and deallocation for the stored objects.
-     *
-     * @tparam T The type of elements stored in the vector.
+     * @brief Get a vector of sf::String objects representing the cards in the player's hand.
+     * @return A vector of sf::String objects representing the cards in the player's hand.
      */
     std::vector<sf::String> getCartesG();
 };
 
-#endif
+#endif // MAINJOUEUR_H

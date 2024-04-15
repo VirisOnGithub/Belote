@@ -1,5 +1,6 @@
 #include "Table.h"
 #include "Joueur.h"
+#include "MainJoueur.h"
 #include "PaquetDeCarte.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -21,6 +22,7 @@ Table::Table()
     for (int i = 0; i < 4; i++)
     {
         MainJoueur m;
+        m.setRang(i);
         Mains.push_back(m);
     }
     CartesSurTable = std::vector<Carte>();
@@ -404,14 +406,10 @@ void Table::changementOrdreJoueur(int index)
     std::rotate(Joueurs.begin(), Joueurs.begin() + index, Joueurs.end());
 }
 
-void Table::changementOrdreMains(int index, std::vector<Joueur> &joueurs)
+void Table::changementOrdreMains(int index)
 {
-    std::vector<MainJoueur> newOrderMains;
-    for (const auto &joueur : joueurs)
-    {
-        newOrderMains.push_back(Mains[joueur.getRang()]);
-    }
-    Mains = newOrderMains;
+    std::sort(Mains.begin(), Mains.end(), [](const MainJoueur &a, const MainJoueur &b)
+              { return a.getRang() < b.getRang(); });
     std::rotate(Mains.begin(), Mains.begin() + index, Mains.end());
 }
 

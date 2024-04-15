@@ -27,7 +27,7 @@ void Affichage::init()
         for (const auto &chiffre : chiffres)
         {
             auto texture = std::make_shared<sf::Texture>();
-            if (!texture->loadFromFile("../assets/cartes/" + chiffre + "_" + couleur + ".png"))
+            if (!texture->loadFromFile("assets/cartes/" + chiffre + "_" + couleur + ".png"))
             {
                 std::cerr << "Error loading texture" << std::endl;
             }
@@ -38,7 +38,7 @@ void Affichage::init()
         }
     }
 
-    if (!settingsTexture.loadFromFile("../assets/settings.png"))
+    if (!settingsTexture.loadFromFile("assets/settings.png"))
     {
         std::cerr << "Error loading settings texture" << std::endl;
     }
@@ -47,7 +47,7 @@ void Affichage::init()
         std::cout << "Settings texture loaded" << std::endl;
     }
 
-    if (!crossTexture.loadFromFile("../assets/cross.png"))
+    if (!crossTexture.loadFromFile("assets/cross.png"))
     {
         std::cerr << "Error loading cross texture" << std::endl;
     }
@@ -73,7 +73,7 @@ void Affichage::init()
     window.display();
 
     sf::Image icon;
-    if (!icon.loadFromFile("../assets/icon.png"))
+    if (!icon.loadFromFile("assets/icon.png"))
     {
         std::cerr << "Error loading icon" << std::endl;
     }
@@ -88,10 +88,10 @@ void Affichage::init()
     table.jeuGraphique(p, atout);
     carteRetournee = Carte(sept, rien);
 
-    texturesCouleurs[coeur].loadFromFile("../assets/couleurs/coeur.png");
-    texturesCouleurs[carreau].loadFromFile("../assets/couleurs/carreau.png");
-    texturesCouleurs[pique].loadFromFile("../assets/couleurs/pique.png");
-    texturesCouleurs[trefle].loadFromFile("../assets/couleurs/trefle.png");
+    texturesCouleurs[coeur].loadFromFile("assets/couleurs/coeur.png");
+    texturesCouleurs[carreau].loadFromFile("assets/couleurs/carreau.png");
+    texturesCouleurs[pique].loadFromFile("assets/couleurs/pique.png");
+    texturesCouleurs[trefle].loadFromFile("assets/couleurs/trefle.png");
     cptTour = 0;
 }
 
@@ -277,7 +277,7 @@ void Affichage::afficherCartePriseGraphique()
             atoutPreneur = indexJoueur;
             table.changementOrdreJoueur(indexJoueur);
             atout = carteRetournee.getCouleur();
-            table.getMains()[indexJoueur].addCarte(carteRetournee);
+            table.Mains[indexJoueur].addCarte(carteRetournee);
             table.distribuer2(p);
             table.trierMains();
         }
@@ -337,7 +337,8 @@ void Affichage::afficherCartePriseGraphique()
             indexJoueur++;
             if (indexJoueur == 4)
             {
-                window.close(); // A FAIRE
+                std::cout << "Personne n'a pris" << std::endl;
+                window.close();
             }
         }
     }

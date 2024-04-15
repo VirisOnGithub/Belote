@@ -30,7 +30,7 @@ const char *AtouttoStr(Couleur c)
 
 void Affichage::loadMusic()
 {
-    if (!music.openFromFile("../assets/mix.ogg"))
+    if (!music.openFromFile("assets/mix.ogg"))
     {
         std::cerr << "Erreur de chargement de la musique" << std::endl;
     }
@@ -43,7 +43,7 @@ void Affichage::afficherMainRetourneeGraphiqueHaut1(int nbCartes)
 {
     // Assurez-vous que la carte est définie
     sf::Texture texture;
-    if (!texture.loadFromFile("../assets/back/BlueCardBack.png"))
+    if (!texture.loadFromFile("assets/back/BlueCardBack.png"))
     {
         std::cerr << "Erreur de chargement de la texture" << std::endl;
     }
@@ -65,7 +65,7 @@ void Affichage::afficherMainRetourneeGraphiqueHaut1(int nbCartes)
 void Affichage::afficherMainRetourneeGraphiqueDroite1(int nbCartes)
 {
     sf::Texture texture;
-    if (!texture.loadFromFile("../assets/back/90DegBlueCardBack.png"))
+    if (!texture.loadFromFile("assets/back/90DegBlueCardBack.png"))
     {
         std::cerr << "Erreur de chargement de la texture" << std::endl;
     }
@@ -88,7 +88,7 @@ void Affichage::afficherMainRetourneeGraphiqueDroite1(int nbCartes)
 void Affichage::afficherMainRetourneeGraphiqueGauche1(int nbCartes)
 {
     sf::Texture texture;
-    if (!texture.loadFromFile("../assets/back/90DegBlueCardBack.png"))
+    if (!texture.loadFromFile("assets/back/90DegBlueCardBack.png"))
     {
         std::cerr << "Erreur de chargement de la texture" << std::endl;
     }
@@ -186,7 +186,7 @@ void Affichage::afficherMainGraphique(MainJoueur main)
 sf::Font Affichage::loadFont()
 {
     sf::Font font;
-    if (!font.loadFromFile("../src/fonts/GravitasOne-Regular.ttf"))
+    if (!font.loadFromFile("src/fonts/GravitasOne-Regular.ttf"))
     {
         std::cerr << "Error loading font" << std::endl;
     }

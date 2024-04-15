@@ -38,6 +38,16 @@ void MainJoueur::setMain(MainJoueur &main)
     this->main = main.main;
 }
 
+int MainJoueur::getRang() const
+{
+    return rang;
+}
+
+void MainJoueur::setRang(int rang)
+{
+    this->rang = rang;
+}
+
 void MainJoueur::addCarte(Carte carte)
 {
     main.push_back(carte);

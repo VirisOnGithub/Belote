@@ -46,19 +46,19 @@ set(IMGUI
     src/imgui-sfml/imgui-SFML.h
 )
 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/obj)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)
 
-add_executable(Belote ${SOURCES} src/main.cpp)
-add_executable(Graphique ${SOURCES} ${IMGUI} ${GRAPHIQUES})
+add_executable(BeloteText ${SOURCES} src/main.cpp)
+add_executable(Belote ${SOURCES} ${IMGUI} ${GRAPHIQUES})
 
 # Add your include directories here
+target_include_directories(BeloteText PRIVATE src)
 target_include_directories(Belote PRIVATE src)
-target_include_directories(Graphique PRIVATE src)
 
 find_package(OpenGL REQUIRED)
 find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
 
 # Link required libraries for Graphique executable
-target_link_libraries(Graphique sfml-graphics sfml-audio OpenGL::GL)
-target_link_libraries(Belote sfml-graphics sfml-audio)
+target_link_libraries(Belote sfml-graphics sfml-audio OpenGL::GL)
+target_link_libraries(BeloteText sfml-graphics sfml-audio)
 
