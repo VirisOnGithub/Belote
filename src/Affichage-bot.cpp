@@ -125,6 +125,7 @@ void Affichage::afficherCartePriseGraphiqueBot()
                     window.close(); // A FAIRE
                 }
             }
+            sleep_next_time = true;
         }
         else
         {
@@ -186,16 +187,10 @@ void Affichage::afficherCartePriseGraphiqueBot()
 
 void Affichage::jeuDePlisBot(std::vector<sf::Sprite> &cartesG)
 {
-    afficherMainRetourneeGraphiqueHaut1(table.Mains[(indexJoueur + 2) % 4].main.size());
-    afficherMainRetourneeGraphiqueDroite1(table.Mains[(indexJoueur + 3) % 4].main.size());
-    afficherMainRetourneeGraphiqueGauche1(table.Mains[(indexJoueur + 1) % 4].main.size());
-    for (int i = 0; i < 4; i++)
-    {
-        if (!table.Mains[i].main.empty() && table.Joueurs[i].getRang() == 0) // on veut constamment afficher la main du joueur, pas celle des bots
-        {
-            afficherMainGraphique(table.Mains[i]);
-        }
-    }
+    afficherMainRetourneeGraphiqueHaut1(table.Mains[1].main.size());
+    afficherMainRetourneeGraphiqueDroite1(table.Mains[2].main.size());
+    afficherMainRetourneeGraphiqueGauche1(table.Mains[3].main.size());
+    afficherMainGraphique(table.Mains[0]);
     afficherCartesSurTable();
     showAtoutPreneur();
     if (showScoresDuringMatch)
@@ -205,8 +200,11 @@ void Affichage::jeuDePlisBot(std::vector<sf::Sprite> &cartesG)
     showTrumpTakerBadge();
     showJoueur();
     bool action = false;
-
-    if (table.Joueurs[indexJoueur].getEstBot())
+    for (int i = 0; i < 4; i++)
+    {
+        std::cout << "Bot : " << table.Joueurs[i].getEstBot() << std::endl;
+    }
+    if ((table.Joueurs[indexJoueur].getEstBot() && indexJoueur != 0 && !sleep_next_time))
     {
         jouerCarte(indexJoueur, table.Joueurs[indexJoueur].demanderCarte(indexJoueur, table.CartesSurTable, table.CartesJouees, atout, table.Mains[indexJoueur].main, table.Joueurs, raison) - 1);
         sleep_next_time = true;

@@ -116,7 +116,6 @@ void Affichage::afficherMainGraphique(MainJoueur main)
     cartesG.clear();
     auto cartes = main.getCartesG();
 
-
     for (int i = 0; i < nbCartesAffichees; i++)
     {
         sf::Sprite sprite;
@@ -143,14 +142,16 @@ void Affichage::afficherMainGraphique(MainJoueur main)
             ImVec2 pos = ImVec2((window.getSize().x - totalWidth) / 2.0f + i * (CardWidth / 2.0f), window.getSize().y - CardHeight / 2.);
             cartesG[i].setPosition(pos.x, pos.y);
             window.draw(cartesG[i]);
-            if(!main.main[i].estValide(table.CartesSurTable, atout, main.main, raison)) {
+            if (!main.main[i].estValide(table.CartesSurTable, atout, main.main, raison))
+            {
                 sf::RectangleShape rectangle;
                 rectangle.setSize(sf::Vector2f(CardWidth, CardHeight));
                 rectangle.setFillColor(sf::Color(128, 128, 128, 128));
                 rectangle.setPosition(pos.x, pos.y);
                 window.draw(rectangle);
             }
-            if(main.main[i].getCouleur() == atout) {
+            if (main.main[i].getCouleur() == atout)
+            {
                 sf::RectangleShape rectangle;
                 rectangle.setSize(sf::Vector2f(CardWidth, CardHeight));
                 rectangle.setFillColor(sf::Color(255, 255, 0, 64));
@@ -164,16 +165,18 @@ void Affichage::afficherMainGraphique(MainJoueur main)
         std::cerr << "Erreur : aucune carte à dessiner" << std::endl;
     }
 
-    if(cptTour > 0 && showLatestCards){
-        //Afficher les cartes déjà jouées
+    if (cptTour > 0 && showLatestCards)
+    {
+        // Afficher les cartes déjà jouées
         std::vector<sf::String> cartesJouees = cartesPrécedentes.getCartesG();
-        for(int i = 0; i < cartesJouees.size(); i++){
+        for (int i = 0; i < cartesJouees.size(); i++)
+        {
             sf::Sprite sprite;
             sprite.setTexture(*textures[cartesJouees[i]]);
             sprite.setScale(0.4, 0.4);
             int CardWidth = textures[cartesJouees[i]]->getSize().x * sprite.getScale().x;  // Prendre en compte l'échelle de la carte
             int CardHeight = textures[cartesJouees[i]]->getSize().y * sprite.getScale().y; // Prendre en compte l'échelle de la carte
-            ImVec2 pos = ImVec2(window.getSize().x - (5*CardWidth)/2. - i * CardWidth / 2., window.getSize().y - CardHeight);
+            ImVec2 pos = ImVec2(window.getSize().x - (5 * CardWidth) / 2. - i * CardWidth / 2., window.getSize().y - CardHeight);
             sprite.setPosition(pos.x, pos.y);
             window.draw(sprite);
         }
@@ -201,9 +204,10 @@ void Affichage::showAtoutPreneur()
     ImGui::Begin("Atout", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
     ImVec2 pos = ImVec2(50, 10);
     ImGui::SetWindowPos(pos, ImGuiCond_Once);
-    ImGui::SetWindowSize(ImVec2(250, 50), ImGuiCond_Always);
+    ImGui::SetWindowSize(ImVec2(340, 70), ImGuiCond_Always);
     ImGui::Text("Le preneur est le joueur %d", atoutPreneur + 1);
     ImGui::Text("L'atout est %s", AtouttoStr(atout));
+    ImGui::Text("le vainqueur du pli précédent est le joueur %d", table.Joueurs[0].getRang() + 1);
     ImGui::End();
     ImGui::PopStyleColor(1);
     ImGui::PopStyleVar(1);
@@ -235,7 +239,7 @@ void Affichage::showTrumpTakerBadge()
     switch (res)
     {
     case 0:
-        pos = ImVec2(window.getSize().x / 2. - trumpSize / 2, window.getSize().y - CardHeight - trumpSize*2);
+        pos = ImVec2(window.getSize().x / 2. - trumpSize / 2, window.getSize().y - CardHeight - trumpSize * 2);
         break;
     case 1:
         pos = ImVec2(CardWidth + trumpSize, window.getSize().y / 2. - trumpSize / 2);
@@ -244,7 +248,7 @@ void Affichage::showTrumpTakerBadge()
         pos = ImVec2(window.getSize().x / 2. - trumpSize / 2, CardHeight + trumpSize);
         break;
     default:
-        pos = ImVec2(window.getSize().x - CardWidth - trumpSize*2, window.getSize().y / 2. - trumpSize / 2);
+        pos = ImVec2(window.getSize().x - CardWidth - trumpSize * 2, window.getSize().y / 2. - trumpSize / 2);
         break;
     }
     ImGui::SetWindowPos(pos, ImGuiCond_Always);

@@ -212,10 +212,6 @@ void Affichage::jeuLoop()
         }
         else if (jeu)
         {
-            for (int i = 0; i < 4; i++)
-            {
-                std::cout << table.Joueurs[i].getRang() << std::endl;
-            }
             jeuDePlisBot(cartesG);
         }
         else
@@ -231,10 +227,6 @@ void Affichage::jeuLoop()
         }
         else if (jeu)
         {
-            for (int i = 0; i < 4; i++)
-            {
-                std::cout << table.Joueurs[i].getRang() << std::endl;
-            }
             jeuDePlis(cartesG);
         }
         else
@@ -401,7 +393,6 @@ void Affichage::jeuDePlis(std::vector<sf::Sprite> &cartesG)
     showTrumpTakerBadge();
     showJoueur();
     bool action = false;
-
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !action)
     {
         sf::Vector2i mousePos = sf::Mouse::getPosition(window);
