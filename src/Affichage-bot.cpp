@@ -213,10 +213,6 @@ void Affichage::jeuDePlisBot(std::vector<sf::Sprite> &cartesG)
     showTrumpTakerBadge();
     showJoueur();
     bool action = false;
-    for (int i = 0; i < 4; i++)
-    {
-        std::cout << "Bot : " << table.Joueurs[i].getEstBot() << std::endl;
-    }
     if ((table.Joueurs[indexJoueur].getEstBot() && indexJoueur != 0 && !sleep_next_time))
     {
         jouerCarte(indexJoueur, table.Joueurs[indexJoueur].demanderCarte(indexJoueur, table.CartesSurTable, table.CartesJouees, atout, table.Mains[indexJoueur].main, table.Joueurs, raison) - 1);

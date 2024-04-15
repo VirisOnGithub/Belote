@@ -1,7 +1,9 @@
 #include "PaquetDeCarte.h"
 #include <algorithm>
 #include <cassert>
+#include <cstddef>
 #include <cstdlib>
+#include <ctime>
 #include <vector>
 
 PaquetDeCarte::PaquetDeCarte()
@@ -52,7 +54,7 @@ void PaquetDeCarte::afficherPaquet() const
 
 void PaquetDeCarte::melanger()
 {
-    srand(10);
+    srand(time(NULL));
     int n = paquet.size();
     for (int i = n - 1; i > 0; i--)
     {
